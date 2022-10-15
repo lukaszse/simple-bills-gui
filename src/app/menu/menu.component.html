@@ -1,8 +1,10 @@
 <!-- navbar -->
-<div class="container p-3">
-  <nav class="shadow navbar navbar-expand navbar navbar-dark bg-secondary rounded">
-    <a class="navbar-brand" href="#">&nbsp;&nbsp; simple-bills</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="shadow navbar navbar-expand navbar navbar-dark bg-secondary rounded">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">simple-bills</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,6 +29,14 @@
           </div>
         </li>
       </ul>
+      <span class="ms-auto">
+          <span *ngIf="!isLogged">
+            <button class="btn btn-dark bg-secondary" (click)="login()" type="submit">Login</button>
+          </span>
+          <span *ngIf="isLogged" >
+            <button class="btn btn-dark bg-secondary" (click)="logout()" href="#">Logout</button>
+          </span>
+      </span>
     </div>
-  </nav>
-</div>
+  </div>
+</nav>
