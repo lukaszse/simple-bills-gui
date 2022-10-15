@@ -1,7 +1,14 @@
 import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Observable, tap} from "rxjs";
 import {map} from 'rxjs/operators'
-import {HttpClientService, NgbdSortableHeader, SortEvent, compare} from "../../httpClient.service";
+import {SortableComponent} from "../../../interfaces/sortableComponent";
+import {
+  SimpleBillsClientService,
+  NgbdSortableHeader,
+  SortEvent,
+  compare,
+  SortUtils
+} from "../../../service/simpleBillsClient.service";
 
 interface Bill {
   billNumber: string;
@@ -17,43 +24,26 @@ interface Bill {
   templateUrl: './bills.component.html',
   styleUrls: ['./bills.component.css']
 })
-export class BillsComponent implements OnInit {
+export class BillsComponent implements OnInit, SortableComponent {
 
   private static billsEndpoint: string = "/bills";
   bills$: Observable<Bill[]>;
 
-  constructor(private httpClientService:HttpClientService) { }
+  constructor(private simpleBillsClientService:SimpleBillsClientService) { }
 
   ngOnInit() {
     this.bills$ = this.getBillsObservable();
   }
 
   getBillsObservable() : Observable<Bill[]> {
-    return this.httpClientService
+    return this.simpleBillsClientService
       .get(BillsComponent.billsEndpoint).pipe(
       tap(console.log));
   }
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
   onSort({column, direction}: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting table
-    if (direction === '' || column === '') {
-      this.bills$ = this.getBillsObservable();
-    } else {
-      this.bills$ = this.getBillsObservable().pipe(
-        map(bills => bills.sort((a, b) => {
-          const res = compare(a[column], b[column]);
-          return direction === 'asc' ? res : -res;
-        } )));
-    }
+    this.headers = SortUtils.resetOtherHeaders(this.headers, column);
+    this.bills$ = SortUtils.sortTable(this, direction, column)
   }
 }

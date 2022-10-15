@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {OAuth2Service} from "./oAuth2Service";
-import {Config} from "./config";
+import {OAuth2Service} from "../service/oAuth2Service";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +25,7 @@ export class AppComponent {
 
   login() {
     window.location.href =
-      `${Config.keycloakHost}/realms/baeldung/protocol/openid-connect/auth?` +
+      `${environment.keycloakHost}/realms/baeldung/protocol/openid-connect/auth?` +
       'response_type=code&scope=openid%20write%20read&client_id=' +
       this._service.clientId + '&redirect_uri=' + this._service.redirectUri;
   }

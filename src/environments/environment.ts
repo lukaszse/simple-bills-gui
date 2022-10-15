@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+
+  production: false,
+  simpleBillsHost: "http://localhost:8080",
+  keycloakHost: "http://localhost:8085",
+  redirectUri: "http://localhost:8089/"
 };
 
 /*
