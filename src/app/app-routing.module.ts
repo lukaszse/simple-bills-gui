@@ -5,7 +5,7 @@ import {BillsComponent} from "./content/bills/bills.component";
 import {ContactComponent} from "./content/contact/contact.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'bills', component: BillsComponent},
   {path: 'contact', component: ContactComponent}

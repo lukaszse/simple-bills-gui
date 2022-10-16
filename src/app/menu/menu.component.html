@@ -7,20 +7,19 @@
         <li class="nav-item" [ngbNavItem]="1">
           <a class="nav-link" ngbNavLink routerLink="/home">home</a>
         </li>
-        <li class="nav-item" [ngbNavItem]="2">
+        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="2">
           <a class="nav-link" ngbNavLink routerLink="/bills">bills</a>
         </li>
-        <li class="nav-item" [ngbNavItem]="3">
+        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="3">
           <a class="nav-link" ngbNavLink routerLink="/contact">contact</a>
         </li>
         <li ngbDropdown class="nav-item" [ngbNavItem]="4">
-          <a href (click)="false" class="nav-link" ngbDropdownToggle>Dropdown</a>
+          <a href (click)="false" class="nav-link" ngbDropdownToggle>Links</a>
           <div ngbDropdownMenu>
-            <button ngbDropdownItem>Action</button>
-            <button ngbDropdownItem>Another action</button>
-            <button ngbDropdownItem>Something else here</button>
+            <a ngbDropdownItem>Documentation</a>
             <div class="dropdown-divider"></div>
-            <button ngbDropdownItem>Separated link</button>
+            <a ngbDropdownItem href="https://github.com/lukaszse">My Github</a>
+            <a ngbDropdownItem href="https://www.linkedin.com/in/%C5%82ukasz-seremak-8b9291a2/">My Linkedin</a>
           </div>
         </li>
       </ul>
