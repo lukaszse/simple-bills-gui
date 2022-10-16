@@ -29,7 +29,7 @@ export class BillsComponent implements OnInit, SortableComponent {
   private static billsEndpoint: string = "/bills";
   bills$: Observable<Bill[]>;
 
-  constructor(private simpleBillsClientService:SimpleBillsClientService) { }
+  constructor(private simpleBillsClientService: SimpleBillsClientService) { }
 
   ngOnInit() {
     this.bills$ = this.getBillsObservable();
