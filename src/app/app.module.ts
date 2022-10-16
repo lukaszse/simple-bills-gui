@@ -12,6 +12,8 @@ import {ContactComponent} from './content/contact/contact.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {NgbdSortableHeader} from "../service/simpleBillsClient.service";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -28,6 +30,9 @@ import {NgbdSortableHeader} from "../service/simpleBillsClient.service";
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     NgbModule
