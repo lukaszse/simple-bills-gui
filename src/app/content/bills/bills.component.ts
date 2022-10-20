@@ -37,7 +37,6 @@ function search(bills: Observable<Bill[]>, text: string, decimalPipe: PipeTransf
 })
 export class BillsComponent implements OnInit, SortableComponent {
 
-  private static billsEndpoint: string = "/bills";
   bills$: Observable<Bill[]>;
   filter = new FormControl('', {nonNullable: true});
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
