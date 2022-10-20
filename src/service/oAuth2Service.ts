@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {Cookie} from "ng2-cookies";
-import {catchError, Observable, throwError} from "rxjs";
+import {throwError} from "rxjs";
 import {environment} from "../environments/environment";
-
 
 
 @Injectable({providedIn: "root"})
@@ -37,15 +36,6 @@ export class OAuth2Service {
 
   handleError(error) {
     alert('Error: ' + error.toString())
-  }
-
-  getResource(resourceUrl) : Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      'Authorization': 'Bearer '+ Cookie.get('access_token')});
-    return this._http.get(resourceUrl, { headers: headers }).pipe(
-      catchError(this.errorHandler)
-    )
   }
 
   errorHandler(error: HttpErrorResponse) {

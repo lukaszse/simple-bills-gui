@@ -1,5 +1,5 @@
 import {Directive, EventEmitter, Input, Output, QueryList} from "@angular/core";
-import {SortableComponent} from "../interfaces/sortableComponent";
+import {SortableComponent} from "./sortableComponent";
 import {map} from "rxjs/operators";
 
 export type SortDirection = 'asc' | 'desc' | '';
