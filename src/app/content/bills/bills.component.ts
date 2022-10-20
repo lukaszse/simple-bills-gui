@@ -3,13 +3,11 @@ import {mergeMap, Observable, startWith, tap} from "rxjs";
 import {map} from 'rxjs/operators'
 import {SortableComponent} from "../../../interfaces/sortableComponent";
 import {
-  NgbdSortableHeader,
   SimpleBillsClientService,
-  SortEvent,
-  SortUtils
 } from "../../../service/simpleBillsClient.service";
 import {FormControl} from "@angular/forms";
 import {DatePipe, DecimalPipe} from "@angular/common";
+import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../directive/sortable.directive";
 
 interface Bill {
   billNumber: string;
@@ -44,7 +42,7 @@ export class BillsComponent implements OnInit, SortableComponent {
   private static billsEndpoint: string = "/bills";
   bills$: Observable<Bill[]>;
   filter = new FormControl('', {nonNullable: true});
-
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(private simpleBillsClientService: SimpleBillsClientService, private decimalPipe: DecimalPipe, private datePipe: DatePipe) {
   }
@@ -61,9 +59,6 @@ export class BillsComponent implements OnInit, SortableComponent {
       .get(BillsComponent.billsEndpoint).pipe(
         tap(console.log));
   }
-
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
   onSort({column, direction}: SortEvent) {
     this.headers = SortUtils.resetOtherHeaders(this.headers, column);
     this.bills$ = SortUtils.sortTable(this, direction, column)
