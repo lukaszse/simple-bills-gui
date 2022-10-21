@@ -5,37 +5,45 @@ import {Bill} from "../dto/bill";
 import {prepareHeaders, prepareUrl} from "../utils/http/httpClientUtils"
 import {map} from "rxjs/operators";
 import {DatePipe} from "@angular/common";
+import {PageableBills} from "../dto/pageableBills";
 
 @Injectable({providedIn: "root"})
 export class BillsService {
 
   private static billsEndpoint: string = "/bills";
 
-  constructor(private httpClient: HttpClient) {}
-
-  getBills(): Observable<Bill[]> {
-    return this.httpClient.get<Bill>(
-      prepareUrl(BillsService.billsEndpoint),
-      { headers: prepareHeaders(), observe: 'response' })
-      .pipe(
-        tap(console.log),
-        map(response => response.body));
+  constructor(private httpClient: HttpClient) {
   }
 
-  static search(bills: Observable<Bill[]>,
-                  text: string,
-                  decimalPipe: PipeTransform,
-                  datePipe: DatePipe): Observable<Bill[]> {
+  getBills(): Observable<PageableBills> {
+    return this.httpClient.get<Bill>(
+      prepareUrl(BillsService.billsEndpoint),
+      {headers: prepareHeaders(), observe: 'response'})
+      .pipe(
+        tap(console.log),
+        map(response => new PageableBills(response.body, response.headers.get("XTotalCount"))));
+  }
+
+  static search(bills: Observable<PageableBills>,
+                text: string,
+                decimalPipe: PipeTransform,
+                datePipe: DatePipe): Observable<PageableBills> {
     return bills.pipe(
-      map(bill => bill.filter(bill => {
-        const term = text.toLowerCase();
-        return decimalPipe.transform(bill.billNumber).includes(term)
-          || datePipe.transform(bill.date).includes(term)
-          || decimalPipe.transform(bill.amount).includes(term)
-          || bill.description.toLowerCase().includes(term)
-          || bill.category.toLowerCase().includes(term)
+      map(pageableBill => {
+        const bills = this.searchBills(pageableBill, text, decimalPipe, datePipe);
+        return new PageableBills(bills, pageableBill.totalCount);
       }))
-    )
+  }
+
+  private static searchBills(pageableBill: PageableBills, text: string, decimalPipe: PipeTransform, datePipe: DatePipe) {
+    return pageableBill.bills.filter(bill => {
+      const term = text.toLowerCase();
+      return decimalPipe.transform(bill.billNumber).includes(term)
+        || datePipe.transform(bill.date).includes(term)
+        || decimalPipe.transform(bill.amount).includes(term)
+        || bill.description.toLowerCase().includes(term)
+        || bill.category.toLowerCase().includes(term);
+    });
   }
 }
 

@@ -20,8 +20,8 @@
     <th scope="col" sortable="category" (sort)="onSort($event)">Category</th>
   </tr>
   </thead>
-  <tbody *ngIf="bills$ | async as bills else noData">
-  <tr *ngFor="let bill of bills; index as i">
+  <tbody *ngIf="pageableBills$ | async as pageableBills else noData">
+  <tr *ngFor="let bill of pageableBills.bills; index as i">
     <th scope="row">
       <ngb-highlight [result]="bill.billNumber" [term]="filter.value"></ngb-highlight>
     </th>
