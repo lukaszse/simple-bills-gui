@@ -1,6 +1,6 @@
 import {Directive, EventEmitter, Input, Output, QueryList} from "@angular/core";
-import {SortableComponent} from "./sortableComponent";
 import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 export type SortDirection = 'asc' | 'desc' | '';
 export const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
@@ -33,7 +33,8 @@ export class NgbdSortableHeader {
 
 export class SortUtils {
 
-  public static resetOtherHeaders(headers:  QueryList<NgbdSortableHeader>, column: string) {
+  public static resetOtherHeaders(headers:  QueryList<NgbdSortableHeader>,
+                                  column: string) {
     headers.forEach(header => {
       if (header.sortable !== column) {
         header.direction = '';
@@ -42,11 +43,13 @@ export class SortUtils {
     return headers;
   }
 
-  public static sortTable(component: SortableComponent, direction: "asc" | "desc" | "", column: string) {
+  public static sortTableByColumn(elements: Observable<any>,
+                                  direction: "asc" | "desc" | "",
+                                  column: string) {
     if (direction === '' || column === '') {
-      return component.getSortableElements();
+      return elements;
     } else {
-      return  component.getSortableElements().pipe(
+      return  elements.pipe(
         map(bills => bills.sort((a, b) => {
           const res = compare(a[column], b[column]);
           return direction === 'asc' ? res : -res;

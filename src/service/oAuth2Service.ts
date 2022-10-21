@@ -10,18 +10,19 @@ export class OAuth2Service {
   public clientId = 'newClient';
   public redirectUri = environment.redirectUri;
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {
+  }
 
   retrieveToken(code) {
     let params = new URLSearchParams();
-    params.append('grant_type','authorization_code');
+    params.append('grant_type', 'authorization_code');
     params.append('client_id', this.clientId);
     params.append('redirect_uri', this.redirectUri);
-    params.append('code',code);
+    params.append('code', code);
 
     let oauth2TokenUrl = `${environment.keycloakHost}/realms/baeldung/protocol/openid-connect/token`
     let headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
-    this._http.post(oauth2TokenUrl, params.toString(), { headers: headers })
+    this._http.post(oauth2TokenUrl, params.toString(), {headers: headers})
       .subscribe(
         data => this.saveToken(data),
         err => this.handleError(err));
