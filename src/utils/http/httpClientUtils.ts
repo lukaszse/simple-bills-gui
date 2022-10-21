@@ -1,4 +1,4 @@
-import {environment} from "../environments/environment";
+import {environment} from "../../environments/environment";
 import {HttpHeaders} from "@angular/common/http";
 import {Cookie} from "ng2-cookies";
 

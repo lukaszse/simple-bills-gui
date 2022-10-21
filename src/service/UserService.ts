@@ -3,7 +3,7 @@ import {environment} from "../environments/environment";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Bill} from "../dto/bill";
-import {prepareHeaders, prepareUrl} from "../utils/httpClientUtils";
+import {prepareHeaders, prepareUrl} from "../utils/http/httpClientUtils";
 
 
 @Injectable({providedIn: "root"})

@@ -44,9 +44,9 @@ export class SortUtils {
 
   public static sortTable(component: SortableComponent, direction: "asc" | "desc" | "", column: string) {
     if (direction === '' || column === '') {
-      return component.getBillsObservable();
+      return component.getSortableElements();
     } else {
-      return  component.getBillsObservable().pipe(
+      return  component.getSortableElements().pipe(
         map(bills => bills.sort((a, b) => {
           const res = compare(a[column], b[column]);
           return direction === 'asc' ? res : -res;

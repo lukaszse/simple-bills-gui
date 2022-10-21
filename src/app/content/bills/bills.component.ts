@@ -3,9 +3,9 @@ import {mergeMap, Observable, startWith, tap} from "rxjs";
 import {map} from 'rxjs/operators'
 import {FormControl} from "@angular/forms";
 import {DatePipe, DecimalPipe} from "@angular/common";
-import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../directive/sortable.directive";
+import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../utils/sortableComponents/sortable.directive";
 import {BillsService} from "../../../service/bills.service";
-import {SortableComponent} from "../../../directive/sortableComponent";
+import {SortableComponent} from "../../../utils/sortableComponents/sortableComponent";
 
 interface Bill {
   billNumber: string;
@@ -14,6 +14,7 @@ interface Bill {
   description: string
   category: string
   amount: number,
+  totalCount: number
 }
 
 function search(bills: Observable<Bill[]>, text: string, decimalPipe: PipeTransform, datePipe: DatePipe): Observable<Bill[]> {
@@ -39,24 +40,26 @@ export class BillsComponent implements OnInit, SortableComponent {
 
   bills$: Observable<Bill[]>;
   filter = new FormControl('', {nonNullable: true});
+  totalCount: number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(private billService: BillsService, private decimalPipe: DecimalPipe, private datePipe: DatePipe) {
   }
 
   ngOnInit() {
-    this.bills$ = this.getBillsObservable().pipe(bills => this.filter.valueChanges.pipe(
+    this.bills$ = this.getSortableElements().pipe(bills => this.filter.valueChanges.pipe(
       startWith(''),
       mergeMap(text => search(bills, text, this.decimalPipe, this.datePipe)
       )));
   }
 
-  getBillsObservable(): Observable<Bill[]> {
+  getSortableElements(): Observable<Bill[]> {
     return this.billService
       .getBills().pipe(
         tap(console.log),
         map(response => response.body));
   }
+
   onSort({column, direction}: SortEvent) {
     this.headers = SortUtils.resetOtherHeaders(this.headers, column);
     this.bills$ = SortUtils.sortTable(this, direction, column)
