@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable, tap} from "rxjs";
-import {UserService} from "../../../service/UserService";
+import {UserService} from "../../../service/userService";
 import {map} from "rxjs/operators";
 
 

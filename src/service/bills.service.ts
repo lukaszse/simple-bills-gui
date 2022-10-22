@@ -21,7 +21,8 @@ export class BillsService {
       {headers: prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
-        map(response => new PageableBills(response.body, response.headers.get("XTotalCount"))));
+        map(response => new PageableBills(response.body, response.headers.get('x-total-count'))),
+        tap(console.log));
   }
 
   static search(bills: Observable<PageableBills>,

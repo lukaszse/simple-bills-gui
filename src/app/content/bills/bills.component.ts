@@ -16,6 +16,7 @@ import {PageableBills} from "../../../dto/pageableBills";
 })
 export class BillsComponent implements OnInit {
 
+  page = 1;
   pageableBills$: Observable<PageableBills>;
   filter = new FormControl('', {nonNullable: true});
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
