@@ -1,16 +1,20 @@
 <p>bills works!</p>
 <br>
-
 <form>
   <div class="mb-3 row">
-    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
     <div class="col-xs-3 col-sm-auto">
-      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+      <input
+        id="table-complete-search"
+        type="text"
+        class="form-control"
+        name="searchTerm"
+        [(ngModel)]="billService.searchTerm"
+      />
     </div>
+    <span class="col col-form-label" *ngIf="billService.loading$ | async">Loading...</span>
   </div>
 </form>
-
-
 <div *ngIf="pageableBills$ | async as pageableBills else noData">
   <table class="table table-striped">
     <thead>
@@ -25,40 +29,34 @@
     <tbody>
     <tr *ngFor="let bill of pageableBills.bills;">
       <th scope="row">
-        <ngb-highlight [result]="bill.billNumber" [term]="filter.value"></ngb-highlight>
+        <ngb-highlight [result]="bill.billNumber" [term]="billService.searchTerm"></ngb-highlight>
       </th>
       <td>
-        <ngb-highlight [result]="bill.date | date" [term]="filter.value"></ngb-highlight>
+        <ngb-highlight [result]="bill.date | date" [term]="billService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.amount | number" [term]="filter.value"></ngb-highlight>
+        <ngb-highlight [result]="bill.amount | number" [term]="billService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.description" [term]="filter.value"></ngb-highlight>
+        <ngb-highlight [result]="bill.description" [term]="billService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.category" [term]="filter.value"></ngb-highlight>
+        <ngb-highlight [result]="bill.category" [term]="billService.searchTerm"></ngb-highlight>
       </td>
     </tr>
     </tbody>
   </table>
-
-
-<!--  <div class="d-flex justify-content-between p-2">-->
-<!--    <ngb-pagination-->
-<!--      [collectionSize]="pageableBills.totalCount"-->
-<!--      [(page)]="page"-->
-<!--      [pageSize]="pageableBills.bills.length">-->
-<!--    </ngb-pagination>-->
-
-<!--&lt;!&ndash;    <select class="form-select" style="width: auto" name="pageSize">&ndash;&gt;-->
-<!--&lt;!&ndash;      <option [ngValue]="2">2 items per page</option>&ndash;&gt;-->
-<!--&lt;!&ndash;      <option [ngValue]="4">4 items per page</option>&ndash;&gt;-->
-<!--&lt;!&ndash;      <option [ngValue]="6">6 items per page</option>&ndash;&gt;-->
-<!--&lt;!&ndash;    </select>&ndash;&gt;-->
-<!--  </div>-->
-
-
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="pageableBills.totalCount"
+      [(page)]="billService.page"
+      [pageSize]="billService.pageSize">
+    </ngb-pagination>
+    <select *ngIf="pageableBills.totalCount > 5" class="form-select" style="width: auto" name="pageSize" [(ngModel)]="billService.pageSize">
+      <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
+      <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
+      <option *ngIf="pageableBills.totalCount > 10" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
+    </select>
+  </div>
 </div>
-
 <ng-template #noData>No Data Available</ng-template>

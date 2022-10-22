@@ -1,10 +1,8 @@
 import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {mergeMap, Observable, startWith} from "rxjs";
-import {FormControl} from "@angular/forms";
+import {Observable} from "rxjs";
 import {DatePipe, DecimalPipe} from "@angular/common";
 import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../utils/sortableComponents/sortable.directive";
 import {BillsService} from "../../../service/bills.service";
-import {Bill} from "../../../dto/bill";
 import {PageableBills} from "../../../dto/pageableBills";
 
 
@@ -14,25 +12,18 @@ import {PageableBills} from "../../../dto/pageableBills";
   styleUrls: ['./bills.component.css'],
   providers: [DecimalPipe, DatePipe]
 })
-export class BillsComponent implements OnInit {
+export class BillsComponent {
 
-  page = 1;
   pageableBills$: Observable<PageableBills>;
-  filter = new FormControl('', {nonNullable: true});
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
-  constructor(private billService: BillsService, private decimalPipe: DecimalPipe, private datePipe: DatePipe) {
-  }
-
-  ngOnInit() {
-    this.pageableBills$ = this.billService.getBills().pipe(pageableBill => this.filter.valueChanges.pipe(
-      startWith(''),
-      mergeMap(text => BillsService.search(pageableBill, text, this.decimalPipe, this.datePipe)
-      )));
+  constructor(public billService: BillsService) {
+    this.pageableBills$ = billService.pageableBills$;
   }
 
   onSort({column, direction}: SortEvent) {
     this.headers = SortUtils.resetOtherHeaders(this.headers, column);
-    this.pageableBills$ = SortUtils.sortTableByColumn(this.pageableBills$, direction, column)
+    this.billService.sortColumn = column;
+    this.billService.sortDirection = direction;
   }
 }

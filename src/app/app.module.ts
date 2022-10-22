@@ -11,7 +11,7 @@ import {BillsComponent} from './content/bills/bills.component';
 import {ContactComponent} from './content/contact/contact.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
-import {CommonModule} from "@angular/common";
+import {CommonModule, DatePipe, DecimalPipe} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgbdSortableHeader} from "../utils/sortableComponents/sortable.directive";
 
@@ -37,7 +37,7 @@ import {NgbdSortableHeader} from "../utils/sortableComponents/sortable.directive
     AppRoutingModule,
     NgbModule
   ],
-  providers: [],
+  providers: [DecimalPipe, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
