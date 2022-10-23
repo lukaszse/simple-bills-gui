@@ -25,16 +25,14 @@ export class HttpUtils {
                            sortDirection: string,
                            sortColumn: string,
                            dateFrom: Date,
-                           dateTo: Date,
-                           searchTerm: string): string;
+                           dateTo: Date): string;
   public static prepareUrl(endpoint?: string,
                            pageSize?: number,
                            pageNumber?: number,
                            sortDirection?: string,
                            sortColumn?: string,
                            dateFrom?: Date,
-                           dateTo?: Date,
-                           searchTerm?: string): string {
+                           dateTo?: Date): string {
     let url = `${environment.simpleBillsHost}${endpoint}`;
     const queryParams: string [] = [];
     if (pageSize) {
@@ -54,9 +52,6 @@ export class HttpUtils {
     }
     if (dateTo) {
       queryParams.push(HttpUtils.getUrlParam(this.DATE_TO, dateTo.toString()))
-    }
-    if (searchTerm) {
-      queryParams.push(HttpUtils.getUrlParam(this.SEARCH_TERM, searchTerm))
     }
     return queryParams.length === 0 ?
       url : `${url}?${queryParams.join("&")}`;

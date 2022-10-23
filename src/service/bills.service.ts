@@ -46,11 +46,10 @@ export class BillsService {
                    sortDirection: string,
                    sortColumn: string,
                    dateFrom: Date,
-                   dateTo: Date,
-                   searchTerm: string): Observable<PageableBills> {
+                   dateTo: Date): Observable<PageableBills> {
 
     return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo, searchTerm),
+      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
       {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
@@ -62,7 +61,7 @@ export class BillsService {
 
   private _search(): Observable<PageableBills> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
-    let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo, searchTerm).pipe()
+    let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
     pageableBills$ = BillsService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
     return pageableBills$;
   }
