@@ -1,6 +1,11 @@
 <div class="container p-1">
   <p></p>
-  <h2 *ngIf="user$ | async as user else noLoggedIn" class="text-center">Welcome {{user.preferredUsername}}!</h2>
+  <div *ngIf="user$ | async as user else noLoggedIn">
+    <h2 class="text-center">Welcome {{user.preferredUsername}}!</h2>
+    <div>
+      <app-bill-creation></app-bill-creation>
+    </div>
+  </div>
   <ng-template #noLoggedIn>
     <div class="text-center">
       <h2>Welcome to Simple Bills!</h2><br><br>
