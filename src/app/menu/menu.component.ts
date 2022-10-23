@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {OAuth2Service} from "../../service/oAuth2Service";
+import {OAuth2Service} from "../../service/oAuth2.service";
 import {environment} from "../../environments/environment";
 
 @Component({
