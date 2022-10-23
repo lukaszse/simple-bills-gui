@@ -41,15 +41,16 @@ export class BillsService {
     this._search$.next();
   }
 
-  private getBills(pageSize?: number,
-                   pageNumber?: number,
-                   sortDirection?: string,
-                   sortColumn?: string,
-                   dateFrom?: Date,
-                   dateTo?: Date): Observable<PageableBills> {
+  private getBills(pageSize: number,
+                   pageNumber: number,
+                   sortDirection: string,
+                   sortColumn: string,
+                   dateFrom: Date,
+                   dateTo: Date,
+                   searchTerm: string): Observable<PageableBills> {
 
     return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
+      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo, searchTerm),
       {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
@@ -61,14 +62,7 @@ export class BillsService {
 
   private _search(): Observable<PageableBills> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
-    let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe(
-      // map(pageableBills => {
-      //   // 1. sort
-      //   let sortedBills = SortUtils.sortTableByColumn(pageableBills.bills, sortDirection, sortColumn);
-      //   return new PageableBills(sortedBills, pageableBills.totalCount);
-      // })
-    )
-    // 2. filter
+    let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo, searchTerm).pipe()
     pageableBills$ = BillsService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
     return pageableBills$;
   }
@@ -94,7 +88,6 @@ export class BillsService {
         || bill.category.toLowerCase().includes(term);
     });
   }
-
 
   // getters and setters to wrapped objects
   get pageableBills$() {

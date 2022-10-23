@@ -81,7 +81,7 @@
       [(ngModel)]="billService.pageSize">
       <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
-      <option *ngIf="pageableBills.totalCount > 10" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
+      <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}} of {{pageableBills.totalCount}}</option>
 
     </select>

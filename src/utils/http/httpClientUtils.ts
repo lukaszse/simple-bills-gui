@@ -12,13 +12,29 @@ export class HttpUtils {
   public static DATE_TO= "dateTo";
   public static SORT_DIRECTION= "sortDirection";
   public static SORT_COLUMN= "sortColumn";
+  public static SEARCH_TERM = "searchTerm";
 
 
 
   public static prepareUrl(endpoint: string): string;
-  public static prepareUrl(endpoint: string, pageSize: number): string;
-  public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number, sortDirection: string, sortColumn: string, dateFrom: Date, dateTo: Date): string;
-  public static prepareUrl(endpoint?: string, pageSize?: number, pageNumber?: number, sortDirection?: string, sortColumn?: string, dateFrom?: Date, dateTo?: Date): string {
+  public static prepareUrl(endpoint: string,
+                           pageSize: number): string;
+  public static prepareUrl(endpoint: string,
+                           pageSize: number,
+                           pageNumber: number,
+                           sortDirection: string,
+                           sortColumn: string,
+                           dateFrom: Date,
+                           dateTo: Date,
+                           searchTerm: string): string;
+  public static prepareUrl(endpoint?: string,
+                           pageSize?: number,
+                           pageNumber?: number,
+                           sortDirection?: string,
+                           sortColumn?: string,
+                           dateFrom?: Date,
+                           dateTo?: Date,
+                           searchTerm?: string): string {
     let url = `${environment.simpleBillsHost}${endpoint}`;
     const queryParams: string [] = [];
     if (pageSize) {
@@ -38,6 +54,9 @@ export class HttpUtils {
     }
     if (dateTo) {
       queryParams.push(HttpUtils.getUrlParam(this.DATE_TO, dateTo.toString()))
+    }
+    if (searchTerm) {
+      queryParams.push(HttpUtils.getUrlParam(this.SEARCH_TERM, searchTerm))
     }
     return queryParams.length === 0 ?
       url : `${url}?${queryParams.join("&")}`;
