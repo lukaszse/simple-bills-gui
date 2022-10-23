@@ -31,6 +31,7 @@ export class BillsService {
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
+        debounceTime(200),
         switchMap(() => this._search()),
         tap(() => this._loading$.next(false)),
       )
@@ -40,9 +41,15 @@ export class BillsService {
     this._search$.next();
   }
 
-  private getBills(pageSize?: number, pageNumber?: number, dateFrom?: Date, dateTo?: Date): Observable<PageableBills> {
+  private getBills(pageSize?: number,
+                   pageNumber?: number,
+                   sortDirection?: string,
+                   sortColumn?: string,
+                   dateFrom?: Date,
+                   dateTo?: Date): Observable<PageableBills> {
+
     return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, dateFrom, dateTo),
+      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
       {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
@@ -54,12 +61,12 @@ export class BillsService {
 
   private _search(): Observable<PageableBills> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
-    let pageableBills$ = this.getBills(pageSize, pageNumber, dateFrom, dateTo).pipe(
-      map(pageableBills => {
-        // 1. sort
-        let sortedBills = SortUtils.sortTableByColumn(pageableBills.bills, sortDirection, sortColumn);
-        return new PageableBills(sortedBills, pageableBills.totalCount);
-      })
+    let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe(
+      // map(pageableBills => {
+      //   // 1. sort
+      //   let sortedBills = SortUtils.sortTableByColumn(pageableBills.bills, sortDirection, sortColumn);
+      //   return new PageableBills(sortedBills, pageableBills.totalCount);
+      // })
     )
     // 2. filter
     pageableBills$ = BillsService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)

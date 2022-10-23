@@ -10,13 +10,15 @@ export class HttpUtils {
   public static PAGE_NUMBER = "pageNumber";
   public static DATE_FROM = "dateFrom";
   public static DATE_TO= "dateTo";
+  public static SORT_DIRECTION= "sortDirection";
+  public static SORT_COLUMN= "sortColumn";
+
 
 
   public static prepareUrl(endpoint: string): string;
   public static prepareUrl(endpoint: string, pageSize: number): string;
-  public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number): string;
-  public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number, dateFrom: Date, dateTo: Date): string;
-  public static prepareUrl(endpoint: string, pageSize?: number, pageNumber?: number, dateFrom?: Date, dateTo?: Date): string {
+  public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number, sortDirection: string, sortColumn: string, dateFrom: Date, dateTo: Date): string;
+  public static prepareUrl(endpoint?: string, pageSize?: number, pageNumber?: number, sortDirection?: string, sortColumn?: string, dateFrom?: Date, dateTo?: Date): string {
     let url = `${environment.simpleBillsHost}${endpoint}`;
     const queryParams: string [] = [];
     if (pageSize) {
@@ -24,6 +26,12 @@ export class HttpUtils {
     }
     if (pageNumber) {
       queryParams.push(HttpUtils.getUrlParam(this.PAGE_NUMBER, pageNumber.toString()))
+    }
+    if (sortDirection) {
+      queryParams.push(HttpUtils.getUrlParam(this.SORT_DIRECTION, sortDirection.toUpperCase()))
+    }
+    if (sortColumn) {
+      queryParams.push(HttpUtils.getUrlParam(this.SORT_COLUMN, sortColumn))
     }
     if (dateFrom) {
       queryParams.push(HttpUtils.getUrlParam(this.DATE_FROM, dateFrom.toString()))
