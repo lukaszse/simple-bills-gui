@@ -11,12 +11,6 @@ export interface SortEvent {
   direction: SortDirection;
 }
 
-export interface TimePeriod {
-  dateFrom: Date
-  dateTo: Date
-}
-
-
 export interface SortableState {
   pageNumber: number;
   pageSize: number;

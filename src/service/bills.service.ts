@@ -1,11 +1,11 @@
 import {Injectable, PipeTransform} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, debounceTime, delay, Observable, Subject, switchMap, tap} from "rxjs";
+import {BehaviorSubject, debounceTime, Observable, Subject, switchMap, tap} from "rxjs";
 import {Bill} from "../dto/bill";
 import {map} from "rxjs/operators";
 import {DatePipe, DecimalPipe} from "@angular/common";
 import {PageableBills} from "../dto/pageableBills";
-import {SortableState, SortDirection, SortUtils, TimePeriod} from "../utils/sortableComponents/sortable.directive";
+import {SortableState, SortDirection} from "../utils/sortableComponents/sortable.directive";
 import {HttpUtils} from "../utils/http/httpClientUtils";
 
 
