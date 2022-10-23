@@ -4,9 +4,10 @@
 @import "../node_modules/bootstrap/scss/mixins";
 
 $theme-colors: (
-"dark": $cyan-800,
-"secondary": $cyan-700,
-"primary": $gray-200
+  "primary": $gray-600,
+  "secondary": $cyan-700,
+  "light": $gray-100,
+  "dark": $gray-900
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

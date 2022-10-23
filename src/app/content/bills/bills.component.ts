@@ -2,7 +2,7 @@ import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Observable} from "rxjs";
 import {DatePipe, DecimalPipe} from "@angular/common";
 import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../utils/sortableComponents/sortable.directive";
-import {BillsService} from "../../../service/bills.service";
+import {BillsSearchService} from "../../../service/bills-search.service";
 import {PageableBills} from "../../../dto/pageableBills";
 
 
@@ -17,7 +17,7 @@ export class BillsComponent {
   pageableBills$: Observable<PageableBills>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
-  constructor(public billService: BillsService) {
+  constructor(public billService: BillsSearchService) {
     this.pageableBills$ = billService.pageableBills$;
   }
 

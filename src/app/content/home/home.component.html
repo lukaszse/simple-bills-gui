@@ -3,6 +3,7 @@
   <div *ngIf="user$ | async as user else noLoggedIn">
     <h2 class="text-center">Welcome {{user.preferredUsername}}!</h2>
     <div>
+      <br><br>
       <app-bill-creation></app-bill-creation>
     </div>
   </div>

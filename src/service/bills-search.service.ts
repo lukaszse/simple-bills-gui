@@ -10,7 +10,7 @@ import {HttpUtils} from "../utils/http/httpClientUtils";
 
 
 @Injectable({providedIn: "root"})
-export class BillsService {
+export class BillsSearchService {
 
   private static billsEndpoint: string = "/bills";
   private _pageableBills$ = new BehaviorSubject<PageableBills>(null);
@@ -49,7 +49,7 @@ export class BillsService {
                    dateTo: Date): Observable<PageableBills> {
 
     return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
+      HttpUtils.prepareUrl(BillsSearchService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
       {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
@@ -62,7 +62,7 @@ export class BillsService {
   private _search(): Observable<PageableBills> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
     let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
-    pageableBills$ = BillsService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
+    pageableBills$ = BillsSearchService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
     return pageableBills$;
   }
 
@@ -109,11 +109,11 @@ export class BillsService {
     return this._state.searchTerm;
   }
 
-  get searchDateFrom() {
+  get dateFrom() {
     return this._state.dateFrom;
   }
 
-  get searchDateTo() {
+  get dateTo() {
     return this._state.dateTo;
   }
 
@@ -150,6 +150,3 @@ export class BillsService {
     this._search$.next();
   }
 }
-
-
-
