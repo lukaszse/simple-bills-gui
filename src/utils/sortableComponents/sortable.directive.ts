@@ -11,10 +11,18 @@ export interface SortEvent {
   direction: SortDirection;
 }
 
+export interface TimePeriod {
+  dateFrom: Date
+  dateTo: Date
+}
+
+
 export interface SortableState {
   pageNumber: number;
   pageSize: number;
   searchTerm: string;
+  dateFrom: Date
+  dateTo: Date
   sortColumn: string;
   sortDirection: SortDirection;
 }

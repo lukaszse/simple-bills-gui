@@ -6,14 +6,17 @@ import {Cookie} from "ng2-cookies";
 export class HttpUtils {
 
   public static X_TOTAL_COUNT = 'x-total-count';
-  public static PAGE_SIZE = "pageSize"
-  public static PAGE_NUMBER = "pageNumber"
+  public static PAGE_SIZE = "pageSize";
+  public static PAGE_NUMBER = "pageNumber";
+  public static DATE_FROM = "dateFrom";
+  public static DATE_TO= "dateTo";
 
 
   public static prepareUrl(endpoint: string): string;
   public static prepareUrl(endpoint: string, pageSize: number): string;
   public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number): string;
-  public static prepareUrl(endpoint: string, pageSize?: number, pageNumber?: number): string {
+  public static prepareUrl(endpoint: string, pageSize: number, pageNumber: number, dateFrom: Date, dateTo: Date): string;
+  public static prepareUrl(endpoint: string, pageSize?: number, pageNumber?: number, dateFrom?: Date, dateTo?: Date): string {
     let url = `${environment.simpleBillsHost}${endpoint}`;
     const queryParams: string [] = [];
     if (pageSize) {
@@ -21,6 +24,12 @@ export class HttpUtils {
     }
     if (pageNumber) {
       queryParams.push(HttpUtils.getUrlParam(this.PAGE_NUMBER, pageNumber.toString()))
+    }
+    if (dateFrom) {
+      queryParams.push(HttpUtils.getUrlParam(this.DATE_FROM, dateFrom.toString()))
+    }
+    if (dateTo) {
+      queryParams.push(HttpUtils.getUrlParam(this.DATE_TO, dateTo.toString()))
     }
     return queryParams.length === 0 ?
       url : `${url}?${queryParams.join("&")}`;

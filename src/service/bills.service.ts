@@ -5,8 +5,9 @@ import {Bill} from "../dto/bill";
 import {map} from "rxjs/operators";
 import {DatePipe, DecimalPipe} from "@angular/common";
 import {PageableBills} from "../dto/pageableBills";
-import {SortableState, SortDirection, SortUtils} from "../utils/sortableComponents/sortable.directive";
+import {SortableState, SortDirection, SortUtils, TimePeriod} from "../utils/sortableComponents/sortable.directive";
 import {HttpUtils} from "../utils/http/httpClientUtils";
+
 
 @Injectable({providedIn: "root"})
 export class BillsService {
@@ -17,21 +18,20 @@ export class BillsService {
   private _search$ = new Subject<void>()
 
   private _state: SortableState = {
+    sortColumn: '',
+    sortDirection: '',
     pageNumber: 1,
     pageSize: 4,
     searchTerm: '',
-    sortColumn: '',
-    sortDirection: '',
+    dateFrom: null,
+    dateTo: null
   };
-
 
   constructor(private httpClient: HttpClient, private decimalPipe: DecimalPipe, private datePipe: DatePipe) {
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
-        debounceTime(200),
         switchMap(() => this._search()),
-        delay(200),
         tap(() => this._loading$.next(false)),
       )
       .subscribe((result) => {
@@ -40,9 +40,9 @@ export class BillsService {
     this._search$.next();
   }
 
-  getBills(pageSize? : number, pageNumber?: number): Observable<PageableBills> {
+  private getBills(pageSize?: number, pageNumber?: number, dateFrom?: Date, dateTo?: Date): Observable<PageableBills> {
     return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber),
+      HttpUtils.prepareUrl(BillsService.billsEndpoint, pageSize, pageNumber, dateFrom, dateTo),
       {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         tap(console.log),
@@ -53,8 +53,8 @@ export class BillsService {
   }
 
   private _search(): Observable<PageableBills> {
-    const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm} = this._state;
-    let pageableBills$ = this.getBills(pageSize, pageNumber).pipe(
+    const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
+    let pageableBills$ = this.getBills(pageSize, pageNumber, dateFrom, dateTo).pipe(
       map(pageableBills => {
         // 1. sort
         let sortedBills = SortUtils.sortTableByColumn(pageableBills.bills, sortDirection, sortColumn);
@@ -66,10 +66,10 @@ export class BillsService {
     return pageableBills$;
   }
 
-  static search(bills: Observable<PageableBills>,
-                text: string,
-                decimalPipe: PipeTransform,
-                datePipe: DatePipe): Observable<PageableBills> {
+  private static search(bills: Observable<PageableBills>,
+                        text: string,
+                        decimalPipe: PipeTransform,
+                        datePipe: DatePipe): Observable<PageableBills> {
     return bills.pipe(
       map(pageableBill => {
         const bills = this.matchBills(pageableBill, text, decimalPipe, datePipe);
@@ -88,6 +88,8 @@ export class BillsService {
     });
   }
 
+
+  // getters and setters to wrapped objects
   get pageableBills$() {
     return this._pageableBills$.asObservable();
   }
@@ -108,24 +110,40 @@ export class BillsService {
     return this._state.searchTerm;
   }
 
+  get searchDateFrom() {
+    return this._state.dateFrom;
+  }
+
+  get searchDateTo() {
+    return this._state.dateTo;
+  }
+
   set page(page: number) {
-    this._set({ pageNumber: page });
+    this._set({pageNumber: page});
   }
 
   set pageSize(pageSize: number) {
-    this._set({ pageSize });
+    this._set({pageSize});
   }
 
   set searchTerm(searchTerm: string) {
-    this._set({ searchTerm });
+    this._set({searchTerm});
   }
 
   set sortColumn(sortColumn: string) {
-    this._set({ sortColumn });
+    this._set({sortColumn});
   }
 
   set sortDirection(sortDirection: SortDirection) {
-    this._set({ sortDirection });
+    this._set({sortDirection});
+  }
+
+  set dateFrom(dateFrom: Date) {
+    this._set({dateFrom});
+  }
+
+  set dateTo(dateTo: Date) {
+    this._set({dateTo});
   }
 
   private _set(patch: Partial<SortableState>) {

@@ -1,9 +1,30 @@
-<p>bills works!</p>
 <br>
 <form>
   <div class="mb-3 row">
-    <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
-    <div class="col-xs-3 col-sm-auto">
+    <label for="table-complete-search" class="col-xs-3 col-sm-2 col-form-label">Date from:</label>
+    <div class="col-xs-3 col-4">
+      <input
+        id="table-dte-from"
+        type="date"
+        class="form-control"
+        name="dateFrom"
+        [(ngModel)]="billService.dateFrom"
+      />
+    </div>
+    <label for="table-complete-search" class="col-xs-3 col-sm-2 col-form-label">Date to:</label>
+    <div class="col-xs-3 col-4">
+      <input
+        id="table-date-to"
+        type="date"
+        class="form-control"
+        name="dateTo"
+        [(ngModel)]="billService.dateTo"
+      />
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="table-complete-search" class="col-xs-3 col-sm-2 col-form-label">Full text search:</label>
+    <div class="col-xs-3 col-4">
       <input
         id="table-complete-search"
         type="text"
@@ -50,12 +71,19 @@
     <ngb-pagination
       [collectionSize]="pageableBills.totalCount"
       [(page)]="billService.page"
-      [pageSize]="billService.pageSize">
+      [pageSize]="billService.pageSize"
+      size="sm">
     </ngb-pagination>
-    <select *ngIf="pageableBills.totalCount > 5" class="form-select" style="width: auto" name="pageSize" [(ngModel)]="billService.pageSize">
+    <select
+      *ngIf="pageableBills.totalCount > 5"
+      class="form-select"
+      style="width: auto; height: min-content" name="pageSize"
+      [(ngModel)]="billService.pageSize">
       <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 10" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
+      <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}} of {{pageableBills.totalCount}}</option>
+
     </select>
   </div>
 </div>
