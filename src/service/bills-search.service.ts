@@ -1,6 +1,6 @@
 import {Injectable, PipeTransform} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, debounceTime, Observable, Subject, switchMap, tap} from "rxjs";
+import {BehaviorSubject, catchError, debounceTime, Observable, Subject, switchMap, tap} from "rxjs";
 import {Bill} from "../dto/bill";
 import {map} from "rxjs/operators";
 import {DatePipe, DecimalPipe} from "@angular/common";
@@ -35,9 +35,10 @@ export class BillsSearchService {
         switchMap(() => this._search()),
         tap(() => this._loading$.next(false)),
       )
-      .subscribe((result) => {
-        this._pageableBills$.next(result);
-      });
+      .subscribe(
+        (result) => {
+          this._pageableBills$.next(result);
+        });
     this._search$.next();
   }
 
@@ -48,15 +49,15 @@ export class BillsSearchService {
                    dateFrom: Date,
                    dateTo: Date): Observable<PageableBills> {
 
-    return this.httpClient.get<Bill>(
-      HttpUtils.prepareUrl(BillsSearchService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo),
-      {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+    let url = HttpUtils.prepareUrl(BillsSearchService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
+    return this.httpClient.get<Bill[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
-        tap(console.log),
-        map(response => {
-          return new PageableBills(response.body, response.headers.get(HttpUtils.X_TOTAL_COUNT));
+        map((response) => {
+          return new PageableBills(response.body, Number(response.headers.get(HttpUtils.X_TOTAL_COUNT)));
         }),
-        tap(console.log));
+        catchError(HttpUtils.handleError),
+        tap(console.log)
+      );
   }
 
   private _search(): Observable<PageableBills> {

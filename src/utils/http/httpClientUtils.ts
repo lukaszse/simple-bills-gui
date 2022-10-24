@@ -1,6 +1,7 @@
 import {environment} from "../../environments/environment";
-import {HttpHeaders} from "@angular/common/http";
+import {HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {Cookie} from "ng2-cookies";
+import {throwError} from "rxjs";
 
 
 export class HttpUtils {
@@ -62,6 +63,21 @@ export class HttpUtils {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + Cookie.get('access_token')
     });
+  }
+
+  // todo - enhance error handling
+  public static handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
   private static getUrlParam(paramName: string, paramValue: string): string {

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {formatDate} from "@angular/common";
+import {BillCreationDto} from "../../../dto/billCreationDto";
 
 @Component({
   selector: 'app-bill-creation',
@@ -9,34 +10,27 @@ import {formatDate} from "@angular/common";
 })
 export class BillCreationComponent {
 
-  public category: string;
-  public description: string;
-  public amount: number;
-  public date: string;
+  billCreationDto : BillCreationDto;
 
   constructor(private modalService: NgbModal) {
   }
 
   open(content) {
-    this.category = null;
-    this.description = null;
-    this.amount = null;
-    this.date = formatDate(Date.now(), "yyyy-MM-dd", "en");
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+    this.resetFormFields()
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {},
+      (reason) => {}
+    );
   }
 
-  processForm() {
-    this.modalService.dismissAll("Close");
-    console.log(`Processed values: ${this.category}, ${this.description}, ${this.amount}, ${this.date}`);
+  createBill() {
+
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  resetFormFields() {
+    this.billCreationDto.category = null;
+    this.billCreationDto.description = null;
+    this.billCreationDto.amount = null;
+    this.billCreationDto.date = formatDate(Date.now(), "yyyy-MM-dd", "en");
   }
 }

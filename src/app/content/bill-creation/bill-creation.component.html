@@ -13,7 +13,7 @@
             type="text"
             class="form-control"
             name="category"
-            [(ngModel)]="category"
+            [(ngModel)]="billCreationDto.category"
           />
         </div>
       </div>
@@ -25,7 +25,7 @@
             type="text"
             class="form-control"
             name="description"
-            [(ngModel)]="description"
+            [(ngModel)]="billCreationDto.description"
           />
         </div>
       </div>
@@ -37,7 +37,7 @@
             type="number" min="0.00" max="999999.99" step="0.01"
             class="form-control"
             name="amount"
-            [(ngModel)]="amount"
+            [(ngModel)]="billCreationDto.amount"
           />
         </div>
       </div>
@@ -49,14 +49,14 @@
             type="date"
             class="form-control"
             name="date"
-            [(ngModel)]="date"
+            [(ngModel)]="billCreationDto.date"
           />
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="processForm()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 </ng-template>
 
