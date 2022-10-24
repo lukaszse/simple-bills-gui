@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {formatDate} from "@angular/common";
 import {BillCreationDto} from "../../../dto/billCreationDto";
+import {BillsCreationService} from "../../../service/bills-creation.service";
 
 @Component({
   selector: 'app-bill-creation',
@@ -10,22 +11,27 @@ import {BillCreationDto} from "../../../dto/billCreationDto";
 })
 export class BillCreationComponent {
 
-  billCreationDto : BillCreationDto;
+  billCreationDto: BillCreationDto = {
+    category: null,
+    description: null,
+    amount: null,
+    date: null
+  };
 
-  constructor(private modalService: NgbModal) {
+  constructor(private billService: BillsCreationService, private modalService: NgbModal) {
   }
 
   open(content) {
     this.resetFormFields()
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-      (result) => {},
-      (reason) => {}
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+      () => {
+        console.log(this.billCreationDto)
+        this.billService.createBill(this.billCreationDto)
+          .subscribe(console.log);
+      }
     );
   }
 
-  createBill() {
-
-  }
 
   resetFormFields() {
     this.billCreationDto.category = null;

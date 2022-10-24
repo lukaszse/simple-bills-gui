@@ -8,12 +8,13 @@ import {catchError, Observable} from "rxjs";
 @Injectable({providedIn: "root"})
 export class BillsCreationService {
 
-  createBill$: Observable<number | Object>
+  private static billsEndpoint: string = "/bills";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
-  get(endpoint: string, body: BillCreationDto): Observable<number | Object> {
-    const url = HttpUtils.prepareUrl(endpoint);
+  createBill(body: BillCreationDto): Observable<number | Object> {
+    const url = HttpUtils.prepareUrl(BillsCreationService.billsEndpoint);
     return this.httpClient
       .post(url, body, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
