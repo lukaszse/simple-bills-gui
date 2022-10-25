@@ -4,13 +4,14 @@ import {HttpUtils} from "../utils/http/httpClientUtils";
 import {BillCreationDto} from "../dto/billCreationDto";
 import {map} from "rxjs/operators";
 import {catchError, Observable, tap} from "rxjs";
+import {BillsSearchService} from "./bills-search.service";
 
 @Injectable({providedIn: "root"})
 export class BillsCrudService {
 
   private static billsEndpoint: string = "/bills";
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
   createBill(bill: BillCreationDto): Observable<number | Object> {
@@ -31,6 +32,7 @@ export class BillsCrudService {
       .pipe(
         map((response) => response.body),
         tap(() => console.log(`Bill with number ${billNumber} deleted.`)),
+        tap(() => this.billSearchService.refresh()),
         catchError(HttpUtils.handleError)
       )
   }

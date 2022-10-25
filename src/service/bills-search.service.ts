@@ -42,6 +42,10 @@ export class BillsSearchService {
     this._search$.next();
   }
 
+  public refresh() {
+    this._search$.next();
+  }
+
   private getBills(pageSize: number,
                    pageNumber: number,
                    sortDirection: string,
@@ -148,6 +152,6 @@ export class BillsSearchService {
 
   private _set(patch: Partial<SortableState>) {
     Object.assign(this._state, patch);
-    this._search$.next();
+    this.refresh();
   }
 }
