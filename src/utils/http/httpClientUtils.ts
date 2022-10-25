@@ -13,8 +13,6 @@ export class HttpUtils {
   public static DATE_TO= "dateTo";
   public static SORT_DIRECTION= "sortDirection";
   public static SORT_COLUMN= "sortColumn";
-  public static SEARCH_TERM = "searchTerm";
-
 
 
   public static prepareUrl(endpoint: string): string;
@@ -56,6 +54,10 @@ export class HttpUtils {
     }
     return queryParams.length === 0 ?
       url : `${url}?${queryParams.join("&")}`;
+  }
+
+  static prepareUrlWithId(endpoint: string, id: string | number) {
+    return `${environment.simpleBillsHost}${endpoint}/${id}`;
   }
 
   public static prepareHeaders(): HttpHeaders {

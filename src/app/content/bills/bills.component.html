@@ -8,7 +8,7 @@
         type="date"
         class="form-control"
         name="dateFrom"
-        [(ngModel)]="billService.dateFrom"
+        [(ngModel)]="billSearchService.dateFrom"
       />
     </div>
     <label for="table-date-to" class="col-xs-3 col-sm-2 col-form-label">Date to:</label>
@@ -18,7 +18,7 @@
         type="date"
         class="form-control"
         name="dateTo"
-        [(ngModel)]="billService.dateTo"
+        [(ngModel)]="billSearchService.dateTo"
       />
     </div>
   </div>
@@ -30,10 +30,10 @@
         type="text"
         class="form-control"
         name="searchTerm"
-        [(ngModel)]="billService.searchTerm"
+        [(ngModel)]="billSearchService.searchTerm"
       />
     </div>
-    <span class="col col-form-label" *ngIf="billService.loading$ | async">Loading...</span>
+    <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">Loading...</span>
   </div>
 </form>
 <div *ngIf="pageableBills$ | async as pageableBills else noData">
@@ -45,24 +45,28 @@
       <th scope="col" sortable="amount" (sort)="onSort($event)">Amount</th>
       <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
       <th scope="col" sortable="category" (sort)="onSort($event)">Category</th>
+      <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let bill of pageableBills.bills;">
       <th scope="row">
-        <ngb-highlight [result]="bill.billNumber" [term]="billService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.billNumber" [term]="billSearchService.searchTerm"></ngb-highlight>
       </th>
       <td>
-        <ngb-highlight [result]="bill.date | date" [term]="billService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.date | date" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.amount | number" [term]="billService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.amount | number" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.description" [term]="billService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.description" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.category" [term]="billService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.category" [term]="billSearchService.searchTerm"></ngb-highlight>
+      </td>
+      <td>
+        <button type="button" class="btn-close" aria-label="Close" (click)="deleteBill(bill.billNumber)"></button>
       </td>
     </tr>
     </tbody>
@@ -70,20 +74,19 @@
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
       [collectionSize]="pageableBills.totalCount"
-      [(page)]="billService.page"
-      [pageSize]="billService.pageSize"
+      [(page)]="billSearchService.page"
+      [pageSize]="billSearchService.pageSize"
       size="sm">
     </ngb-pagination>
     <select
       *ngIf="pageableBills.totalCount > 5"
       class="form-select"
       style="width: auto; height: min-content" name="pageSize"
-      [(ngModel)]="billService.pageSize">
+      [(ngModel)]="billSearchService.pageSize">
       <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}} of {{pageableBills.totalCount}}</option>
-
     </select>
   </div>
 </div>
