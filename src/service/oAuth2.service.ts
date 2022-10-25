@@ -20,7 +20,7 @@ export class OAuth2Service {
     params.append('redirect_uri', this.redirectUri);
     params.append('code', code);
 
-    let oauth2TokenUrl = `${environment.keycloakHost}/realms/baeldung/protocol/openid-connect/token`
+    let oauth2TokenUrl = `${environment.tokenUrl}`
     let headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
     this._http.post(oauth2TokenUrl, params.toString(), {headers: headers})
       .subscribe(

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OAuth2Service} from "../../service/oAuth2.service";
 import {environment} from "../../environments/environment";
 
@@ -25,9 +25,8 @@ export class MenuComponent implements OnInit {
 
   login() {
     window.location.href =
-      `${environment.keycloakHost}/realms/baeldung/protocol/openid-connect/auth?` +
-      'response_type=code&scope=openid%20write%20read&client_id=' +
-      this._service.clientId + '&redirect_uri=' + this._service.redirectUri;
+      `${environment.authUrl}?response_type=code&scope=openid%20write%20read&client_id=${this._service.clientId}`
+      + `&redirect_uri=${this._service.redirectUri}`;
   }
 
   logout() {

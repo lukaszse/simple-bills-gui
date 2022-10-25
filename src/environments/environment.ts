@@ -6,8 +6,9 @@ export const environment = {
 
   production: false,
   simpleBillsHost: "http://localhost:8080",
-  keycloakHost: "http://localhost:8085",
-  redirectUri: "http://localhost:8089/"
+  redirectUri: "http://localhost:8089/",
+  tokenUrl: "http://localhost:8085/realms/baeldung/protocol/openid-connect/token",
+  authUrl: "http://localhost:8085/realms/baeldung/protocol/openid-connect/auth"
 };
 
 /*
