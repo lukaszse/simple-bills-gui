@@ -1,21 +1,24 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {HttpUtils} from "../utils/http/httpClientUtils";
-import {BillCreationDto} from "../dto/billCreationDto";
-import {map} from "rxjs/operators";
-import {catchError, Observable, tap} from "rxjs";
-import {BillsSearchService} from "./bills-search.service";
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { HttpUtils } from "../utils/http/httpClientUtils";
+import { BillCreationDto } from "../dto/billCreationDto";
+import { map } from "rxjs/operators";
+import { catchError, Observable, tap } from "rxjs";
+import { BillsSearchService } from "./bills-search.service";
+import { environment } from "../environments/environment";
 
 @Injectable({providedIn: "root"})
 export class BillsCrudService {
 
   private static billsEndpoint: string = "/bills";
+  private static host: string = environment.simpleBillsHost;
+
 
   constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
   createBill(bill: BillCreationDto): Observable<number | Object> {
-    const url = HttpUtils.prepareUrl(BillsCrudService.billsEndpoint);
+    const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.billsEndpoint);
     return this.httpClient
       .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
@@ -25,8 +28,8 @@ export class BillsCrudService {
       )
   }
 
-  deleteBill(billNumber: number | string) : Observable<number | Object> {
-    const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.billsEndpoint, billNumber)}`;
+  deleteBill(billNumber: number | string): Observable<number | Object> {
+    const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.host, BillsCrudService.billsEndpoint, billNumber)}`;
     return this.httpClient
       .delete(url, {headers: HttpUtils.prepareHeaders(), observe: "response"})
       .pipe(

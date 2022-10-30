@@ -15,6 +15,7 @@ import { CommonModule, DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
 import { BillCreationComponent } from './content/bill-creation/bill-creation.component';
+import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-plan-creation.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { BillCreationComponent } from './content/bill-creation/bill-creation.com
     BillsComponent,
     ContactComponent,
     NgbdSortableHeader,
-    BillCreationComponent
+    BillCreationComponent,
+    BillPlanCreationComponent
   ],
   imports: [
     BrowserModule,

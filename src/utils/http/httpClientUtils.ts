@@ -1,7 +1,6 @@
-import {environment} from "../../environments/environment";
-import {HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {Cookie} from "ng2-cookies";
-import {throwError} from "rxjs";
+import { HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { Cookie } from "ng2-cookies";
+import { throwError } from "rxjs";
 
 
 export class HttpUtils {
@@ -10,29 +9,33 @@ export class HttpUtils {
   public static PAGE_SIZE = "pageSize";
   public static PAGE_NUMBER = "pageNumber";
   public static DATE_FROM = "dateFrom";
-  public static DATE_TO= "dateTo";
-  public static SORT_DIRECTION= "sortDirection";
-  public static SORT_COLUMN= "sortColumn";
+  public static DATE_TO = "dateTo";
+  public static SORT_DIRECTION = "sortDirection";
+  public static SORT_COLUMN = "sortColumn";
 
 
-  public static prepareUrl(endpoint: string): string;
-  public static prepareUrl(endpoint: string,
+  public static prepareUrl(host: string,
+                           endpoint: string): string;
+  public static prepareUrl(host: string,
+                           endpoint: string,
                            pageSize: number): string;
-  public static prepareUrl(endpoint: string,
+  public static prepareUrl(host: string,
+                           endpoint: string,
                            pageSize: number,
                            pageNumber: number,
                            sortDirection: string,
                            sortColumn: string,
                            dateFrom: Date,
                            dateTo: Date): string;
-  public static prepareUrl(endpoint?: string,
+  public static prepareUrl(host?: string,
+                           endpoint?: string,
                            pageSize?: number,
                            pageNumber?: number,
                            sortDirection?: string,
                            sortColumn?: string,
                            dateFrom?: Date,
                            dateTo?: Date): string {
-    let url = `${environment.simpleBillsHost}${endpoint}`;
+    let url = `${host}${endpoint}`;
     const queryParams: string [] = [];
     if (pageSize) {
       queryParams.push(HttpUtils.getUrlParam(this.PAGE_SIZE, pageSize.toString()))
@@ -56,8 +59,8 @@ export class HttpUtils {
       url : `${url}?${queryParams.join("&")}`;
   }
 
-  static prepareUrlWithId(endpoint: string, id: string | number) {
-    return `${environment.simpleBillsHost}${endpoint}/${id}`;
+  static prepareUrlWithId(host: string, endpoint: string, id: string | number) {
+    return `${host}${endpoint}/${id}`;
   }
 
   public static prepareHeaders(): HttpHeaders {
