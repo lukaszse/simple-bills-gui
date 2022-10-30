@@ -1,1 +1,27 @@
-<p>category-creation works!</p>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new bill</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body text-dark">
+    <form>
+      <div class="mb-3">
+        <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category:</label>
+        <div class="input-group">
+          <input
+            id="category-input"
+            type="text"
+            class="form-control"
+            name="category"
+            [(ngModel)]="category.name"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-secondary m-2" (click)="open(content)">Add category</button>

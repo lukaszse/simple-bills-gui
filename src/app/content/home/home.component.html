@@ -2,9 +2,10 @@
   <p></p>
   <div *ngIf="user$ | async as user else noLoggedIn">
     <h2 class="text-center">Welcome {{user.preferredUsername}}!</h2>
-    <div>
+    <div class="col text-center">
       <br><br>
       <app-bill-creation></app-bill-creation>
+      <app-category-creation></app-category-creation>
     </div>
   </div>
   <ng-template #noLoggedIn>
