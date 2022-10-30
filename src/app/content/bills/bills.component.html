@@ -66,7 +66,8 @@
         <ngb-highlight [result]="bill.category" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <button type="button" class="btn-close" aria-label="Close" (click)="deleteBill(bill.billNumber)"></button>
+        <button type="button" class="btn-close" aria-label="Close"
+                (click)="openModelBillDeleteWindow(bill.billNumber, content)"></button>
       </td>
     </tr>
     </tbody>
@@ -86,8 +87,25 @@
       <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
       <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
-      <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}} of {{pageableBills.totalCount}}</option>
+      <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}}
+        of {{pageableBills.totalCount}}</option>
     </select>
   </div>
 </div>
+
 <ng-template #noData>No Data Available</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Bill deletion</h4>
+    <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p><strong class="text-danger">Are you sure you want to delete selected bill?</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
+  </div>
+</ng-template>

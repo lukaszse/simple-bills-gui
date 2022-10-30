@@ -5,6 +5,7 @@ import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../utils/sortableC
 import {BillsSearchService} from "../../../service/bills-search.service";
 import {PageableBills} from "../../../dto/pageableBills";
 import {BillsCrudService} from "../../../service/bills-crud.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -19,7 +20,8 @@ export class BillsComponent {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(public billSearchService: BillsSearchService,
-              public billCrudService: BillsCrudService) {
+              public billCrudService: BillsCrudService,
+              private _modalService: NgbModal) {
     this.pageableBills$ = billSearchService.pageableBills$;
   }
 
@@ -29,8 +31,16 @@ export class BillsComponent {
     this.billSearchService.sortDirection = direction;
   }
 
-  deleteBill(billNumber: number | string) {
-    return this.billCrudService.deleteBill(billNumber)
-      .subscribe(console.log);
+  openModelBillDeleteWindow(billNumber: number | string, content) {
+    this._modalService.open(content).result.then(
+      (result) => {
+        console.log(result);
+        return this.billCrudService.deleteBill(billNumber)
+          .subscribe(console.log);
+      },
+      (result) => {
+        console.log(result);
+      }
+    );
   }
 }

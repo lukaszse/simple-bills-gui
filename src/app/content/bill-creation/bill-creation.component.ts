@@ -29,6 +29,9 @@ export class BillCreationComponent {
         console.log(this.billCreationDto)
         this.billSearchService.createBill(this.billCreationDto)
           .subscribe(console.log);
+      },
+      () => {
+        console.log("Bill creation canceled")
       }
     );
   }
