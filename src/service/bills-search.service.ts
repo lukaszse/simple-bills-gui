@@ -13,8 +13,8 @@ import { environment } from "../environments/environment";
 @Injectable({providedIn: "root"})
 export class BillsSearchService {
 
-  private static billsEndpoint: string = "/bills";
-  private static host: string = environment.simpleBillsHost;
+  private static host: string = environment.billHost;
+  private static endpoint: string = "/bills";
   private _pageableBills$ = new BehaviorSubject<PageableBills>(null);
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>()
@@ -55,7 +55,7 @@ export class BillsSearchService {
                    dateFrom: Date,
                    dateTo: Date): Observable<PageableBills> {
 
-    let url = HttpUtils.prepareUrl(BillsSearchService.host, BillsSearchService.billsEndpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
+    let url = HttpUtils.prepareUrl(BillsSearchService.host, BillsSearchService.endpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
     return this.httpClient.get<Bill[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         map((response) => {

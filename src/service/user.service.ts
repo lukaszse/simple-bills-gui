@@ -9,7 +9,7 @@ import { environment } from "../environments/environment";
 @Injectable({providedIn: "root"})
 export class UserService {
 
-  private static host: string = environment.simpleBillsHost;
+  private static host: string = environment.billHost;
   private static userEndpoint: string = "/user/user-info";
 
   constructor(private httpClient: HttpClient) {

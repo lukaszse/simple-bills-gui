@@ -10,15 +10,14 @@ import { environment } from "../environments/environment";
 @Injectable({providedIn: "root"})
 export class BillsCrudService {
 
-  private static billsEndpoint: string = "/bills";
-  private static host: string = environment.simpleBillsHost;
-
+  private static host: string = environment.billHost;
+  private static endpoint: string = "/bills";
 
   constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
   createBill(bill: BillCreationDto): Observable<number | Object> {
-    const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.billsEndpoint);
+    const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.endpoint);
     return this.httpClient
       .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
@@ -29,7 +28,7 @@ export class BillsCrudService {
   }
 
   deleteBill(billNumber: number | string): Observable<number | Object> {
-    const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.host, BillsCrudService.billsEndpoint, billNumber)}`;
+    const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.host, BillsCrudService.endpoint, billNumber)}`;
     return this.httpClient
       .delete(url, {headers: HttpUtils.prepareHeaders(), observe: "response"})
       .pipe(

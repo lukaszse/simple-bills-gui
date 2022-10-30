@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
 import { BillCreationComponent } from './content/bill-creation/bill-creation.component';
 import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-plan-creation.component';
+import { CategoryCreationComponent } from './content/category-creation/category-creation.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-pla
     ContactComponent,
     NgbdSortableHeader,
     BillCreationComponent,
-    BillPlanCreationComponent
+    BillPlanCreationComponent,
+    CategoryCreationComponent
   ],
   imports: [
     BrowserModule,
