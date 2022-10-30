@@ -1,4 +1,4 @@
-export interface BillCreationDto {
+export interface BillCreation {
   category: string;
   description: string;
   amount: number;

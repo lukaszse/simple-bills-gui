@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { BillCreationDto } from "../dto/billCreationDto";
 import { catchError, Observable, tap } from "rxjs";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { map } from "rxjs/operators";
+import { Category } from "../dto/category";
 
 @Injectable({providedIn: "root"})
 export class CategoryService {
@@ -15,14 +15,24 @@ export class CategoryService {
   constructor(private httpClient: HttpClient) {
   }
 
-  createBill(bill: BillCreationDto): Observable<number | Object> {
+  createCategory(category: Category): Observable<string | Object> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
     return this.httpClient
-      .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .post<string>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         map((response) => response.body),
-        tap(body => console.log(`Bill with number ${body} created.`)),
+        tap(body => console.log(`Category with name ${body} created.`)),
         catchError(HttpUtils.handleError)
       )
+  }
+
+  getCategories(): Observable<Category[]> {
+    const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
+    return this.httpClient.get<Category[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .pipe(
+        map((response) => response.body),
+        catchError(HttpUtils.handleError),
+        tap(console.log)
+      );
   }
 }

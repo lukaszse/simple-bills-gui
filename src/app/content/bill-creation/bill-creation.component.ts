@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {formatDate} from "@angular/common";
-import {BillCreationDto} from "../../../dto/billCreationDto";
-import {BillsCrudService} from "../../../service/bills-crud.service";
+import { Component } from '@angular/core';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { formatDate } from "@angular/common";
+import { BillCreation } from "../../../dto/billCreation";
+import { BillsCrudService } from "../../../service/bills-crud.service";
 
 @Component({
   selector: 'app-bill-creation',
@@ -11,7 +11,7 @@ import {BillsCrudService} from "../../../service/bills-crud.service";
 })
 export class BillCreationComponent {
 
-  billCreationDto: BillCreationDto = {
+  billCreationDto: BillCreation = {
     category: null,
     description: null,
     amount: null,

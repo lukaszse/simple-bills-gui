@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HttpUtils } from "../utils/http/httpClientUtils";
-import { BillCreationDto } from "../dto/billCreationDto";
+import { BillCreation } from "../dto/billCreation";
 import { map } from "rxjs/operators";
 import { catchError, Observable, tap } from "rxjs";
 import { BillsSearchService } from "./bills-search.service";
@@ -16,7 +16,7 @@ export class BillsCrudService {
   constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
-  createBill(bill: BillCreationDto): Observable<number | Object> {
+  createBill(bill: BillCreation): Observable<number | Object> {
     const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.endpoint);
     return this.httpClient
       .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
