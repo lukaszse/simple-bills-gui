@@ -6,7 +6,21 @@
   <div class="modal-body text-dark">
     <form>
       <div class="mb-3">
-        <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category:</label>
+        <label for="category-input" class="col-form-label">Remove selected category:</label>
+        <div *ngIf="categories$ | async as categories else noData" class="input-group">
+          <select [(ngModel)]="categoryToRemove" name="categoryRemoval" class="form-select"
+                  aria-label="Default select example">
+            <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
+          </select>
+        </div>
+        <div class="col text-end">
+          <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('remove category')">Remove
+            category
+          </button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="category-input" class="col-form-label">Add new category:</label>
         <div class="input-group">
           <input
             id="category-input"
@@ -16,12 +30,19 @@
             [(ngModel)]="category.name"
           />
         </div>
+        <div class="col text-end">
+          <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('add category')">Add new
+            category
+          </button>
+        </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <button type="button" class="btn btn-outline-dark m-2" (click)="modal.dismiss('Close click')">Close</button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-secondary m-2" (click)="open(content)">Add category</button>
+<button class="btn btn-lg btn-outline-secondary m-2" (click)="open(content)">Category management</button>
+
+<ng-template #noData>Error. No Data Available</ng-template>

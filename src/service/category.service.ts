@@ -35,4 +35,15 @@ export class CategoryService {
         tap(console.log)
       );
   }
+
+  deleteCategory(categoryName: string): Observable<string | Object> {
+    const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, categoryName);
+    return this.httpClient
+      .delete<string>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .pipe(
+        map((response) => response.body),
+        tap(body => console.log(`Category with name ${categoryName} deleted.`)),
+        catchError(HttpUtils.handleError)
+      )
+  }
 }
