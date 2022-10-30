@@ -40,7 +40,7 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col" sortable="billNumber" (sort)="onSort($event)">#</th>
       <th scope="col" sortable="date" (sort)="onSort($event)">Date</th>
       <th scope="col" sortable="amount" (sort)="onSort($event)">Amount</th>
       <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
