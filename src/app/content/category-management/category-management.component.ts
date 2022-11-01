@@ -4,11 +4,11 @@ import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 
 @Component({
-  selector: 'app-category-creation',
-  templateUrl: './category-creation.component.html',
-  styleUrls: ['./category-creation.component.scss']
+  selector: 'app-category-management',
+  templateUrl: './category-management.component.html',
+  styleUrls: ['./category-management.component.scss']
 })
-export class CategoryCreationComponent {
+export class CategoryManagementComponent {
 
   public categories$;
 
