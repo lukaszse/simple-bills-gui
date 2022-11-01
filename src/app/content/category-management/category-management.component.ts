@@ -17,6 +17,7 @@ export class CategoryManagementComponent {
 
   categories$;
   categoryToRemove: string;
+  categoryToUpdate: Category;
 
   constructor(private categoryService: CategoryService,
               private modalService: NgbModal) {
