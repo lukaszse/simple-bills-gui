@@ -1,6 +1,6 @@
 <div class="container p-1">
   <p></p>
-  <div *ngIf="user$ | async as user else noLoggedIn">
+  <div *ngIf="loggedUsername | async as user else noLoggedIn">
     <h2 class="text-center">Welcome {{user}}!</h2>
     <div class="col text-center">
       <br><br>
