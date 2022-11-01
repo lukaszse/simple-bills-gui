@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable, tap} from "rxjs";
-import {UserService} from "../../../service/user.service";
-import {map} from "rxjs/operators";
+import { Observable, tap } from "rxjs";
+import { UserService } from "../../../service/user.service";
+import { map } from "rxjs/operators";
 
 
 interface User {
@@ -19,19 +19,31 @@ interface User {
 })
 export class HomeComponent implements OnInit {
 
-  user$: Observable<User>;
+  user$: Observable<string>;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.user$ = this.getUser();
   }
 
-  getUser(): Observable<User> {
+  getUser(): Observable<string> {
     return this.userService
       .getUser().pipe(
         map(response => response.body),
-        tap(console.log)
+        tap(console.log),
+        map(this.getShowUserName)
       )
+  }
+
+  getShowUserName(user: User): string {
+    if (user.givenName) {
+      return user.givenName;
+    } else if (user.name) {
+      return user.name;
+    } else if (user.preferredUsername) {
+      return user.preferredUsername;
+    }
   }
 }

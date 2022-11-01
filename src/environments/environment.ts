@@ -8,8 +8,8 @@ export const environment = {
   billHost: "http://localhost:8080",
   billPlanHost: "http://localhost:8081",
   redirectUri: "http://localhost:8089/",
-  tokenUrl: "http://localhost:8085/realms/baeldung/protocol/openid-connect/token",
-  authUrl: "http://localhost:8085/realms/baeldung/protocol/openid-connect/auth"
+  tokenUrl: "http://localhost:8085/realms/simple-bills/protocol/openid-connect/token",
+  authUrl: "http://localhost:8085/realms/simple-bills/protocol/openid-connect/auth"
 };
 
 /*

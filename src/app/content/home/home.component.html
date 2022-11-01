@@ -1,7 +1,7 @@
 <div class="container p-1">
   <p></p>
   <div *ngIf="user$ | async as user else noLoggedIn">
-    <h2 class="text-center">Welcome {{user.preferredUsername}}!</h2>
+    <h2 class="text-center">Welcome {{user}}!</h2>
     <div class="col text-center">
       <br><br>
       <app-bill-creation></app-bill-creation>

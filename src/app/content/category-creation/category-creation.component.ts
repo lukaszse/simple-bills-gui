@@ -15,7 +15,8 @@ export class CategoryCreationComponent {
   categoryToRemove: string;
 
   category: Category = {
-    name: null
+    name: null,
+    limit: null
   };
 
   constructor(private categoryService: CategoryService,

@@ -10,7 +10,7 @@ import { environment } from "../environments/environment";
 export class UserService {
 
   private static host: string = environment.billHost;
-  private static userEndpoint: string = "/user/user-info";
+  private static userEndpoint: string = "/user";
 
   constructor(private httpClient: HttpClient) {
   }
