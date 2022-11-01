@@ -10,14 +10,18 @@ import { CategoryService } from "../../../service/category.service";
 })
 export class CategoryManagementComponent {
 
-  category: Category = {
+  categoryToCreate: Category = {
+    name: null,
+    limit: null
+  };
+
+  categoryToUpdate: Category = {
     name: null,
     limit: null
   };
 
   categories$;
   categoryToRemove: string;
-  categoryToUpdate: Category;
 
   constructor(private categoryService: CategoryService,
               private modalService: NgbModal) {
@@ -28,23 +32,29 @@ export class CategoryManagementComponent {
     this.resetFormFields()
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
       (result) => {
-        console.log(`${result} ${this.category.name}`)
+        if (result === "add category") {
+          this.categoryService.createCategory(this.categoryToCreate)
+            .subscribe();
+        }
+        if (result === "update category") {
+          this.categoryService.updateCategory(this.categoryToUpdate)
+            .subscribe()
+        }
         if (result === "remove category") {
           this.categoryService.deleteCategory(this.categoryToRemove)
             .subscribe()
         }
-        if (result === "add category") {
-          this.categoryService.createCategory(this.category)
-            .subscribe();
-        }
       },
       () => {
-        console.log("Bill creation canceled")
+        console.log("Exit `category management` without any action.")
       }
     );
   }
 
   resetFormFields() {
-    this.category.name = null;
+    this.categoryToCreate.name = null;
+    this.categoryToCreate.limit = null;
+    this.categoryToUpdate.name = null
+    this.categoryToUpdate.limit = null
   }
 }

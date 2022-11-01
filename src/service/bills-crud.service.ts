@@ -16,7 +16,7 @@ export class BillsCrudService {
   constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
-  createBill(bill: BillCreation): Observable<number | Object> {
+  createBill(bill: BillCreation): Observable<string | Object> {
     const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.endpoint);
     return this.httpClient
       .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})

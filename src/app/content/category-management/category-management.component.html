@@ -5,10 +5,11 @@
   </div>
   <div class="modal-body text-dark">
     <form>
-      <h2 class="col-form-label">Add new category:</h2>
+
       <!--
             add new category
       -->
+      <h2 class="col-form-label">Add new category:</h2>
       <div class="mb-3">
         <label for="category-name-input" class="col-form-label">Category name</label>
         <div class="input-group">
@@ -17,7 +18,7 @@
             type="text"
             class="form-control"
             name="category"
-            [(ngModel)]="category.name"
+            [(ngModel)]="categoryToCreate.name"
           />
         </div>
         <label for="category-limit-input" class="col-form-label">Category limit</label>
@@ -27,7 +28,7 @@
             type="number" min="0.00" max="999999.99" step="0.01"
             class="form-control"
             name="category"
-            [(ngModel)]="category.limit"
+            [(ngModel)]="categoryToCreate.limit"
           />
         </div>
         <div class="col text-end">
@@ -36,6 +37,7 @@
           </button>
         </div>
       </div>
+
       <!--
             edit category
       -->
@@ -43,7 +45,7 @@
         <h2 class="col-form-label">Update category:</h2>
         <label for="category-update-select" class="col-form-label">Category name</label>
         <div *ngIf="categories$ | async as categories else noData" class="input-group">
-          <select [(ngModel)]="categoryToRemove" name="categoryUpdate" class="form-select"
+          <select [(ngModel)]="categoryToUpdate.name" name="categoryUpdate" class="form-select"
                   aria-label="Default select example" id="category-update-select">
             <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
           </select>
@@ -55,14 +57,15 @@
             type="text"
             class="form-control"
             name="category"
-            [(ngModel)]="category.limit"
+            [(ngModel)]="categoryToUpdate.limit"
           />
         </div>
         <div class="col text-end">
-          <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('add category')">Confirm update
+          <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('update category')">Confirm update
           </button>
         </div>
       </div>
+
       <!--
             remove category
       -->

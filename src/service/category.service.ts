@@ -18,10 +18,21 @@ export class CategoryService {
   createCategory(category: Category): Observable<string | Object> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
     return this.httpClient
-      .post<string>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .post<Category>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
-        map((response) => response.body),
-        tap(body => console.log(`Category with name ${body} created.`)),
+        map((response) => response.body.name),
+        tap(categoryName => console.log(`Category ${categoryName} created.`)),
+        catchError(HttpUtils.handleError)
+      )
+  }
+
+  updateCategory(category: Category): Observable<string | Object> {
+    const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, category.name);
+    return this.httpClient
+      .patch<Category>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .pipe(
+        map((response) => response.body.name),
+        tap(categoryName => console.log(`Category ${categoryName} updated.`)),
         catchError(HttpUtils.handleError)
       )
   }
@@ -39,10 +50,9 @@ export class CategoryService {
   deleteCategory(categoryName: string): Observable<string | Object> {
     const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, categoryName);
     return this.httpClient
-      .delete<string>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .delete(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
-        map((response) => response.body),
-        tap(body => console.log(`Category with name ${categoryName} deleted.`)),
+        tap(categoryName => console.log(`Category with name ${categoryName} deleted.`)),
         catchError(HttpUtils.handleError)
       )
   }
