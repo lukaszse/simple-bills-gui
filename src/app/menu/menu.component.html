@@ -7,7 +7,7 @@
         <li class="nav-item" [ngbNavItem]="1">
           <a class="nav-link" ngbNavLink routerLink="/home">home</a>
         </li>
-        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="2">
+        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="2" (click)="refreshBills()">
           <a class="nav-link" ngbNavLink routerLink="/bills">bills</a>
         </li>
         <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="3">
@@ -27,7 +27,7 @@
           <span *ngIf="!isLogged">
             <button class="btn btn-dark bg-secondary" (click)="login()" type="submit">Login</button>
           </span>
-          <span *ngIf="isLogged" >
+          <span *ngIf="isLogged">
             <button class="btn btn-dark bg-secondary" (click)="logout()" href="#">Logout</button>
           </span>
       </span>

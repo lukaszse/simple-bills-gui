@@ -5,20 +5,15 @@
   </div>
   <div class="modal-body text-dark">
     <form>
-      <div class="mb-3">
-        <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category:</label>
-        <div class="input-group">
-          <input
-            id="category-input"
-            type="text"
-            class="form-control"
-            name="category"
-            [(ngModel)]="billCreationDto.category"
-          />
-        </div>
+      <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
+      <div *ngIf="categories$ | async as categories else noData" class="input-group">
+        <select [(ngModel)]="billCreationDto.category" name="categoryRemoval" class="form-select"
+                aria-label="Default select example" id="category-input">
+          <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
+        </select>
       </div>
       <div class="mb-3">
-        <label for="description-input" class="col-xs-3 col-sm-2 col-form-label">Description:</label>
+        <label for="description-input" class="col-xs-3 col-sm-2 col-form-label">Description</label>
         <div class="input-group">
           <input
             id="description-input"
@@ -30,7 +25,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="amount-input" class="col-xs-3 col-sm-2 col-form-label">Amount:</label>
+        <label for="amount-input" class="col-xs-3 col-sm-2 col-form-label">Amount</label>
         <div class="input-group">
           <input
             id="amount-input"
@@ -42,7 +37,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="date-input" class="col-xs-3 col-sm-2 col-form-label">Date:</label>
+        <label for="date-input" class="col-xs-3 col-sm-2 col-form-label">Date</label>
         <div class="input-group">
           <input
             id="date-input"
@@ -61,3 +56,5 @@
 </ng-template>
 
 <button class="btn btn-lg btn-outline-secondary me-2" (click)="open(content)">Add bill</button>
+
+<ng-template #noData>No Category Available</ng-template>

@@ -3,6 +3,8 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { formatDate } from "@angular/common";
 import { BillCreation } from "../../../dto/billCreation";
 import { BillsCrudService } from "../../../service/bills-crud.service";
+import { Category } from "../../../dto/category";
+import { CategoryService } from "../../../service/category.service";
 
 @Component({
   selector: 'app-bill-creation',
@@ -18,8 +20,17 @@ export class BillCreationComponent {
     date: null
   };
 
+  category: Category = {
+    name: null,
+    limit: null
+  };
+
+  categories$;
+
   constructor(private billSearchService: BillsCrudService,
+              private categoryService: CategoryService,
               private modalService: NgbModal) {
+    this.categories$ = this.categoryService.getCategories()
   }
 
   open(content) {

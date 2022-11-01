@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {OAuth2Service} from "../../service/oAuth2.service";
-import {environment} from "../../environments/environment";
+import { Component, OnInit } from '@angular/core';
+import { OAuth2Service } from "../../service/oAuth2.service";
+import { environment } from "../../environments/environment";
+import { BillsSearchService } from "../../service/bills-search.service";
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +13,8 @@ export class MenuComponent implements OnInit {
   title = 'simple-bills-gui';
   public isLogged: boolean = false;
 
-  constructor(private _service: OAuth2Service) {
+  constructor(private _service: OAuth2Service,
+              private billsSearchService: BillsSearchService) {
   }
 
   ngOnInit() {
@@ -31,6 +33,10 @@ export class MenuComponent implements OnInit {
 
   logout() {
     this._service.logout();
+  }
+
+  refreshBills() {
+    this.billsSearchService.refresh();
   }
 
 }

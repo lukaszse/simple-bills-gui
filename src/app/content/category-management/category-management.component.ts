@@ -10,14 +10,13 @@ import { CategoryService } from "../../../service/category.service";
 })
 export class CategoryManagementComponent {
 
-  public categories$;
-
-  categoryToRemove: string;
-
   category: Category = {
     name: null,
     limit: null
   };
+
+  categories$;
+  categoryToRemove: string;
 
   constructor(private categoryService: CategoryService,
               private modalService: NgbModal) {
