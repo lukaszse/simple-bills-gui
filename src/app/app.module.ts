@@ -17,6 +17,8 @@ import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directi
 import { BillCreationComponent } from './content/bill-creation/bill-creation.component';
 import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-plan-creation.component';
 import { CategoryManagementComponent } from './content/category-management/category-management.component';
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { LimitChartsComponent } from './content/limit-charts/limit-charts.component';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { CategoryManagementComponent } from './content/category-management/categ
     NgbdSortableHeader,
     BillCreationComponent,
     BillPlanCreationComponent,
-    CategoryManagementComponent
+    CategoryManagementComponent,
+    LimitChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,8 @@ import { CategoryManagementComponent } from './content/category-management/categ
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    NgxChartsModule
   ],
   providers: [DecimalPipe, DatePipe],
   bootstrap: [AppComponent]
