@@ -1,13 +1,14 @@
-import {Bill} from "./bill";
+import { Bill } from "./bill";
 
-export class PageableBills{
+export class PageableBills {
 
   bills: Bill[]
   totalCount: number
+  pageTotalAmount: number
 
-
-  constructor(bills: Bill[], totalCount: number) {
+  constructor(bills: Bill[], totalCount: number, totalAmount?: number) {
     this.bills = bills;
     this.totalCount = totalCount;
+    this.pageTotalAmount = totalAmount;
   }
 }

@@ -70,7 +70,10 @@ export class BillsSearchService {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
     let pageableBills$ = this.getBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
     pageableBills$ = BillsSearchService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
-    return pageableBills$;
+    return pageableBills$
+      .pipe(
+        map(pageableBills => BillsSearchService.setAmountSum(pageableBills)),
+        tap(console.log));
   }
 
   private static search(bills: Observable<PageableBills>,
@@ -82,6 +85,17 @@ export class BillsSearchService {
         const bills = this.matchBills(pageableBill, text, decimalPipe, datePipe);
         return new PageableBills(bills, pageableBill.totalCount);
       }))
+  }
+
+  public static setAmountSum(pageableBills: PageableBills): PageableBills {
+    pageableBills.pageTotalAmount = this.countAmountSum(pageableBills.bills)
+    return pageableBills;
+  }
+
+  private static countAmountSum(bills: Bill[]): number {
+    return bills
+      .map((bill) => bill.amount)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
   private static matchBills(pageableBill: PageableBills, text: string, decimalPipe: PipeTransform, datePipe: DatePipe) {

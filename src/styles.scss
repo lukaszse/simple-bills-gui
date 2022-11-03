@@ -7,7 +7,8 @@ $theme-colors: (
   "primary": $gray-600,
   "secondary": $cyan-700,
   "light": $gray-100,
-  "dark": $gray-900
+  "dark": $gray-900,
+  "info": $gray-400
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

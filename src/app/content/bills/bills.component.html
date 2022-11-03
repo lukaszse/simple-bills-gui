@@ -57,7 +57,7 @@
         <ngb-highlight [result]="bill.date | date" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
-        <ngb-highlight [result]="bill.amount | number" [term]="billSearchService.searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="bill.amount | currency" [term]="billSearchService.searchTerm"></ngb-highlight>
       </td>
       <td>
         <ngb-highlight [result]="bill.description" [term]="billSearchService.searchTerm"></ngb-highlight>
@@ -69,6 +69,14 @@
         <button type="button" class="btn-close" aria-label="Close"
                 (click)="openModelBillDeleteWindow(bill.billNumber, content)"></button>
       </td>
+    </tr>
+    <tr class="bg-info">
+      <th scope="row"></th>
+      <td>Total page amount:</td>
+      <td>{{ pageableBills.pageTotalAmount | currency }} </td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     </tbody>
   </table>
