@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-category',
@@ -20,7 +21,7 @@ export class CategoryComponent {
     limit: null
   };
 
-  categories$;
+  categories$: Observable<Category[]>;
   categoryToRemove: string;
 
   constructor(private categoryService: CategoryService,

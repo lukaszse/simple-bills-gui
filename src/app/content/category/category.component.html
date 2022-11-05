@@ -1,12 +1,40 @@
 <div class="container p-1 text-center">
 
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow(categoryCreation)">Add
-    new category
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow(categoryCreation)">
+    Add new category
   </button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openUpdateWindow(categoryUpdate)">Update category
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openUpdateWindow(categoryUpdate)">
+    Update category
   </button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openDeletionWindow(categoryDeletion)">Delete category
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openDeletionWindow(categoryDeletion)">
+    Delete category
   </button>
+
+  <br><br><br>
+  <div *ngIf="categories$ | async as categories else noData">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Category name</th>
+        <th>Category limit</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let category of categories; index as i">
+        <th scope="row">
+          {{i + 1}}
+        </th>
+        <td>
+          {{category.name}}
+        </td>
+        <td>
+          {{category.limit}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
 
