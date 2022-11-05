@@ -19,9 +19,6 @@ import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-pla
 import { CategoryManagementComponent } from './content/category-management/category-management.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitChartsComponent } from './content/limit-charts/limit-charts.component';
-import { CategoryCreationComponent } from './content/category-creation/category-creation.component';
-import { CategoryUpdateComponent } from './content/category-update/category-update.component';
-import { CategoryDeletionComponent } from './content/category-deletion/category-deletion.component';
 
 
 @NgModule({
@@ -37,10 +34,7 @@ import { CategoryDeletionComponent } from './content/category-deletion/category-
     BillCreationComponent,
     BillPlanCreationComponent,
     CategoryManagementComponent,
-    LimitChartsComponent,
-    CategoryCreationComponent,
-    CategoryUpdateComponent,
-    CategoryDeletionComponent
+    LimitChartsComponent
   ],
   imports: [
     BrowserModule,
