@@ -21,6 +21,7 @@ export class CategoryComponent implements OnInit {
   };
 
   categories: Category[];
+  totalLimit: number;
   categoryToRemove: string;
 
   constructor(private categoryService: CategoryService,
@@ -31,13 +32,14 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategories().subscribe(
       (categories) => {
         this.categories = categories;
+        this.totalLimit = CategoryComponent.countTotalLimit(categories);
       }
     );
   }
 
   openCreationWindow(content) {
     this.resetFormFields()
-    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this._modalService.open(content, {ariaLabelledBy: 'modal-category-creation'}).result.then(
       () => {
         this.categoryService.createCategory(this.categoryToCreate)
           .subscribe((deletionResponse) => {
@@ -46,43 +48,30 @@ export class CategoryComponent implements OnInit {
           });
       },
       () => {
-        console.log("Exit `category management` without any action.")
+        console.log("Exit without any action.")
       }
     );
   }
 
-  openUpdateWindow(content) {
-    this.resetFormFields()
-    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+  openUpdateWindowForSelectedCategory(category: Category, content) {
+    this.categoryToUpdate = category;
+    this._modalService.open(content, {ariaLabelledBy: 'modal-category-update'}).result.then(
       () => {
         this.categoryService.updateCategory(this.categoryToUpdate)
-          .subscribe()
-        this.ngOnInit();
-      },
-      () => {
-        console.log("Exit `category management` without any action.")
-      }
-    );
-  }
-
-  openDeletionWindow(content) {
-    this.resetFormFields()
-    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
-      () => {
-        this.categoryService.deleteCategory(this.categoryToRemove)
-          .subscribe((deletionResponse) => {
-            console.log(deletionResponse);
+          .subscribe((updateResponse) => {
+            console.log(updateResponse);
             this.ngOnInit();
           });
       },
       () => {
-        console.log("Exit `category management` without any action.")
+        console.log("Exit without any action.")
       }
     );
   }
 
   openDeletionConfirmationWindow(categoryName: string, content) {
-    this._modalService.open(content).result.then(
+    console.log(this.categoryToRemove)
+    this._modalService.open(content, {ariaLabelledBy: 'modal-category-deletion'}).result.then(
       (result) => {
         console.log(result);
         this.categoryService.deleteCategory(categoryName)
@@ -95,6 +84,12 @@ export class CategoryComponent implements OnInit {
         console.log(result);
       }
     );
+  }
+
+  private static countTotalLimit(categories: Category[]): number {
+    return categories
+      .map((category) => category.limit)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
   resetFormFields() {

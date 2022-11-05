@@ -16,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
 import { BillCreationComponent } from './content/bill-creation/bill-creation.component';
 import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-plan-creation.component';
-import { CategoryManagementComponent } from './content/category-management/category-management.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitChartsComponent } from './content/limit-charts/limit-charts.component';
 
@@ -33,7 +32,6 @@ import { LimitChartsComponent } from './content/limit-charts/limit-charts.compon
     NgbdSortableHeader,
     BillCreationComponent,
     BillPlanCreationComponent,
-    CategoryManagementComponent,
     LimitChartsComponent
   ],
   imports: [

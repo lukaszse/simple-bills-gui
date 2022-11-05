@@ -1,46 +1,63 @@
 <div class="container p-1 text-center">
-
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow(categoryCreation)">
     Add new category
   </button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openUpdateWindow(categoryUpdate)">
-    Update category
-  </button>
+  <br><br>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <div *ngIf="categories else noData">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Category name</th>
+            <th>Category limit</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let category of categories; index as i">
+            <th scope="row">
+              {{i + 1}}
+            </th>
+            <td>
+              {{category.name}}
+            </td>
+            <td>
+              {{category.limit | currency}}
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                aria-label="Close"
+                (click)="openUpdateWindowForSelectedCategory(category, categoryUpdate)"
+              >Edit
+              </button>
+            </td>
+            <td>
+              <button type="button" class="btn-close" aria-label="Close"
+                      (click)="openDeletionConfirmationWindow(category.name, deletionConfirmationWindow)"></button>
+            </td>
+          </tr>
+          <tr class="bg-info fw-bold">
+            <th></th>
+            <td>Total limit:</td>
+            <td>{{totalLimit | currency}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <br><br><br>
-  <div *ngIf="categories else noData">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Category name</th>
-        <th>Category limit</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let category of categories; index as i">
-        <th scope="row">
-          {{i + 1}}
-        </th>
-        <td>
-          {{category.name}}
-        </td>
-        <td>
-          {{category.limit}}
-        </td>
-        <td>
-          <button type="button" class="btn-close" aria-label="Close"
-                  (click)="openDeletionConfirmationWindow(category.name, deletionConfirmationWindow)"></button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    </div>
+    <div class="col=2"></div>
   </div>
-
 </div>
 
 <!--
-      add new category
+      add new category modal window
 -->
 <ng-template #categoryCreation let-modal>
   <div class="modal-header">
@@ -80,8 +97,9 @@
   </div>
 </ng-template>
 
+
 <!--
-      edit category
+      edit category modal window
 -->
 <ng-template #categoryUpdate let-modal>
   <div class="modal-header">
@@ -92,12 +110,8 @@
     <form>
       <div class="mb-3">
         <h2 class="col-form-label">Update category:</h2>
-        <label for="category-update-select" class="col-form-label">Category name</label>
-        <div *ngIf="categories else noData" class="input-group">
-          <select [(ngModel)]="categoryToUpdate.name" name="categoryUpdate" class="form-select"
-                  aria-label="Default select example" id="category-update-select">
-            <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
-          </select>
+        <div class="input-group">
+          <span class="fw-bold" id="category-update-name-input">{{categoryToUpdate.name}}</span>
         </div>
         <label for="category-update-limit-input" class="col-form-label">Category limit</label>
         <div class="input-group">
@@ -120,9 +134,12 @@
 </ng-template>
 
 
+<!--
+      delete category modal window
+-->
 <ng-template #deletionConfirmationWindow let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">Bill deletion</h4>
+    <h4 class="modal-title" id="modal-category-deletion">Bill deletion</h4>
     <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"
     ></button>
   </div>
