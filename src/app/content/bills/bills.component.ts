@@ -1,10 +1,10 @@
-import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {Observable} from "rxjs";
-import {DatePipe, DecimalPipe} from "@angular/common";
-import {NgbdSortableHeader, SortEvent, SortUtils} from "../../../utils/sortableComponents/sortable.directive";
-import {BillsSearchService} from "../../../service/bills-search.service";
-import {PageableBills} from "../../../dto/pageableBills";
-import {BillsCrudService} from "../../../service/bills-crud.service";
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Observable } from "rxjs";
+import { DatePipe, DecimalPipe } from "@angular/common";
+import { NgbdSortableHeader, SortEvent, SortUtils } from "../../../utils/sortableComponents/sortable.directive";
+import { BillsSearchService } from "../../../service/bills-search.service";
+import { PageableBills } from "../../../dto/pageableBills";
+import { BillsCrudService } from "../../../service/bills-crud.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 
@@ -14,7 +14,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./bills.component.css'],
   providers: [DecimalPipe, DatePipe]
 })
-export class BillsComponent {
+export class BillsComponent implements OnInit {
 
   pageableBills$: Observable<PageableBills>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
@@ -25,13 +25,17 @@ export class BillsComponent {
     this.pageableBills$ = billSearchService.pageableBills$;
   }
 
+  ngOnInit(): void {
+    this.billSearchService.refresh()
+  }
+
   onSort({column, direction}: SortEvent) {
     this.headers = SortUtils.resetOtherHeaders(this.headers, column);
     this.billSearchService.sortColumn = column;
     this.billSearchService.sortDirection = direction;
   }
 
-  openModelBillDeleteWindow(billNumber: number | string, content) {
+  openDeletionConfirmationWindow(billNumber: number | string, content) {
     this._modalService.open(content).result.then(
       (result) => {
         console.log(result);

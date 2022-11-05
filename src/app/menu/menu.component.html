@@ -7,11 +7,11 @@
         <li class="nav-item" [ngbNavItem]="1">
           <a class="nav-link" ngbNavLink routerLink="/home">home</a>
         </li>
-        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="2" (click)="refreshBills()">
+        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="2">
           <a class="nav-link" ngbNavLink routerLink="/bills">bills</a>
         </li>
         <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="3">
-          <a class="nav-link" ngbNavLink routerLink="/category">category</a>
+          <a class="nav-link" ngbNavLink routerLink="/category">categories</a>
         </li>
         <li ngbDropdown class="nav-item" [ngbNavItem]="4">
           <a href (click)="false" class="nav-link" ngbDropdownToggle>Links</a>

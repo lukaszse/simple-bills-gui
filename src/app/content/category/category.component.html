@@ -6,12 +6,9 @@
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openUpdateWindow(categoryUpdate)">
     Update category
   </button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openDeletionWindow(categoryDeletion)">
-    Delete category
-  </button>
 
   <br><br><br>
-  <div *ngIf="categories$ | async as categories else noData">
+  <div *ngIf="categories else noData">
     <table class="table table-striped">
       <thead>
       <tr>
@@ -30,6 +27,10 @@
         </td>
         <td>
           {{category.limit}}
+        </td>
+        <td>
+          <button type="button" class="btn-close" aria-label="Close"
+                  (click)="openDeletionConfirmationWindow(category.name, deletionConfirmationWindow)"></button>
         </td>
       </tr>
       </tbody>
@@ -92,7 +93,7 @@
       <div class="mb-3">
         <h2 class="col-form-label">Update category:</h2>
         <label for="category-update-select" class="col-form-label">Category name</label>
-        <div *ngIf="categories$ | async as categories else noData" class="input-group">
+        <div *ngIf="categories else noData" class="input-group">
           <select [(ngModel)]="categoryToUpdate.name" name="categoryUpdate" class="form-select"
                   aria-label="Default select example" id="category-update-select">
             <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
@@ -118,31 +119,19 @@
   </div>
 </ng-template>
 
-<!--
-      remove category
--->
-<ng-template #categoryDeletion let-modal>
+
+<ng-template #deletionConfirmationWindow let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Category deletion</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    <h4 class="modal-title" id="modal-title">Bill deletion</h4>
+    <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"
+    ></button>
   </div>
-  <div class="modal-body text-dark">
-    <form>
-      <div class="mb-3">
-        <h2 class="col-form-label">Remove category:</h2>
-        <div *ngIf="categories$ | async as categories else noData" class="input-group">
-          <select [(ngModel)]="categoryToRemove" name="categoryRemoval" class="form-select"
-                  aria-label="Default select example">
-            <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
-          </select>
-        </div>
-      </div>
-    </form>
+  <div class="modal-body">
+    <p><strong class="text-danger">Are you sure you want to delete selected category?</strong></p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('remove category')">Remove selected
-      category
-    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
   </div>
 </ng-template>
 

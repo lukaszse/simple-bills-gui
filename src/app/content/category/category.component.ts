@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
-export class CategoryComponent {
+export class CategoryComponent implements OnInit {
 
   categoryToCreate: Category = {
     name: null,
@@ -21,20 +20,30 @@ export class CategoryComponent {
     limit: null
   };
 
-  categories$: Observable<Category[]>;
+  categories: Category[];
   categoryToRemove: string;
 
   constructor(private categoryService: CategoryService,
-              private modalService: NgbModal) {
-    this.categories$ = this.categoryService.getCategories();
+              private _modalService: NgbModal) {
+  }
+
+  ngOnInit(): void {
+    this.categoryService.getCategories().subscribe(
+      (categories) => {
+        this.categories = categories;
+      }
+    );
   }
 
   openCreationWindow(content) {
     this.resetFormFields()
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
       () => {
         this.categoryService.createCategory(this.categoryToCreate)
-          .subscribe();
+          .subscribe((deletionResponse) => {
+            console.log(deletionResponse);
+            this.ngOnInit();
+          });
       },
       () => {
         console.log("Exit `category management` without any action.")
@@ -44,10 +53,11 @@ export class CategoryComponent {
 
   openUpdateWindow(content) {
     this.resetFormFields()
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
       () => {
         this.categoryService.updateCategory(this.categoryToUpdate)
           .subscribe()
+        this.ngOnInit();
       },
       () => {
         console.log("Exit `category management` without any action.")
@@ -57,13 +67,32 @@ export class CategoryComponent {
 
   openDeletionWindow(content) {
     this.resetFormFields()
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
       () => {
         this.categoryService.deleteCategory(this.categoryToRemove)
-          .subscribe()
+          .subscribe((deletionResponse) => {
+            console.log(deletionResponse);
+            this.ngOnInit();
+          });
       },
       () => {
         console.log("Exit `category management` without any action.")
+      }
+    );
+  }
+
+  openDeletionConfirmationWindow(categoryName: string, content) {
+    this._modalService.open(content).result.then(
+      (result) => {
+        console.log(result);
+        this.categoryService.deleteCategory(categoryName)
+          .subscribe((deletionResponse) => {
+            console.log(deletionResponse);
+            this.ngOnInit();
+          });
+      },
+      (result) => {
+        console.log(result);
       }
     );
   }
