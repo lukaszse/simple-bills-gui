@@ -1,8 +1,12 @@
 <div class="container p-1 text-center">
 
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="open(categoryCreation)">Add new category</button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="open(categoryUpdate)">Update category</button>
-  <button class="btn btn-lg btn-outline-secondary m-2" (click)="open(categoryDeletion)">Delete category</button>
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow(categoryCreation)">Add
+    new category
+  </button>
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openUpdateWindow(categoryUpdate)">Update category
+  </button>
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openDeletionWindow(categoryDeletion)">Delete category
+  </button>
 
 </div>
 
@@ -39,7 +43,6 @@
           />
         </div>
       </div>
-
     </form>
   </div>
   <div class="modal-footer">

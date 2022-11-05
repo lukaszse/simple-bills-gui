@@ -8,7 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ContentComponent } from './content/content.component';
 import { HomeComponent } from './content/home/home.component';
 import { BillsComponent } from './content/bills/bills.component';
-import { ContactComponent } from './content/category/contact.component';
+import { CategoryComponent } from './content/category/category.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
 import { CommonModule, DatePipe, DecimalPipe } from "@angular/common";
@@ -29,7 +29,7 @@ import { LimitChartsComponent } from './content/limit-charts/limit-charts.compon
     ContentComponent,
     HomeComponent,
     BillsComponent,
-    ContactComponent,
+    CategoryComponent,
     NgbdSortableHeader,
     BillCreationComponent,
     BillPlanCreationComponent,

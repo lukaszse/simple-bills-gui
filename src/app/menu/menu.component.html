@@ -25,10 +25,10 @@
       </ul>
       <span class="ms-auto">
           <span *ngIf="!isLogged">
-            <button class="btn btn-dark bg-secondary" (click)="login()" type="submit">Login</button>
+            <button class="btn btn-outline-light" (click)="login()" type="submit">Login</button>
           </span>
           <span *ngIf="isLogged">
-            <button class="btn btn-dark bg-secondary" (click)="logout()" href="#">Logout</button>
+            <button class="btn btn-outline-light" (click)="logout()" href="#">Logout</button>
           </span>
       </span>
     </div>
