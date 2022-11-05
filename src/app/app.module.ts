@@ -8,7 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ContentComponent } from './content/content.component';
 import { HomeComponent } from './content/home/home.component';
 import { BillsComponent } from './content/bills/bills.component';
-import { ContactComponent } from './content/contact/contact.component';
+import { ContactComponent } from './content/category/contact.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
 import { CommonModule, DatePipe, DecimalPipe } from "@angular/common";
@@ -19,6 +19,9 @@ import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-pla
 import { CategoryManagementComponent } from './content/category-management/category-management.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitChartsComponent } from './content/limit-charts/limit-charts.component';
+import { CategoryCreationComponent } from './content/category-creation/category-creation.component';
+import { CategoryUpdateComponent } from './content/category-update/category-update.component';
+import { CategoryDeletionComponent } from './content/category-deletion/category-deletion.component';
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { LimitChartsComponent } from './content/limit-charts/limit-charts.compon
     BillCreationComponent,
     BillPlanCreationComponent,
     CategoryManagementComponent,
-    LimitChartsComponent
+    LimitChartsComponent,
+    CategoryCreationComponent,
+    CategoryUpdateComponent,
+    CategoryDeletionComponent
   ],
   imports: [
     BrowserModule,
