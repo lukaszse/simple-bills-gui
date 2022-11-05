@@ -33,16 +33,12 @@
             [(ngModel)]="categoryToCreate.limit"
           />
         </div>
-        <div class="col text-end">
-          <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('add category')">Add new
-            category
-          </button>
-        </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark m-2" (click)="modal.dismiss('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-dark m-2" (click)="modal.dismiss('add category')">Add new category
+    </button>
   </div>
 </ng-template>
 <ng-template #noData>No Category Available</ng-template>

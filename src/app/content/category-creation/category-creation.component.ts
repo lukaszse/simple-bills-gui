@@ -31,11 +31,9 @@ export class CategoryCreationComponent {
   open(content) {
     this.resetFormFields()
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
-      (result) => {
-        if (result === "add category") {
-          this.categoryService.createCategory(this.categoryToCreate)
-            .subscribe();
-        }
+      () => {
+        this.categoryService.createCategory(this.categoryToCreate)
+          .subscribe();
       },
       () => {
         console.log("Exit `category management` without any action.")
