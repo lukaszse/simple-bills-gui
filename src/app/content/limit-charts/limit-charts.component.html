@@ -1,9 +1,11 @@
-<p>limit-charts works!</p>
+<h5>Monthly limit usage:</h5>
 <table>
   <tr>
     <td>
-
-      <ngx-charts-bar-vertical-normalized
+      Food
+    </td>
+    <td>
+      <ngx-charts-bar-horizontal-normalized
         [view]="view"
         [results]="multi"
         [gradient]="gradient"
@@ -15,8 +17,7 @@
         [xAxisLabel]="xAxisLabel"
         [yAxisLabel]="yAxisLabel"
         (select)="onSelect($event)">
-      </ngx-charts-bar-vertical-normalized>
-
+      </ngx-charts-bar-horizontal-normalized>
     </td>
   </tr>
 </table>

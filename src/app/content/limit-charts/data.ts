@@ -11,5 +11,5 @@ export var multi = [
         value: 89400000,
       },
     ],
-  },
+  }
 ];

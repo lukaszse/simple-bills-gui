@@ -12,7 +12,7 @@ export class LimitChartsComponent implements OnInit {
 
   loggedUsername: Observable<string>;
   multi: any[];
-  view: any[] = [200, 300];
+  view: any[] = [300, 50];
 
   // options
   showXAxis: boolean = false;
@@ -29,11 +29,11 @@ export class LimitChartsComponent implements OnInit {
   };
 
   constructor(private userService: UserService) {
-    Object.assign(this, {multi});
   }
 
   ngOnInit(): void {
     this.loggedUsername = this.getUser();
+    Object.assign(this, {multi});
   }
 
   getUser(): Observable<string> {

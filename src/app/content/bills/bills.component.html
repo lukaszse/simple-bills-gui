@@ -67,10 +67,10 @@
       </td>
       <td>
         <button type="button" class="btn-close" aria-label="Close"
-                (click)="openModelBillDeleteWindow(bill.billNumber, content)"></button>
+                (click)="openModelBillDeleteWindow(bill.billNumber, consentWindow)"></button>
       </td>
     </tr>
-    <tr class="bg-info">
+    <tr class="bg-info fw-bold">
       <th scope="row"></th>
       <td>Total page amount:</td>
       <td>{{ pageableBills.pageTotalAmount | currency }} </td>
@@ -103,7 +103,7 @@
 
 <ng-template #noData>No Data Available</ng-template>
 
-<ng-template #content let-modal>
+<ng-template #consentWindow let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">Bill deletion</h4>
     <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"
