@@ -48,11 +48,12 @@ export class CategoryService {
   }
 
   deleteCategory(categoryName: string, categoryToReplace: string): Observable<string | Object> {
-    const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, categoryName);
+    const queryParam = categoryToReplace != null ? `?replacementCategory=${categoryToReplace}` : "";
+    const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, categoryName) + queryParam;
     return this.httpClient
       .delete(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
-        tap(categoryName => console.log(`Category with name ${categoryName} deleted.`)),
+        tap(categoryName => console.log(`Category with name ${categoryName.body} deleted.`)),
         catchError(HttpUtils.handleError)
       )
   }

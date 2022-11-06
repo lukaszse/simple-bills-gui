@@ -146,7 +146,25 @@
     ></button>
   </div>
   <div class="modal-body">
-    <p><strong class="text-danger">Are you sure you want to delete selected category?</strong></p>
+    <form>
+      <label for="category-input" class="col-form-label">Select the category
+        <span class="fw-bold text-dark">{{categoryToDelete}}</span>
+        to which the bills from
+        the deleted category will be assigned. If you don't select any category, bills will be assigned to <span
+          class="fw-bold">undefined</span>
+        category:</label>
+      <div *ngIf="categories else noData" class="input-group">
+        <select [(ngModel)]="replacementCategory" name="replacementCategory" class="form-select"
+                aria-label="Default select example" id="category-input">
+          <option *ngFor="let category of allowableReplacementCategories"
+                  value="{{category.name}}">{{category.name}}</option>
+        </select>
+      </div>
+    </form>
+    <br>
+    <p><strong class="text-danger">Are you sure you want to delete
+      <span class="fw-bold text-dark">{{categoryToDelete}}</span>
+      category?</strong></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>

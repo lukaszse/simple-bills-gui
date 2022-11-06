@@ -16,8 +16,10 @@ export class CategoryComponent implements OnInit {
   };
 
   categories: Category[];
+  allowableReplacementCategories: Category[];
   totalLimit: number;
-  categoryToRemove: string;
+  categoryToDelete: string = null;
+  replacementCategory: string = null;
 
   constructor(private categoryService: CategoryService,
               private _modalService: NgbModal) {
@@ -65,11 +67,12 @@ export class CategoryComponent implements OnInit {
   }
 
   openDeletionConfirmationWindow(categoryName: string, content) {
-    console.log(this.categoryToRemove)
+    this.categoryToDelete = categoryName;
+    this.allowableReplacementCategories = this.categories.filter(category => category.name !== categoryName);
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-deletion'}).result.then(
       (result) => {
         console.log(result);
-        this.categoryService.deleteCategory(categoryName, null)
+        this.categoryService.deleteCategory(categoryName, this.replacementCategory)
           .subscribe((deletionResponse) => {
             console.log(deletionResponse);
             this.ngOnInit();
