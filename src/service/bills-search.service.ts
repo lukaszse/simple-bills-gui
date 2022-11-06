@@ -95,6 +95,7 @@ export class BillsSearchService {
   private static countAmountSum(bills: Bill[]): number {
     return bills
       .map((bill) => bill.amount)
+      .map(amount => amount == null ? 0 : amount)
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 

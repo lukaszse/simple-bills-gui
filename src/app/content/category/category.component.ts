@@ -87,6 +87,7 @@ export class CategoryComponent implements OnInit {
   private static countTotalLimit(categories: Category[]): number {
     return categories
       .map((category) => category.limit)
+      .map(limit => limit == null ? 0 : limit)
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
