@@ -54,13 +54,16 @@ export class BillsComponent implements OnInit {
     this.billSearchService.sortDirection = direction;
   }
 
-  open(content) {
+  openBillCreationWindow(content) {
     this.resetFormFields()
     this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
       () => {
         console.log(this.billCreationDto)
         this.billCrudService.createBill(this.billCreationDto)
-          .subscribe(console.log);
+          .subscribe((creationResponse) => {
+            console.log(creationResponse);
+            this.ngOnInit();
+          });
       },
       () => {
         console.log("Bill creation canceled")
