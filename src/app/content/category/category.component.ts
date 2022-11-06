@@ -10,12 +10,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 })
 export class CategoryComponent implements OnInit {
 
-  categoryToCreate: Category = {
-    name: null,
-    limit: null
-  };
-
-  categoryToUpdate: Category = {
+  category: Category = {
     name: null,
     limit: null
   };
@@ -41,7 +36,7 @@ export class CategoryComponent implements OnInit {
     this.resetFormFields()
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-creation'}).result.then(
       () => {
-        this.categoryService.createCategory(this.categoryToCreate)
+        this.categoryService.createCategory(this.category)
           .subscribe((deletionResponse) => {
             console.log(deletionResponse);
             this.ngOnInit();
@@ -54,10 +49,10 @@ export class CategoryComponent implements OnInit {
   }
 
   openUpdateWindowForSelectedCategory(category: Category, content) {
-    this.categoryToUpdate = category;
+    this.category = category;
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-update'}).result.then(
       () => {
-        this.categoryService.updateCategory(this.categoryToUpdate)
+        this.categoryService.updateCategory(this.category)
           .subscribe((updateResponse) => {
             console.log(updateResponse);
             this.ngOnInit();
@@ -74,7 +69,7 @@ export class CategoryComponent implements OnInit {
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-deletion'}).result.then(
       (result) => {
         console.log(result);
-        this.categoryService.deleteCategory(categoryName)
+        this.categoryService.deleteCategory(categoryName, null)
           .subscribe((deletionResponse) => {
             console.log(deletionResponse);
             this.ngOnInit();
@@ -93,9 +88,7 @@ export class CategoryComponent implements OnInit {
   }
 
   resetFormFields() {
-    this.categoryToCreate.name = null;
-    this.categoryToCreate.limit = null;
-    this.categoryToUpdate.name = null
-    this.categoryToUpdate.limit = null
+    this.category.name = null;
+    this.category.limit = null;
   }
 }

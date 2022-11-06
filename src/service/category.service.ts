@@ -47,7 +47,7 @@ export class CategoryService {
       );
   }
 
-  deleteCategory(categoryName: string): Observable<string | Object> {
+  deleteCategory(categoryName: string, categoryToReplace: string): Observable<string | Object> {
     const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, categoryName);
     return this.httpClient
       .delete(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})

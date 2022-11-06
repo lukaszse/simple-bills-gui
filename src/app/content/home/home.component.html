@@ -2,10 +2,8 @@
   <p></p>
   <div *ngIf="loggedUsername | async as user else noLoggedIn">
     <h2 class="text-center">Welcome {{user}}!</h2>
-    <div class="col text-center">
-      <br><br>
-      <app-bill-creation></app-bill-creation>
-    </div>
+    <br>
+    <hr>
     <div>
       <app-limit-charts></app-limit-charts>
     </div>
