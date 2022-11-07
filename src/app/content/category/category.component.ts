@@ -26,7 +26,7 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoryService.getCategories().subscribe(
+    this.categoryService.findCategories().subscribe(
       (categories) => {
         this.categories = categories;
         this.totalLimit = CategoryComponent.countTotalLimit(categories);

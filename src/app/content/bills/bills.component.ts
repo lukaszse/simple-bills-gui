@@ -10,6 +10,8 @@ import { BillDto } from "../../../dto/billDto";
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { Bill } from "../../../dto/bill";
+import { BalanceService } from "../../../service/balance.service";
+import { Balance } from "../../../dto/balance";
 
 
 @Component({
@@ -34,15 +36,19 @@ export class BillsComponent implements OnInit {
 
   categories$: Observable<Category[]>;
   pageableBills$: Observable<PageableBills>;
+  balance$: Observable<Balance>
   billToDelete: string | number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(public billSearchService: BillsSearchService,
               private billCrudService: BillsCrudService,
               private categoryService: CategoryService,
+              private balanceService: BalanceService,
               private _modalService: NgbModal) {
+
     this.pageableBills$ = billSearchService.pageableBills$;
-    this.categories$ = this.categoryService.getCategories()
+    this.categories$ = this.categoryService.findCategories();
+    this.balance$ = this.balanceService.findBalance();
   }
 
   ngOnInit(): void {

@@ -1,116 +1,126 @@
 <div class="container p-1 text-center">
-  <button class="btn btn-lg btn-outline-secondary me-2" (click)="openBillCreationWindow(createBill)">Add bill</button>
+  <h5 *ngIf=" balance$ | async as balance" class="fw-bold">
+    <span class="text-primary">Total balance: </span>
+    <span>{{balance.balance | currency}}</span>
+  </h5>
+  <br>
+  <button class="btn btn-lg btn-outline-secondary m-2" (click)="openBillCreationWindow(createBill)">
+    Add new bill
+  </button>
   <br><br><br>
-  <form>
-    <div class="mb-3 row">
-      <label for="table-date-from" class="col-xs-3 col-sm-2 col-form-label">Date from:</label>
-      <div class="col-xs-3 col-4">
-        <input
-          id="table-date-from"
-          type="date"
-          class="form-control"
-          name="dateFrom"
-          [(ngModel)]="billSearchService.dateFrom"
-        />
+  <div class="row">
+    <form>
+      <div class="mb-3 row">
+        <label for="table-date-from" class="col-sm-2 col-form-label">Date from:</label>
+        <div class="col-xs-3 col-4">
+          <input
+            id="table-date-from"
+            type="date"
+            class="form-control"
+            name="dateFrom"
+            [(ngModel)]="billSearchService.dateFrom"
+          />
+        </div>
+        <label for="table-date-to" class="col-sm-2 col-form-label">Date to:</label>
+        <div class="col-xs-3 col-4">
+          <input
+            id="table-date-to"
+            type="date"
+            class="form-control"
+            name="dateTo"
+            [(ngModel)]="billSearchService.dateTo"
+          />
+        </div>
       </div>
-      <label for="table-date-to" class="col-xs-3 col-sm-2 col-form-label">Date to:</label>
-      <div class="col-xs-3 col-4">
-        <input
-          id="table-date-to"
-          type="date"
-          class="form-control"
-          name="dateTo"
-          [(ngModel)]="billSearchService.dateTo"
-        />
+      <div class="mb-3 row">
+        <label for="table-complete-search" class="col-sm-2 col-form-label">Full text search:</label>
+        <div class="col-xs-3 col-4">
+          <input
+            id="table-complete-search"
+            type="text"
+            class="form-control"
+            name="searchTerm"
+            [(ngModel)]="billSearchService.searchTerm"
+          />
+        </div>
+        <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">Loading...</span>
       </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="table-complete-search" class="col-xs-3 col-sm-2 col-form-label">Full text search:</label>
-      <div class="col-xs-3 col-4">
-        <input
-          id="table-complete-search"
-          type="text"
-          class="form-control"
-          name="searchTerm"
-          [(ngModel)]="billSearchService.searchTerm"
-        />
+    </form>
+    <div *ngIf="pageableBills$ | async as pageableBills else noData">
+      <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+          <th scope="col" sortable="billNumber" (sort)="onSort($event)">#</th>
+          <th scope="col" sortable="date" (sort)="onSort($event)">Date</th>
+          <th scope="col" sortable="amount" (sort)="onSort($event)">Amount</th>
+          <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
+          <th scope="col" sortable="category" (sort)="onSort($event)">Category</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let bill of pageableBills.bills;">
+          <th scope="row">
+            <ngb-highlight [result]="bill.billNumber" [term]="billSearchService.searchTerm"></ngb-highlight>
+          </th>
+          <td>
+            <ngb-highlight [result]="bill.date | date" [term]="billSearchService.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="bill.amount | currency" [term]="billSearchService.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="bill.description" [term]="billSearchService.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="bill.category" [term]="billSearchService.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              aria-label="Close"
+              (click)="openBillUpdateWindow(bill, updateBill)"
+            >Edit
+            </button>
+          </td>
+          <td>
+            <button type="button" class="btn-close" aria-label="Close"
+                    (click)="openDeletionConfirmationWindow(bill.billNumber, deletionConfirmationWindow)"></button>
+          </td>
+        </tr>
+        <tr class="bg-info fw-bold">
+          <th scope="row"></th>
+          <td>Total page amount:</td>
+          <td>{{ pageableBills.pageTotalAmount | currency }} </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination
+          [collectionSize]="pageableBills.totalCount"
+          [(page)]="billSearchService.page"
+          [pageSize]="billSearchService.pageSize"
+          size="sm">
+        </ngb-pagination>
+        <select
+          *ngIf="pageableBills.totalCount > 5"
+          class="form-select"
+          style="width: auto; height: min-content" name="pageSize"
+          [(ngModel)]="billSearchService.pageSize">
+          <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
+          <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
+          <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
+          <option *ngIf="pageableBills.totalCount < 50"
+                  [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}}
+            of {{pageableBills.totalCount}}</option>
+        </select>
       </div>
-      <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">Loading...</span>
-    </div>
-  </form>
-  <div *ngIf="pageableBills$ | async as pageableBills else noData">
-    <table class="table table-striped align-middle">
-      <thead>
-      <tr>
-        <th scope="col" sortable="billNumber" (sort)="onSort($event)">#</th>
-        <th scope="col" sortable="date" (sort)="onSort($event)">Date</th>
-        <th scope="col" sortable="amount" (sort)="onSort($event)">Amount</th>
-        <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
-        <th scope="col" sortable="category" (sort)="onSort($event)">Category</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let bill of pageableBills.bills;">
-        <th scope="row">
-          <ngb-highlight [result]="bill.billNumber" [term]="billSearchService.searchTerm"></ngb-highlight>
-        </th>
-        <td>
-          <ngb-highlight [result]="bill.date | date" [term]="billSearchService.searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="bill.amount | currency" [term]="billSearchService.searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="bill.description" [term]="billSearchService.searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="bill.category" [term]="billSearchService.searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            aria-label="Close"
-            (click)="openBillUpdateWindow(bill, updateBill)"
-          >Edit
-          </button>
-        </td>
-        <td>
-          <button type="button" class="btn-close" aria-label="Close"
-                  (click)="openDeletionConfirmationWindow(bill.billNumber, deletionConfirmationWindow)"></button>
-        </td>
-      </tr>
-      <tr class="bg-info fw-bold">
-        <th scope="row"></th>
-        <td>Total page amount:</td>
-        <td>{{ pageableBills.pageTotalAmount | currency }} </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination
-        [collectionSize]="pageableBills.totalCount"
-        [(page)]="billSearchService.page"
-        [pageSize]="billSearchService.pageSize"
-        size="sm">
-      </ngb-pagination>
-      <select
-        *ngIf="pageableBills.totalCount > 5"
-        class="form-select"
-        style="width: auto; height: min-content" name="pageSize"
-        [(ngModel)]="billSearchService.pageSize">
-        <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
-        <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
-        <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
-        <option *ngIf="pageableBills.totalCount < 50" [ngValue]="pageableBills.totalCount">{{pageableBills.totalCount}}
-          of {{pageableBills.totalCount}}</option>
-      </select>
     </div>
   </div>
 </div>

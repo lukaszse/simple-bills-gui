@@ -34,7 +34,7 @@ export class CategoryService {
       )
   }
 
-  getCategories(): Observable<Category[]> {
+  findCategories(): Observable<Category[]> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
     return this.httpClient.get<Category[]>(url, {headers: HttpUtils.prepareHeaders()})
       .pipe(
