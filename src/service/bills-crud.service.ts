@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HttpUtils } from "../utils/http/httpClientUtils";
-import { BillCreation } from "../dto/billCreation";
-import { map } from "rxjs/operators";
+import { BillDto } from "../dto/billDto";
 import { catchError, Observable, tap } from "rxjs";
 import { BillsSearchService } from "./bills-search.service";
 import { environment } from "../environments/environment";
+import { Bill } from "../dto/bill";
 
 @Injectable({providedIn: "root"})
 export class BillsCrudService {
@@ -16,13 +16,23 @@ export class BillsCrudService {
   constructor(private httpClient: HttpClient, private billSearchService: BillsSearchService) {
   }
 
-  createBill(bill: BillCreation): Observable<string | Object> {
+  createBill(bill: BillDto): Observable<string | Object> {
     const url = HttpUtils.prepareUrl(BillsCrudService.host, BillsCrudService.endpoint);
     return this.httpClient
-      .post(url, bill, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .post<string>(url, bill, {headers: HttpUtils.prepareHeaders()})
       .pipe(
-        map((response) => response.body),
-        tap(body => console.log(`Bill with number ${body} created.`)),
+        tap(strResponse => console.log(`Bill with number ${strResponse} created.`)),
+        catchError(HttpUtils.handleError)
+      )
+  }
+
+  updateBill(bill: Bill): Observable<Bill> {
+    const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.host, BillsCrudService.endpoint, bill.billNumber)}`;
+    return this.httpClient
+      .patch<Bill>(url, bill, {headers: HttpUtils.prepareHeaders()})
+      .pipe(
+        tap((updatedBill) => console.log(`Bill with billNumber=${updatedBill.billNumber} updated.`)),
+        tap(() => this.billSearchService.refresh()),
         catchError(HttpUtils.handleError)
       )
   }
@@ -30,9 +40,8 @@ export class BillsCrudService {
   deleteBill(billNumber: number | string): Observable<number | Object> {
     const url = `${HttpUtils.prepareUrlWithId(BillsCrudService.host, BillsCrudService.endpoint, billNumber)}`;
     return this.httpClient
-      .delete(url, {headers: HttpUtils.prepareHeaders(), observe: "response"})
+      .delete<string>(url, {headers: HttpUtils.prepareHeaders()})
       .pipe(
-        map((response) => response.body),
         tap(() => console.log(`Bill with number ${billNumber} deleted.`)),
         tap(() => this.billSearchService.refresh()),
         catchError(HttpUtils.handleError)

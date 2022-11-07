@@ -3,7 +3,6 @@ import { environment } from "../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, tap } from "rxjs";
 import { HttpUtils } from "../utils/http/httpClientUtils";
-import { map } from "rxjs/operators";
 import { Category } from "../dto/category";
 
 @Injectable({providedIn: "root"})
@@ -18,10 +17,9 @@ export class CategoryService {
   createCategory(category: Category): Observable<string | Object> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
     return this.httpClient
-      .post<Category>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .post<Category>(url, category, {headers: HttpUtils.prepareHeaders()})
       .pipe(
-        map((response) => response.body.name),
-        tap(categoryName => console.log(`Category ${categoryName} created.`)),
+        tap(category => console.log(`Category with name ${category.name} created.`)),
         catchError(HttpUtils.handleError)
       )
   }
@@ -29,19 +27,17 @@ export class CategoryService {
   updateCategory(category: Category): Observable<string | Object> {
     const url = HttpUtils.prepareUrlWithId(CategoryService.host, CategoryService.endpoint, category.name);
     return this.httpClient
-      .patch<Category>(url, category, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+      .patch<Category>(url, category, {headers: HttpUtils.prepareHeaders()})
       .pipe(
-        map((response) => response.body.name),
-        tap(categoryName => console.log(`Category ${categoryName} updated.`)),
+        tap(category => console.log(`Category with name ${category.name} updated.`)),
         catchError(HttpUtils.handleError)
       )
   }
 
   getCategories(): Observable<Category[]> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
-    return this.httpClient.get<Category[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+    return this.httpClient.get<Category[]>(url, {headers: HttpUtils.prepareHeaders()})
       .pipe(
-        map((response) => response.body),
         catchError(HttpUtils.handleError),
         tap(console.log)
       );

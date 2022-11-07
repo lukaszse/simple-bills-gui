@@ -6,9 +6,10 @@ import { BillsSearchService } from "../../../service/bills-search.service";
 import { PageableBills } from "../../../dto/pageableBills";
 import { BillsCrudService } from "../../../service/bills-crud.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { BillCreation } from "../../../dto/billCreation";
+import { BillDto } from "../../../dto/billDto";
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
+import { Bill } from "../../../dto/bill";
 
 
 @Component({
@@ -19,7 +20,7 @@ import { CategoryService } from "../../../service/category.service";
 })
 export class BillsComponent implements OnInit {
 
-  billCreationDto: BillCreation = {
+  billDto: BillDto = {
     category: null,
     description: null,
     amount: null,
@@ -31,9 +32,9 @@ export class BillsComponent implements OnInit {
     limit: null
   };
 
-  categories$;
-
+  categories$: Observable<Category[]>;
   pageableBills$: Observable<PageableBills>;
+  billToDelete: string | number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(public billSearchService: BillsSearchService,
@@ -56,10 +57,10 @@ export class BillsComponent implements OnInit {
 
   openBillCreationWindow(content) {
     this.resetFormFields()
-    this._modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this._modalService.open(content, {ariaLabelledBy: 'modal-bill-creation'}).result.then(
       () => {
-        console.log(this.billCreationDto)
-        this.billCrudService.createBill(this.billCreationDto)
+        console.log(this.billDto)
+        this.billCrudService.createBill(this.billDto)
           .subscribe((creationResponse) => {
             console.log(creationResponse);
             this.ngOnInit();
@@ -71,23 +72,57 @@ export class BillsComponent implements OnInit {
     );
   }
 
-  resetFormFields() {
-    this.billCreationDto.category = null;
-    this.billCreationDto.description = null;
-    this.billCreationDto.amount = null;
-    this.billCreationDto.date = formatDate(Date.now(), "yyyy-MM-dd", "en");
+  openBillUpdateWindow(bill: Bill, content) {
+    this.setFormFields(bill)
+    this._modalService.open(content, {ariaLabelledBy: 'modal-bill-update'}).result.then(
+      () => {
+        const billToUpdate: Bill = this.updateBill(bill);
+        console.log(this.billDto)
+        this.billCrudService.updateBill(billToUpdate)
+          .subscribe((creationResponse) => {
+            console.log(creationResponse);
+            this.ngOnInit();
+          });
+      },
+      () => {
+        console.log("Bill update canceled")
+      }
+    );
   }
 
   openDeletionConfirmationWindow(billNumber: number | string, content) {
-    this._modalService.open(content).result.then(
-      (result) => {
-        console.log(result);
+    this.billToDelete = billNumber;
+    this._modalService.open(content, {ariaLabelledBy: "modal-bill-deletion"}).result.then(
+      () => {
+        console.log(billNumber);
         return this.billCrudService.deleteBill(billNumber)
           .subscribe(console.log);
       },
-      (result) => {
-        console.log(result);
+      () => {
+        console.log("Bill deletion canceled")
       }
     );
+  }
+
+  resetFormFields() {
+    this.billDto.category = null;
+    this.billDto.description = null;
+    this.billDto.amount = null;
+    this.billDto.date = formatDate(Date.now(), "yyyy-MM-dd", "en");
+  }
+
+  setFormFields(bill: Bill) {
+    this.billDto.category = bill.category;
+    this.billDto.description = bill.description;
+    this.billDto.amount = bill.amount;
+    this.billDto.date = formatDate(bill.date, "yyyy-MM-dd", "en");
+  }
+
+  updateBill(bill: Bill): Bill {
+    bill.category = this.billDto.category;
+    bill.description = this.billDto.description;
+    bill.amount = this.billDto.amount;
+    bill.date = this.billDto.date;
+    return bill;
   }
 }
