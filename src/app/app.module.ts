@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitChartComponent } from './content/limit-chart/limit-chart.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LimitChartComponent } from './content/limit-chart/limit-chart.component
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    NgxChartsModule
+    NgxChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [DecimalPipe, DatePipe],
   bootstrap: [AppComponent]
