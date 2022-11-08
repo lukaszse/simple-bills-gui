@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { Balance } from "../dto/balance";
-import { catchError, Observable, tap } from "rxjs";
+import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchMap, tap } from "rxjs";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { Injectable } from "@angular/core";
 
@@ -11,7 +11,20 @@ export class BalanceService {
   private static host = environment.billPlanHost
   private static endpoint = "/balance"
 
+  private _findBalance$ = new Subject<void>()
+  private _balance$ = new BehaviorSubject<Balance>(null);
+  private _loading$ = new BehaviorSubject<boolean>(true);
+
+
   constructor(private httpClient: HttpClient) {
+    this._findBalance$
+      .pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this.findBalance()),
+        tap(() => this._loading$.next(false))
+      )
+      .subscribe((result) => this._balance$.next(result))
   }
 
   findBalance(): Observable<Balance> {
@@ -21,5 +34,17 @@ export class BalanceService {
         catchError(HttpUtils.handleError),
         tap(console.log)
       );
+  }
+
+  refresh() {
+    this._findBalance$.next();
+  }
+
+  get balance$() {
+    return this._balance$.asObservable();
+  }
+
+  get loading$() {
+    return this._loading$.asObservable();
   }
 }

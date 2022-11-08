@@ -14,7 +14,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { CommonModule, DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
-import { BillPlanCreationComponent } from './content/bill-plan-creation/bill-plan-creation.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitChartsComponent } from './content/limit-charts/limit-charts.component';
 
@@ -29,7 +28,6 @@ import { LimitChartsComponent } from './content/limit-charts/limit-charts.compon
     BillsComponent,
     CategoryComponent,
     NgbdSortableHeader,
-    BillPlanCreationComponent,
     LimitChartsComponent
   ],
   imports: [

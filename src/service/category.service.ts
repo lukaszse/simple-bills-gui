@@ -11,7 +11,10 @@ export class CategoryService {
   private static host = environment.billPlanHost
   private static endpoint = "/categories"
 
+  public categories$: Observable<Category[]>;
+
   constructor(private httpClient: HttpClient) {
+    this.categories$ = this.findCategories();
   }
 
   createCategory(category: Category): Observable<string | Object> {

@@ -35,12 +35,9 @@ export class BillsSearchService {
         tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this._search()),
-        tap(() => this._loading$.next(false)),
+        tap(() => this._loading$.next(false))
       )
-      .subscribe(
-        (result) => {
-          this._pageableBills$.next(result);
-        });
+      .subscribe((result) => this._pageableBills$.next(result));
     this._search$.next();
   }
 

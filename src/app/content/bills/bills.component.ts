@@ -1,9 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Observable } from "rxjs";
 import { DatePipe, DecimalPipe, formatDate } from "@angular/common";
 import { NgbdSortableHeader, SortEvent, SortUtils } from "../../../utils/sortableComponents/sortable.directive";
 import { BillsSearchService } from "../../../service/bills-search.service";
-import { PageableBills } from "../../../dto/pageableBills";
 import { BillsCrudService } from "../../../service/bills-crud.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BillDto } from "../../../dto/billDto";
@@ -11,7 +9,6 @@ import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { Bill } from "../../../dto/bill";
 import { BalanceService } from "../../../service/balance.service";
-import { Balance } from "../../../dto/balance";
 
 
 @Component({
@@ -34,25 +31,19 @@ export class BillsComponent implements OnInit {
     limit: null
   };
 
-  categories$: Observable<Category[]>;
-  pageableBills$: Observable<PageableBills>;
-  balance$: Observable<Balance>
   billToDelete: string | number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(public billSearchService: BillsSearchService,
+              public categoryService: CategoryService,
+              public balanceService: BalanceService,
               private billCrudService: BillsCrudService,
-              private categoryService: CategoryService,
-              private balanceService: BalanceService,
               private _modalService: NgbModal) {
-
-    this.pageableBills$ = billSearchService.pageableBills$;
-    this.categories$ = this.categoryService.findCategories();
-    this.balance$ = this.balanceService.findBalance();
   }
 
   ngOnInit(): void {
-    this.billSearchService.refresh()
+    this.billSearchService.refresh();
+    this.balanceService.refresh();
   }
 
   onSort({column, direction}: SortEvent) {

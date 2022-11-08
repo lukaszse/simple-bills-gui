@@ -1,7 +1,9 @@
 <div class="container p-1 text-center">
-  <h5 *ngIf=" balance$ | async as balance" class="fw-bold">
+  <h5 class="fw-bold">
     <span class="text-primary">Total balance: </span>
-    <span>{{balance.balance | currency}}</span>
+    <span class="col col-form-label" *ngIf="!(balanceService.loading$ | async) else loading">
+          <span *ngIf="balanceService.balance$ | async as balance">{{balance.balance | currency}}</span>
+    </span>
   </h5>
   <br>
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openBillCreationWindow(createBill)">
@@ -43,10 +45,10 @@
             [(ngModel)]="billSearchService.searchTerm"
           />
         </div>
-        <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">Loading...</span>
+        <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">loading...</span>
       </div>
     </form>
-    <div *ngIf="pageableBills$ | async as pageableBills else noData">
+    <div *ngIf="billSearchService.pageableBills$ | async as pageableBills else noData">
       <table class="table table-striped align-middle">
         <thead>
         <tr>
@@ -125,7 +127,6 @@
   </div>
 </div>
 
-<ng-template #noData>No Data Available</ng-template>
 
 <ng-template #createBill let-modal>
   <div class="modal-header">
@@ -135,7 +136,7 @@
   <div class="modal-body text-dark">
     <form>
       <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
-      <div *ngIf="categories$ | async as categories else noData" class="input-group">
+      <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
         <select [(ngModel)]="billDto.category" name="categoryRemoval" class="form-select"
                 aria-label="Default select example" id="category-input">
           <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
@@ -192,7 +193,7 @@
   <div class="modal-body text-dark">
     <form>
       <label for="category-update-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
-      <div *ngIf="categories$ | async as categories else noData" class="input-group">
+      <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
         <select [(ngModel)]="billDto.category" name="categoryRemoval" class="form-select"
                 aria-label="Default select example" id="category-update-input">
           <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
@@ -257,5 +258,11 @@
   </div>
 </ng-template>
 
-<ng-template #noData>No Category Available</ng-template>
+<ng-template #noData>
+  <h3 class="text-center fw-bold">No Category Available</h3>
+</ng-template>
 
+
+<ng-template #loading>
+  <span class="text-dark">loading... </span>
+</ng-template>
