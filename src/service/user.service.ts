@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 @Injectable({providedIn: "root"})
 export class UserService {
 
-  private static host: string = environment.billHost;
+  private static host: string = environment.simpleBillHost;
   private static userEndpoint: string = "/user";
 
   constructor(private httpClient: HttpClient) {

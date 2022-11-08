@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { multi } from "./data";
 import { CategoryUsageLimitService } from "../../../service/category-usage-limit.service";
 
 @Component({
@@ -10,10 +9,8 @@ import { CategoryUsageLimitService } from "../../../service/category-usage-limit
 export class LimitChartComponent implements OnInit {
 
 
-  multi: any[];
-  view: any[] = [300, 50];
-
   // options
+  view: any[] = [300, 50];
   showXAxis: boolean = false;
   showYAxis: boolean = false;
   gradient: boolean = false;
@@ -31,7 +28,6 @@ export class LimitChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Object.assign(this, {multi});
     this.categoryUsageLimitService.refresh();
   }
 

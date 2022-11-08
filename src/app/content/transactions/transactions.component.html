@@ -7,7 +7,7 @@
   </h5>
   <br>
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openBillCreationWindow(createBill)">
-    Add new bill
+    Add new transaction
   </button>
   <br><br><br>
   <div class="row">
@@ -20,7 +20,7 @@
             type="date"
             class="form-control"
             name="dateFrom"
-            [(ngModel)]="billSearchService.dateFrom"
+            [(ngModel)]="transactionSearchService.dateFrom"
           />
         </div>
         <label for="table-date-to" class="col-sm-2 col-form-label">Date to:</label>
@@ -30,7 +30,7 @@
             type="date"
             class="form-control"
             name="dateTo"
-            [(ngModel)]="billSearchService.dateTo"
+            [(ngModel)]="transactionSearchService.dateTo"
           />
         </div>
       </div>
@@ -42,17 +42,17 @@
             type="text"
             class="form-control"
             name="searchTerm"
-            [(ngModel)]="billSearchService.searchTerm"
+            [(ngModel)]="transactionSearchService.searchTerm"
           />
         </div>
-        <span class="col col-form-label" *ngIf="billSearchService.loading$ | async">loading...</span>
+        <span class="col col-form-label" *ngIf="transactionSearchService.loading$ | async">loading...</span>
       </div>
     </form>
-    <div *ngIf="billSearchService.pageableBills$ | async as pageableBills else noData">
+    <div *ngIf="transactionSearchService.pageableTransactions$ | async as pageableBills else noData">
       <table class="table table-striped align-middle">
         <thead>
         <tr>
-          <th scope="col" sortable="billNumber" (sort)="onSort($event)">#</th>
+          <th scope="col" sortable="transactionNumber" (sort)="onSort($event)">#</th>
           <th scope="col" sortable="date" (sort)="onSort($event)">Date</th>
           <th scope="col" sortable="amount" (sort)="onSort($event)">Amount</th>
           <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
@@ -62,34 +62,38 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let bill of pageableBills.bills;">
+        <tr *ngFor="let transaction of pageableBills.transactions;">
           <th scope="row">
-            <ngb-highlight [result]="bill.billNumber" [term]="billSearchService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="transaction.transactionNumber"
+                           [term]="transactionSearchService.searchTerm"></ngb-highlight>
           </th>
           <td>
-            <ngb-highlight [result]="bill.date | date" [term]="billSearchService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="transaction.date | date"
+                           [term]="transactionSearchService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="bill.amount | currency" [term]="billSearchService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="transaction.amount | currency"
+                           [term]="transactionSearchService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="bill.description" [term]="billSearchService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="transaction.description"
+                           [term]="transactionSearchService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="bill.category" [term]="billSearchService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="transaction.category" [term]="transactionSearchService.searchTerm"></ngb-highlight>
           </td>
           <td>
             <button
               type="button"
               class="btn btn-outline-secondary btn-sm"
               aria-label="Close"
-              (click)="openBillUpdateWindow(bill, updateBill)"
+              (click)="openBillUpdateWindow(transaction, updateBill)"
             >Edit
             </button>
           </td>
           <td>
             <button type="button" class="btn-close" aria-label="Close"
-                    (click)="openDeletionConfirmationWindow(bill.billNumber, deletionConfirmationWindow)"></button>
+                    (click)="openDeletionConfirmationWindow(transaction.transactionNumber, deletionConfirmationWindow)"></button>
           </td>
         </tr>
         <tr class="bg-info fw-bold">
@@ -106,15 +110,15 @@
       <div class="d-flex justify-content-between p-2">
         <ngb-pagination
           [collectionSize]="pageableBills.totalCount"
-          [(page)]="billSearchService.page"
-          [pageSize]="billSearchService.pageSize"
+          [(page)]="transactionSearchService.page"
+          [pageSize]="transactionSearchService.pageSize"
           size="sm">
         </ngb-pagination>
         <select
           *ngIf="pageableBills.totalCount > 5"
           class="form-select"
           style="width: auto; height: min-content" name="pageSize"
-          [(ngModel)]="billSearchService.pageSize">
+          [(ngModel)]="transactionSearchService.pageSize">
           <option [ngValue]="5">5 of {{pageableBills.totalCount}}</option>
           <option *ngIf="pageableBills.totalCount > 10" [ngValue]="10">10 of {{pageableBills.totalCount}}</option>
           <option *ngIf="pageableBills.totalCount > 20" [ngValue]="20">20 of {{pageableBills.totalCount}}</option>
@@ -130,14 +134,14 @@
 
 <ng-template #createBill let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-bill-creation">Add new bill</h4>
+    <h4 class="modal-title" id="modal-transaction-creation">Add new transaction</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body text-dark">
     <form>
       <label for="category-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
       <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
-        <select [(ngModel)]="billDto.category" name="categoryRemoval" class="form-select"
+        <select [(ngModel)]="transactionDto.category" name="categoryRemoval" class="form-select"
                 aria-label="Default select example" id="category-input">
           <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
         </select>
@@ -150,7 +154,7 @@
             type="text"
             class="form-control"
             name="description"
-            [(ngModel)]="billDto.description"
+            [(ngModel)]="transactionDto.description"
           />
         </div>
       </div>
@@ -162,7 +166,7 @@
             type="number" min="0.00" max="999999.99" step="0.01"
             class="form-control"
             name="amount"
-            [(ngModel)]="billDto.amount"
+            [(ngModel)]="transactionDto.amount"
           />
         </div>
       </div>
@@ -174,27 +178,28 @@
             type="date"
             class="form-control"
             name="date"
-            [(ngModel)]="billDto.date"
+            [(ngModel)]="transactionDto.date"
           />
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Create new bill</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Create new transaction
+    </button>
   </div>
 </ng-template>
 
 <ng-template #updateBill let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-bill-update">Edit selected bill</h4>
+    <h4 class="modal-title" id="modal-transaction-update">Edit selected transaction</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body text-dark">
     <form>
       <label for="category-update-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
       <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
-        <select [(ngModel)]="billDto.category" name="categoryRemoval" class="form-select"
+        <select [(ngModel)]="transactionDto.category" name="categoryRemoval" class="form-select"
                 aria-label="Default select example" id="category-update-input">
           <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
         </select>
@@ -207,7 +212,7 @@
             type="text"
             class="form-control"
             name="description"
-            [(ngModel)]="billDto.description"
+            [(ngModel)]="transactionDto.description"
           />
         </div>
       </div>
@@ -219,7 +224,7 @@
             type="number" min="0.00" max="999999.99" step="0.01"
             class="form-control"
             name="amount"
-            [(ngModel)]="billDto.amount"
+            [(ngModel)]="transactionDto.amount"
           />
         </div>
       </div>
@@ -231,26 +236,26 @@
             type="date"
             class="form-control"
             name="date"
-            [(ngModel)]="billDto.date"
+            [(ngModel)]="transactionDto.date"
           />
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update bill</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update transaction</button>
   </div>
 </ng-template>
 
 <ng-template #deletionConfirmationWindow let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-bill-deletion">Bill deletion</h4>
+    <h4 class="modal-title" id="modal-transaction-deletion">Bill deletion</h4>
     <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"
     ></button>
   </div>
   <div class="modal-body">
-    <p><strong class="text-danger">Are you sure you want to delete bill with billNumber <span
-      class="text-dark">{{billToDelete}}</span>?</strong></p>
+    <p><strong class="text-danger">Are you sure you want to delete transaction with transactionNumber <span
+      class="text-dark">{{transactionToDelete}}</span>?</strong></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>

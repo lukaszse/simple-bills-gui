@@ -1,5 +1,5 @@
-export interface Bill {
-  billNumber: string;
+export interface Transaction {
+  transactionNumber: string;
   user: string;
   date: string;
   description: string;

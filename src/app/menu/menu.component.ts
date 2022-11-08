@@ -9,7 +9,7 @@ import { environment } from "../../environments/environment";
 })
 export class MenuComponent implements OnInit {
 
-  title = 'simple-bills-gui';
+  title = 'simple-transactions-gui';
   public isLogged: boolean = false;
 
   constructor(private _service: OAuth2Service) {

@@ -5,7 +5,7 @@
 export const environment = {
 
   production: false,
-  billHost: "http://localhost:8080",
+  simpleBillHost: "http://localhost:8080",
   billPlanHost: "http://localhost:8081",
   redirectUri: "http://localhost:8089/",
   tokenUrl: "http://localhost:8085/realms/simple-bills/protocol/openid-connect/token",

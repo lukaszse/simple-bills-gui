@@ -1,4 +1,4 @@
-export interface BillDto {
+export interface TransactionDto {
   category: string;
   description: string;
   amount: number;

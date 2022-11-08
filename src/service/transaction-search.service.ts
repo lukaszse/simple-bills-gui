@@ -1,21 +1,21 @@
 import { Injectable, PipeTransform } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchMap, tap } from "rxjs";
-import { Bill } from "../dto/bill";
+import { Transaction } from "../dto/transaction";
 import { map } from "rxjs/operators";
 import { DatePipe, DecimalPipe } from "@angular/common";
-import { PageableBills } from "../dto/pageableBills";
+import { PageableTransactions } from "../dto/pageableTransactions";
 import { SortableState, SortDirection } from "../utils/sortableComponents/sortable.directive";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { environment } from "../environments/environment";
 
 
 @Injectable({providedIn: "root"})
-export class BillsSearchService {
+export class TransactionSearchService {
 
-  private static host: string = environment.billHost;
-  private static endpoint: string = "/bills";
-  private _pageableBills$ = new BehaviorSubject<PageableBills>(null);
+  private static host: string = environment.simpleBillHost;
+  private static endpoint: string = "/transactions";
+  private _pageableTransactions$ = new BehaviorSubject<PageableTransactions>(null);
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>()
 
@@ -37,7 +37,7 @@ export class BillsSearchService {
         switchMap(() => this._search()),
         tap(() => this._loading$.next(false))
       )
-      .subscribe((result) => this._pageableBills$.next(result));
+      .subscribe((result) => this._pageableTransactions$.next(result));
   }
 
   public refresh() {
@@ -49,66 +49,66 @@ export class BillsSearchService {
                     sortDirection: string,
                     sortColumn: string,
                     dateFrom: Date,
-                    dateTo: Date): Observable<PageableBills> {
+                    dateTo: Date): Observable<PageableTransactions> {
 
-    let url = HttpUtils.prepareUrl(BillsSearchService.host, BillsSearchService.endpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
-    return this.httpClient.get<Bill[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
+    let url = HttpUtils.prepareUrl(TransactionSearchService.host, TransactionSearchService.endpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
+    return this.httpClient.get<Transaction[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
       .pipe(
         map((response) => {
-          return new PageableBills(response.body, Number(response.headers.get(HttpUtils.X_TOTAL_COUNT)));
+          return new PageableTransactions(response.body, Number(response.headers.get(HttpUtils.X_TOTAL_COUNT)));
         }),
         catchError(HttpUtils.handleError),
         tap(console.log)
       );
   }
 
-  private _search(): Observable<PageableBills> {
+  private _search(): Observable<PageableTransactions> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
     let pageableBills$ = this.findBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
-    pageableBills$ = BillsSearchService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
+    pageableBills$ = TransactionSearchService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
     return pageableBills$
       .pipe(
-        map(pageableBills => BillsSearchService.setAmountSum(pageableBills)),
+        map(pageableBills => TransactionSearchService.setAmountSum(pageableBills)),
         tap(console.log));
   }
 
-  private static search(bills: Observable<PageableBills>,
+  private static search(transactions: Observable<PageableTransactions>,
                         text: string,
                         decimalPipe: PipeTransform,
-                        datePipe: DatePipe): Observable<PageableBills> {
-    return bills.pipe(
-      map(pageableBill => {
-        const bills = this.matchBills(pageableBill, text, decimalPipe, datePipe);
-        return new PageableBills(bills, pageableBill.totalCount);
+                        datePipe: DatePipe): Observable<PageableTransactions> {
+    return transactions.pipe(
+      map(pageableTransactions => {
+        const transactions = this.matchBills(pageableTransactions, text, decimalPipe, datePipe);
+        return new PageableTransactions(transactions, pageableTransactions.totalCount);
       }))
   }
 
-  public static setAmountSum(pageableBills: PageableBills): PageableBills {
-    pageableBills.pageTotalAmount = this.countAmountSum(pageableBills.bills)
+  public static setAmountSum(pageableBills: PageableTransactions): PageableTransactions {
+    pageableBills.pageTotalAmount = this.countAmountSum(pageableBills.transactions)
     return pageableBills;
   }
 
-  private static countAmountSum(bills: Bill[]): number {
-    return bills
-      .map((bill) => bill.amount)
+  private static countAmountSum(transactions: Transaction[]): number {
+    return transactions
+      .map((transaction) => transaction.amount)
       .map(amount => amount == null ? 0 : amount)
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
-  private static matchBills(pageableBill: PageableBills, text: string, decimalPipe: PipeTransform, datePipe: DatePipe) {
-    return pageableBill.bills.filter(bill => {
+  private static matchBills(pageableTransaction: PageableTransactions, text: string, decimalPipe: PipeTransform, datePipe: DatePipe) {
+    return pageableTransaction.transactions.filter(transaction => {
       const term = text.toLowerCase();
-      return decimalPipe.transform(bill.billNumber).includes(term)
-        || datePipe.transform(bill.date).includes(term)
-        || decimalPipe.transform(bill.amount).includes(term)
-        || bill.description.toLowerCase().includes(term)
-        || bill.category.toLowerCase().includes(term);
+      return decimalPipe.transform(transaction.transactionNumber).includes(term)
+        || datePipe.transform(transaction.date).includes(term)
+        || decimalPipe.transform(transaction.amount).includes(term)
+        || transaction.description.toLowerCase().includes(term)
+        || transaction.category.toLowerCase().includes(term);
     });
   }
 
   // getters and setters to wrapped objects
-  get pageableBills$() {
-    return this._pageableBills$.asObservable();
+  get pageableTransactions$() {
+    return this._pageableTransactions$.asObservable();
   }
 
   get loading$() {

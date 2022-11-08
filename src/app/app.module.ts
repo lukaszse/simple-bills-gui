@@ -7,7 +7,7 @@ import { MenuComponent } from './menu/menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContentComponent } from './content/content.component';
 import { HomeComponent } from './content/home/home.component';
-import { BillsComponent } from './content/bills/bills.component';
+import { TransactionsComponent } from './content/transactions/transactions.component';
 import { CategoryComponent } from './content/category/category.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
@@ -26,7 +26,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     FooterComponent,
     ContentComponent,
     HomeComponent,
-    BillsComponent,
+    TransactionsComponent,
     CategoryComponent,
     NgbdSortableHeader,
     LimitChartComponent
