@@ -13,27 +13,46 @@ export class CategoryUsageLimitService {
   private static endpoint = "/category-usage-limit"
 
   private _findCategoryUsageLimit$ = new Subject<void>();
+  private _findTotalUsageLimit$ = new Subject<void>();
   private _categoryUsageLimit$ = new BehaviorSubject<CategoryUsageLimit[]>(null);
-  private _categoryUsageBarchart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
-  private _loading$ = new BehaviorSubject<boolean>(true);
+  private _totalUsageLimit$ = new BehaviorSubject<CategoryUsageLimit[]>(null);
+  private _categoryUsageBarChart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
+  private _totalUsageLimitBarChart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
+  private _loadingCategories$ = new BehaviorSubject<boolean>(true);
+  private _loadingTotal$ = new BehaviorSubject<boolean>(true);
+
 
   constructor(private httpClient: HttpClient) {
+
     this._findCategoryUsageLimit$
       .pipe(
-        tap(() => this._loading$.next(true)),
+        tap(() => this._loadingCategories$.next(true)),
         debounceTime(200),
         switchMap(() => this.findCategoryUsageLimits()),
-        tap(() => this._loading$.next(false))
+        tap(() => this._loadingCategories$.next(false))
       )
       .subscribe((result) => {
         this._categoryUsageLimit$.next(result);
-        this._categoryUsageBarchart$.next(CategoryUsageLimitService.prepareBarCharData(result))
-      })
+        this._categoryUsageBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
+      });
+
+    this._findTotalUsageLimit$
+      .pipe(
+        tap(() => this._loadingTotal$.next(true)),
+        debounceTime(200),
+        switchMap(() => this.findCategoryUsageLimits(true)),
+        tap(() => this._loadingTotal$.next(false))
+      )
+      .subscribe((result) => {
+        this._totalUsageLimit$.next(result);
+        this._totalUsageLimitBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
+      });
   }
 
-  private findCategoryUsageLimits(): Observable<CategoryUsageLimit[]> {
+  private findCategoryUsageLimits(total?: boolean): Observable<CategoryUsageLimit[]> {
     const url = HttpUtils.prepareUrl(CategoryUsageLimitService.host, CategoryUsageLimitService.endpoint);
-    return this.httpClient.get<CategoryUsageLimitService[]>(url, {headers: HttpUtils.prepareHeaders()})
+    const completeUrl = total ? `${url}?total=true` : url;
+    return this.httpClient.get<CategoryUsageLimitService[]>(completeUrl, {headers: HttpUtils.prepareHeaders()})
       .pipe(
         catchError(HttpUtils.handleError),
         tap(console.log)
@@ -42,18 +61,31 @@ export class CategoryUsageLimitService {
 
   refresh() {
     this._findCategoryUsageLimit$.next();
+    this._findTotalUsageLimit$.next()
   }
 
   get categoryUsageLimit$() {
     return this._categoryUsageLimit$.asObservable();
   }
 
-  get categoryUsageBarchart$() {
-    return this._categoryUsageBarchart$.asObservable();
+  get totalUsageLimit$() {
+    return this._totalUsageLimit$.asObservable();
   }
 
-  get loading$() {
-    return this._loading$.asObservable();
+  get categoryUsageBarChart$() {
+    return this._categoryUsageBarChart$.asObservable();
+  }
+
+  get totalUsageLimitBarchart$() {
+    return this._totalUsageLimitBarChart$.asObservable();
+  }
+
+  get loadingCategories$() {
+    return this._loadingCategories$.asObservable();
+  }
+
+  get loadingTotal$() {
+    return this._loadingTotal$.asObservable();
   }
 
   static prepareBarCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsageLimitBarChart[][] {
