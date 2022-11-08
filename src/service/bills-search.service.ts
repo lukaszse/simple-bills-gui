@@ -38,7 +38,6 @@ export class BillsSearchService {
         tap(() => this._loading$.next(false))
       )
       .subscribe((result) => this._pageableBills$.next(result));
-    this._search$.next();
   }
 
   public refresh() {

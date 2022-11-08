@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchM
 import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { Injectable } from "@angular/core";
+import { CategoryUsageLimitBarChart } from "../app/content/limit-chart/categoryUsageLimitBarChart";
 
 @Injectable({providedIn: "root"})
 export class CategoryUsageLimitService {
@@ -13,6 +14,7 @@ export class CategoryUsageLimitService {
 
   private _findCategoryUsageLimit$ = new Subject<void>();
   private _categoryUsageLimit$ = new BehaviorSubject<CategoryUsageLimit[]>(null);
+  private _categoryUsageBarchart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
   private _loading$ = new BehaviorSubject<boolean>(true);
 
   constructor(private httpClient: HttpClient) {
@@ -23,7 +25,10 @@ export class CategoryUsageLimitService {
         switchMap(() => this.findCategoryUsageLimits()),
         tap(() => this._loading$.next(false))
       )
-      .subscribe((result) => this._categoryUsageLimit$.next(result))
+      .subscribe((result) => {
+        this._categoryUsageLimit$.next(result);
+        this._categoryUsageBarchart$.next(CategoryUsageLimitService.prepareBarCharData(result))
+      })
   }
 
   private findCategoryUsageLimits(): Observable<CategoryUsageLimit[]> {
@@ -43,7 +48,20 @@ export class CategoryUsageLimitService {
     return this._categoryUsageLimit$.asObservable();
   }
 
+  get categoryUsageBarchart$() {
+    return this._categoryUsageBarchart$.asObservable();
+  }
+
   get loading$() {
     return this._loading$.asObservable();
+  }
+
+  static prepareBarCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsageLimitBarChart[][] {
+    return categoryUsageLimits
+      .map(CategoryUsageLimitService.convertToBarChartData);
+  }
+
+  static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit): CategoryUsageLimitBarChart[] {
+    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, categoryUsageLimit.limit)];
   }
 }

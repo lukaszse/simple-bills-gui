@@ -1,57 +1,14 @@
 <h5>Monthly limit usage:</h5>
 
-<table *ngIf="categoryUsageBarCharts$ | async as barCharts">
+<table *ngIf="categoryUsageLimitService.categoryUsageBarchart$ | async as barCharts">
   <tr *ngFor="let chart of barCharts">
     <td>
-      {{chart[0].name}} ({{chart[0].series[0].value}}/ {{chart[0].series[1].value}})
+      <span>{{chart[0].name}} ({{chart[0].series[0].value | currency}}</span>/{{chart[0].series[1].value | currency}})
     </td>
     <td>
       <ngx-charts-bar-horizontal-normalized
         [view]="view"
         [results]="chart"
-        [gradient]="gradient"
-        [xAxis]="showXAxis"
-        [yAxis]="showYAxis"
-        [legend]="showLegend"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        (select)="onSelect($event)">
-      </ngx-charts-bar-horizontal-normalized>
-    </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <td>
-      Food
-    </td>
-    <td>
-      <ngx-charts-bar-horizontal-normalized
-        [view]="view"
-        [results]="multi"
-        [gradient]="gradient"
-        [xAxis]="showXAxis"
-        [yAxis]="showYAxis"
-        [legend]="showLegend"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        (select)="onSelect($event)">
-      </ngx-charts-bar-horizontal-normalized>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Somsing
-    </td>
-    <td>
-      <ngx-charts-bar-horizontal-normalized
-        [view]="view"
-        [results]="multi"
         [gradient]="gradient"
         [xAxis]="showXAxis"
         [yAxis]="showYAxis"

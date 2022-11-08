@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, tap } from "rxjs";
 import { multi } from "./data";
 import { CategoryUsageLimitService } from "../../../service/category-usage-limit.service";
-import { CategoryUsageLimit } from "../../../dto/categoryUsageLimit";
-import { CategoryUsageLimitBarChart } from "./categoryUsageLimitBarChart";
-import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-limit-chart',
@@ -13,7 +9,6 @@ import { map } from "rxjs/operators";
 })
 export class LimitChartComponent implements OnInit {
 
-  public categoryUsageBarCharts$: Observable<CategoryUsageLimitBarChart[][]>;
 
   multi: any[];
   view: any[] = [300, 50];
@@ -32,36 +27,15 @@ export class LimitChartComponent implements OnInit {
     domain: ['#A10A28', '#AAAAAA'],
   };
 
-  constructor(private categoryUsageLimitService: CategoryUsageLimitService) {
-    this.categoryUsageBarCharts$ = categoryUsageLimitService.categoryUsageLimit$
-      .pipe(
-        map(LimitChartComponent.prepareBarCharData),
-        tap(() => console.log('Category usage limits after conversion to bar charts')),
-        tap(console.log)
-      );
+  constructor(public categoryUsageLimitService: CategoryUsageLimitService) {
   }
 
   ngOnInit(): void {
     Object.assign(this, {multi});
     this.categoryUsageLimitService.refresh();
-    this.categoryUsageBarCharts$ = this.categoryUsageLimitService.categoryUsageLimit$
-      .pipe(
-        map(LimitChartComponent.prepareBarCharData),
-        tap(() => console.log('Category usage limits after conversion to bar charts')),
-        tap(console.log)
-      );
   }
 
   onSelect(event) {
     console.log(event);
-  }
-
-  static prepareBarCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsageLimitBarChart[][] {
-    return categoryUsageLimits
-      .map(LimitChartComponent.convertToBarChartData);
-  }
-
-  static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit): CategoryUsageLimitBarChart[] {
-    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, categoryUsageLimit.limit)];
   }
 }
