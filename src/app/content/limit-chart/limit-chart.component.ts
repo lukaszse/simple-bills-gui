@@ -4,11 +4,11 @@ import { UserService } from "../../../service/user.service";
 import { multi } from "./data";
 
 @Component({
-  selector: 'app-limit-charts',
-  templateUrl: './limit-charts.component.html',
-  styleUrls: ['./limit-charts.component.scss']
+  selector: 'app-limit-chart',
+  templateUrl: './limit-chart.component.html',
+  styleUrls: ['./limit-chart.component.scss']
 })
-export class LimitChartsComponent implements OnInit {
+export class LimitChartComponent implements OnInit {
 
   loggedUsername: Observable<string>;
   multi: any[];
