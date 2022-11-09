@@ -1,64 +1,86 @@
-<div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingTotal$ | async) else loading">
-  <div *ngIf="categoryUsageLimitService.totalUsageLimitBarchart$ | async as totalBarChart">
-    <div *ngIf="totalBarChart.length !==0">
-      <h5>Monthly total usage of assigned limit:</h5>
-      <table>
-        <tr *ngFor="let chart of totalBarChart">
-          <td>
+<div class="row">
+  <div class="col-6">
+    <div class="card border-secondary mb-3">
+      <div class="card-body">
+        <!--        start of card body-->
+        <div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingTotal$ | async) else loading">
+          <div *ngIf="categoryUsageLimitService.totalUsageLimitBarchart$ | async as totalBarChart">
+            <div *ngIf="totalBarChart.length !==0">
+              <h5>Monthly total usage of assigned limit:</h5>
+              <table>
+                <tr *ngFor="let chart of totalBarChart">
+                  <td>
           <span>{{chart[0].name}}
             ({{chart[0].series[0].value | currency}}</span>/{{chart[0].series[1].value | currency}})
-          </td>
-          <td>
-            <ngx-charts-bar-horizontal-normalized
-              [view]="view"
-              [results]="chart"
-              [gradient]="gradient"
-              [xAxis]="showXAxis"
-              [yAxis]="showYAxis"
-              [legend]="showLegend"
-              [showXAxisLabel]="showXAxisLabel"
-              [showYAxisLabel]="showYAxisLabel"
-              [xAxisLabel]="xAxisLabel"
-              [yAxisLabel]="yAxisLabel"
-              (select)="onSelect($event)">
-            </ngx-charts-bar-horizontal-normalized>
-          </td>
-        </tr>
-      </table>
+                  </td>
+                  <td>
+                    <ngx-charts-bar-horizontal-normalized
+                      [view]="view"
+                      [results]="chart"
+                      [gradient]="gradient"
+                      [xAxis]="showXAxis"
+                      [yAxis]="showYAxis"
+                      [legend]="showLegend"
+                      [showXAxisLabel]="showXAxisLabel"
+                      [showYAxisLabel]="showYAxisLabel"
+                      [xAxisLabel]="xAxisLabel"
+                      [yAxisLabel]="yAxisLabel"
+                      (select)="onSelect($event)">
+                    </ngx-charts-bar-horizontal-normalized>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--        end of card body-->
+      </div>
     </div>
   </div>
 </div>
-<br>
-<div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingCategories$ | async) else loading">
-  <div *ngIf="categoryUsageLimitService.categoryUsageBarChart$ | async as barCharts">
-    <div *ngIf="barCharts.length !==0">
-      <h5>Monthly usage of assigned limits by categories:</h5>
-      <table>
-        <tr *ngFor="let chart of barCharts">
-          <td>
+
+
+<div class="row">
+  <div class="col-6">
+    <div class="card border-secondary mb-3">
+      <div class="card-body">
+        <!--        start of card body-->
+        <div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingCategories$ | async) else loading">
+          <div *ngIf="categoryUsageLimitService.categoryUsageBarChart$ | async as barCharts">
+            <div *ngIf="barCharts.length !==0">
+              <h5>Monthly usage of assigned limits by categories:</h5>
+              <table>
+                <tr *ngFor="let chart of barCharts">
+                  <td>
           <span>{{chart[0].name}}
             ({{chart[0].series[0].value | currency}}</span>/{{chart[0].series[1].value | currency}})
-          </td>
-          <td>
-            <ngx-charts-bar-horizontal-normalized
-              [view]="view"
-              [results]="chart"
-              [gradient]="gradient"
-              [xAxis]="showXAxis"
-              [yAxis]="showYAxis"
-              [legend]="showLegend"
-              [showXAxisLabel]="showXAxisLabel"
-              [showYAxisLabel]="showYAxisLabel"
-              [xAxisLabel]="xAxisLabel"
-              [yAxisLabel]="yAxisLabel"
-              (select)="onSelect($event)">
-            </ngx-charts-bar-horizontal-normalized>
-          </td>
-        </tr>
-      </table>
+                  </td>
+                  <td>
+                    <ngx-charts-bar-horizontal-normalized
+                      [view]="view"
+                      [results]="chart"
+                      [gradient]="gradient"
+                      [xAxis]="showXAxis"
+                      [yAxis]="showYAxis"
+                      [legend]="showLegend"
+                      [showXAxisLabel]="showXAxisLabel"
+                      [showYAxisLabel]="showYAxisLabel"
+                      [xAxisLabel]="xAxisLabel"
+                      [yAxisLabel]="yAxisLabel"
+                      (select)="onSelect($event)">
+                    </ngx-charts-bar-horizontal-normalized>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--        end of card body-->
+      </div>
     </div>
   </div>
 </div>
+
 
 <ng-template #loading>
   <span class="text-dark">loading... </span>
