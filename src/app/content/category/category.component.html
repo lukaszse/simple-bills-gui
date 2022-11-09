@@ -98,15 +98,16 @@
             name="category-name"
             [(ngModel)]="category.name"/>
         </div>
-        <label for="new-category-limit-input" class="col-form-label">Category limit</label>
-        <div class="input-group">
-          <input
-            id="new-category-limit-input"
-            type="number" min="0.00" max="999999.99" step="0.01"
-            class="form-control"
-            name="category"
-            [(ngModel)]="category.limit"
-          />
+        <div *ngIf="expenseTransactionType">
+          <label for="new-category-limit-input" class="col-form-label">Category limit</label>
+          <div class="input-group">
+            <input
+              id="new-category-limit-input"
+              type="number" min="0.00" max="999999.99" step="0.01"
+              class="form-control"
+              name="category"
+              [(ngModel)]="category.limit"/>
+          </div>
         </div>
       </div>
     </form>
