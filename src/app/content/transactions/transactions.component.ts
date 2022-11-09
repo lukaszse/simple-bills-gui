@@ -7,7 +7,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TransactionDto } from "../../../dto/transactionDto";
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
-import { Transaction } from "../../../dto/transaction";
+import { Transaction, Type } from "../../../dto/transaction";
 import { BalanceService } from "../../../service/balance.service";
 
 
@@ -20,6 +20,7 @@ import { BalanceService } from "../../../service/balance.service";
 export class TransactionsComponent implements OnInit {
 
   transactionDto: TransactionDto = {
+    type: null,
     category: null,
     description: null,
     amount: null,
@@ -52,8 +53,8 @@ export class TransactionsComponent implements OnInit {
     this.transactionSearchService.sortDirection = direction;
   }
 
-  openBillCreationWindow(content) {
-    this.resetFormFields()
+  openTransactionCreationWindow(transactionType: string, content) {
+    this.resetFormFields(Type[transactionType])
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-creation'}).result.then(
       () => {
         console.log(this.transactionDto)
@@ -64,12 +65,12 @@ export class TransactionsComponent implements OnInit {
           });
       },
       () => {
-        console.log("Bill creation canceled")
+        console.log(`Transaction (${transactionType}) creation canceled`)
       }
     );
   }
 
-  openBillUpdateWindow(transaction: Transaction, content) {
+  openTransactionUpdateWindow(transaction: Transaction, content) {
     this.selectedTransaction = transaction.transactionNumber;
     this.setFormFields(transaction)
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-update'}).result.then(
@@ -102,7 +103,8 @@ export class TransactionsComponent implements OnInit {
     );
   }
 
-  resetFormFields() {
+  resetFormFields(transactionType: Type) {
+    this.transactionDto.type = transactionType;
     this.transactionDto.category = null;
     this.transactionDto.description = null;
     this.transactionDto.amount = null;
@@ -110,6 +112,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   setFormFields(transaction: Transaction) {
+    this.transactionDto.type = transaction.type;
     this.transactionDto.category = transaction.category;
     this.transactionDto.description = transaction.description;
     this.transactionDto.amount = transaction.amount;
@@ -117,6 +120,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   updateBill(transaction: Transaction): Transaction {
+    transaction.type = this.transactionDto.type;
     transaction.category = this.transactionDto.category;
     transaction.description = this.transactionDto.description;
     transaction.amount = this.transactionDto.amount;

@@ -99,6 +99,7 @@ export class TransactionSearchService {
     return pageableTransaction.transactions.filter(transaction => {
       const term = text.toLowerCase();
       return decimalPipe.transform(transaction.transactionNumber).includes(term)
+        || transaction.type.toString().toLowerCase().includes(term)
         || datePipe.transform(transaction.date).includes(term)
         || decimalPipe.transform(transaction.amount).includes(term)
         || transaction.description.toLowerCase().includes(term)
