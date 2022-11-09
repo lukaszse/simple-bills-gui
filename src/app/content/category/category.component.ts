@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from "../../../dto/category";
+import { Category, TransactionType } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
@@ -12,6 +12,7 @@ export class CategoryComponent implements OnInit {
 
   category: Category = {
     name: null,
+    transactionType: null,
     limit: null
   };
 
@@ -20,6 +21,8 @@ export class CategoryComponent implements OnInit {
   totalLimit: number;
   categoryToDelete: string = null;
   replacementCategory: string = null;
+  expenseTransactionType: boolean;
+
 
   constructor(private categoryService: CategoryService,
               private _modalService: NgbModal) {
@@ -34,8 +37,10 @@ export class CategoryComponent implements OnInit {
     );
   }
 
-  openCreationWindow(content) {
-    this.resetFormFields()
+  openCreationWindow(transactionType: "INCOME" | "EXPENSE", content) {
+    const transactionTypeEnum = TransactionType[transactionType];
+    this.expenseTransactionType = transactionTypeEnum === TransactionType.EXPENSE;
+    this.resetFormFields(transactionTypeEnum)
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-creation'}).result.then(
       () => {
         this.categoryService.createCategory(this.category)
@@ -50,8 +55,9 @@ export class CategoryComponent implements OnInit {
     );
   }
 
-  openUpdateWindowForSelectedCategory(category: Category, content) {
+  openEditWindowForSelectedCategory(category: Category, content) {
     this.category = category;
+    this.expenseTransactionType = category.transactionType === TransactionType.EXPENSE;
     this._modalService.open(content, {ariaLabelledBy: 'modal-category-update'}).result.then(
       () => {
         this.categoryService.updateCategory(this.category)
@@ -91,8 +97,9 @@ export class CategoryComponent implements OnInit {
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
-  resetFormFields() {
+  resetFormFields(transactionType: TransactionType) {
     this.category.name = null;
+    this.category.transactionType = transactionType;
     this.category.limit = null;
   }
 }

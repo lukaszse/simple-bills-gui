@@ -20,6 +20,7 @@ import { BalanceService } from "../../../service/balance.service";
 export class TransactionsComponent implements OnInit {
 
   transactionDto: TransactionDto = {
+    transactionNumber: null,
     type: null,
     category: null,
     description: null,
@@ -29,6 +30,7 @@ export class TransactionsComponent implements OnInit {
 
   category: Category = {
     name: null,
+    transactionType: null,
     limit: null
   };
 
@@ -70,7 +72,7 @@ export class TransactionsComponent implements OnInit {
     );
   }
 
-  openTransactionUpdateWindow(transaction: Transaction, content) {
+  openTransactionEditWindow(transaction: Transaction, content) {
     this.selectedTransaction = transaction.transactionNumber;
     this.setFormFields(transaction)
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-update'}).result.then(
@@ -112,6 +114,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   setFormFields(transaction: Transaction) {
+    this.transactionDto.transactionNumber = transaction.transactionNumber
     this.transactionDto.type = transaction.type;
     this.transactionDto.category = transaction.category;
     this.transactionDto.description = transaction.description;

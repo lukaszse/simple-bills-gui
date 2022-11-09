@@ -101,7 +101,7 @@
               type="button"
               class="btn btn-outline-secondary btn-sm"
               aria-label="Close"
-              (click)="openTransactionUpdateWindow(transaction, updateBill)"
+              (click)="openTransactionEditWindow(transaction, editTransaction)"
             >Edit
             </button>
           </td>
@@ -206,7 +206,7 @@
   </div>
 </ng-template>
 
-<ng-template #updateBill let-modal>
+<ng-template #editTransaction let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-transaction-update">Edit transaction <span
       class="text-dark">#{{selectedTransaction}}</span></h4>
@@ -214,6 +214,16 @@
   </div>
   <div class="modal-body text-dark">
     <form>
+      <label for="transactionNumber-update-input" class="col-form-label">Transaction number</label>
+      <div class="input-group">
+        <input
+          type="text"
+          id="transactionNumber-update-input"
+          name="new-category-transaction-type-input"
+          class="form-control"
+          disabled
+          [(ngModel)]="transactionDto.transactionNumber">
+      </div>
       <label for="category-update-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
       <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
         <select [(ngModel)]="transactionDto.category" name="categoryRemoval" class="form-select"
