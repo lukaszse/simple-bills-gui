@@ -10,7 +10,7 @@ export class LimitChartComponent implements OnInit {
 
 
   // options
-  view: any[] = [300, 50];
+  view: any[] = [300, 35];
   showXAxis: boolean = false;
   showYAxis: boolean = false;
   gradient: boolean = false;

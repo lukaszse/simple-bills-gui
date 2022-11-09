@@ -94,6 +94,7 @@ export class CategoryUsageLimitService {
   }
 
   static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit): CategoryUsageLimitBarChart[] {
-    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, categoryUsageLimit.limit)];
+    let limitToBeUsed = categoryUsageLimit.limit ? categoryUsageLimit.limit - categoryUsageLimit.usage : 0;
+    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, limitToBeUsed)];
   }
 }
