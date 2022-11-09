@@ -31,7 +31,7 @@ export class TransactionsComponent implements OnInit {
     limit: null
   };
 
-  transactionToDelete: string | number;
+  selectedTransaction: string | number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(public transactionSearchService: TransactionSearchService,
@@ -70,6 +70,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   openBillUpdateWindow(transaction: Transaction, content) {
+    this.selectedTransaction = transaction.transactionNumber;
     this.setFormFields(transaction)
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-update'}).result.then(
       () => {
@@ -88,7 +89,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   openDeletionConfirmationWindow(transactionNumber: number | string, content) {
-    this.transactionToDelete = transactionNumber;
+    this.selectedTransaction = transactionNumber;
     this.modalService.open(content, {ariaLabelledBy: "modal-transaction-deletion"}).result.then(
       () => {
         console.log(transactionNumber);

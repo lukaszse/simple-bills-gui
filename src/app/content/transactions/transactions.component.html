@@ -192,7 +192,8 @@
 
 <ng-template #updateBill let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-transaction-update">Edit selected transaction</h4>
+    <h4 class="modal-title" id="modal-transaction-update">Edit transaction <span
+      class="text-dark">#{{selectedTransaction}}</span></h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body text-dark">
@@ -254,8 +255,8 @@
     ></button>
   </div>
   <div class="modal-body">
-    <p><strong class="text-danger">Are you sure you want to delete transaction with transactionNumber <span
-      class="text-dark">{{transactionToDelete}}</span>?</strong></p>
+    <p><strong class="text-danger">Are you sure you want to delete transaction <span
+      class="text-dark">#{{selectedTransaction}}</span>?</strong></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
