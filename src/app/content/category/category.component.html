@@ -1,9 +1,9 @@
 <div class="container p-1 text-center">
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow('INCOME', categoryCreation)">
-    Add new income category
+    Add income category
   </button>
   <button class="btn btn-lg btn-outline-secondary m-2" (click)="openCreationWindow('EXPENSE',categoryCreation)">
-    Add new expense category
+    Add expense category
   </button>
   <br><br>
   <div class="row">
@@ -129,9 +129,15 @@
   <div class="modal-body text-dark" *ngIf="expenseTransactionType else incomeNotEditable">
     <form>
       <div class="mb-3">
-        <h2 class="col-form-label">Update category:</h2>
+        <label for="update-category-name-input" class="col-form-label">Update category:</label>
         <div class="input-group">
-          <span class="fw-bold" id="category-update-name-input">{{category.name}}</span>
+          <input
+            type="text"
+            id="update-category-name-input"
+            name="new-category-name-input"
+            class="form-control"
+            disabled
+            [(ngModel)]="category.name">
         </div>
         <div *ngIf="expenseTransactionType">
           <label for="category-update-limit-input" class="col-form-label">Category limit</label>
