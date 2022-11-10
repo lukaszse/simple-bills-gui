@@ -4,6 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, tap } from "rxjs";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { Category } from "../dto/category";
+import { map } from "rxjs/operators";
+import { TransactionType } from "../dto/transaction";
 
 @Injectable({providedIn: "root"})
 export class CategoryService {
@@ -12,6 +14,7 @@ export class CategoryService {
   private static endpoint = "/categories"
 
   public categories$: Observable<Category[]>;
+
 
   constructor(private httpClient: HttpClient) {
     this.categories$ = this.findCategories();
@@ -37,10 +40,11 @@ export class CategoryService {
       )
   }
 
-  findCategories(): Observable<Category[]> {
+  findCategories(transactionType?: TransactionType): Observable<Category[]> {
     const url = HttpUtils.prepareUrl(CategoryService.host, CategoryService.endpoint);
     return this.httpClient.get<Category[]>(url, {headers: HttpUtils.prepareHeaders()})
       .pipe(
+        map(categories => this.filterCategories(categories, transactionType)),
         catchError(HttpUtils.handleError),
         tap(console.log)
       );
@@ -55,5 +59,10 @@ export class CategoryService {
         tap(categoryName => console.log(`Category with name ${categoryName.body} deleted.`)),
         catchError(HttpUtils.handleError)
       )
+  }
+
+  filterCategories(categories: Category[], transactionType?: TransactionType): Category[] {
+    return transactionType ?
+      categories.filter(category => category.transactionType === transactionType) : categories;
   }
 }

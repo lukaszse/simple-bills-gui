@@ -7,8 +7,9 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TransactionDto } from "../../../dto/transactionDto";
 import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
-import { Transaction, Type } from "../../../dto/transaction";
+import { Transaction, TransactionType } from "../../../dto/transaction";
 import { BalanceService } from "../../../service/balance.service";
+import { Observable } from "rxjs";
 
 
 @Component({
@@ -34,6 +35,7 @@ export class TransactionsComponent implements OnInit {
     limit: null
   };
 
+  categoriesToSelect$: Observable<Category[]>;
   selectedTransaction: string | number;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
@@ -56,7 +58,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   openTransactionCreationWindow(transactionType: string, content) {
-    this.resetFormFields(Type[transactionType])
+    this.resetFormFields(TransactionType[transactionType])
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-creation'}).result.then(
       () => {
         console.log(this.transactionDto)
@@ -105,8 +107,8 @@ export class TransactionsComponent implements OnInit {
     );
   }
 
-  resetFormFields(transactionType: Type) {
-    this.transactionDto.type = transactionType;
+  resetFormFields(transactionType?: TransactionType) {
+    this.categoriesToSelect$ = this.categoryService.findCategories(transactionType);
     this.transactionDto.category = null;
     this.transactionDto.description = null;
     this.transactionDto.amount = null;

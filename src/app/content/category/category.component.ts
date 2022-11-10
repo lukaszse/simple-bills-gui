@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Category, TransactionType } from "../../../dto/category";
+import { Category } from "../../../dto/category";
 import { CategoryService } from "../../../service/category.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { TransactionType } from "../../../dto/transaction";
 
 @Component({
   selector: 'app-category',
