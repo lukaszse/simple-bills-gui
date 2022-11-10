@@ -150,7 +150,7 @@
 
 <ng-template #createTransaction let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-transaction-creation">Add new {{ transactionDto.type }}</h4>
+    <h4 class="modal-title" id="modal-transaction-creation">Add new {{ transactionDto.type.toLowerCase() }}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body text-dark">
@@ -219,13 +219,23 @@
         <input
           type="text"
           id="transactionNumber-update-input"
-          name="new-category-transaction-type-input"
+          name="new-category-transaction-number-input"
           class="form-control"
           disabled
           [(ngModel)]="transactionDto.transactionNumber">
       </div>
+      <label for="transactionType-update-input" class="col-form-label">Transaction type</label>
+      <div class="input-group">
+        <input
+          type="text"
+          id="transactionType-update-input"
+          name="new-category-transaction-type-input"
+          class="form-control"
+          disabled
+          [(ngModel)]="transactionDto.type">
+      </div>
       <label for="category-update-input" class="col-xs-3 col-sm-2 col-form-label">Category</label>
-      <div *ngIf="categoryService.categories$ | async as categories else noData" class="input-group">
+      <div *ngIf="categoriesToSelect$ | async as categories else noData" class="input-group">
         <select [(ngModel)]="transactionDto.category" name="categoryRemoval" class="form-select"
                 aria-label="Default select example" id="category-update-input">
           <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>

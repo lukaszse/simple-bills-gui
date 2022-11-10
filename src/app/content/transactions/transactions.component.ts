@@ -99,7 +99,10 @@ export class TransactionsComponent implements OnInit {
       () => {
         console.log(transactionNumber);
         return this.transactionCrudService.deleteBill(transactionNumber)
-          .subscribe(console.log);
+          .subscribe((deletionResponse) => {
+            console.log(deletionResponse);
+            this.ngOnInit();
+          });
       },
       () => {
         console.log("Transaction deletion canceled")
@@ -109,6 +112,7 @@ export class TransactionsComponent implements OnInit {
 
   resetFormFields(transactionType?: TransactionType) {
     this.categoriesToSelect$ = this.categoryService.findCategories(transactionType);
+    this.transactionDto.type = transactionType;
     this.transactionDto.category = null;
     this.transactionDto.description = null;
     this.transactionDto.amount = null;
@@ -116,6 +120,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   setFormFields(transaction: Transaction) {
+    this.categoriesToSelect$ = this.categoryService.findCategories(transaction.type);
     this.transactionDto.transactionNumber = transaction.transactionNumber
     this.transactionDto.type = transaction.type;
     this.transactionDto.category = transaction.category;
