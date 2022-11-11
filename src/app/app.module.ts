@@ -11,7 +11,7 @@ import { TransactionsComponent } from './content/transactions/transactions.compo
 import { CategoryComponent } from './content/category/category.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
-import { CommonModule, DatePipe, DecimalPipe } from "@angular/common";
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -42,7 +42,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     NgxChartsModule,
     BrowserAnimationsModule
   ],
-  providers: [DecimalPipe, DatePipe],
+  providers: [DecimalPipe, DatePipe, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

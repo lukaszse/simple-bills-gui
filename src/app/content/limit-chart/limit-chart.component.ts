@@ -10,15 +10,17 @@ export class LimitChartComponent implements OnInit {
 
 
   // options
-  view: any[] = [300, 35];
+  view: any[] = [450, 35];
   showXAxis: boolean = false;
-  showYAxis: boolean = false;
+  showYAxis: boolean = true;
   gradient: boolean = false;
   showLegend: boolean = false;
   showXAxisLabel: boolean = false;
   xAxisLabel: string = '';
-  showYAxisLabel: boolean = true;
+  showYAxisLabel: boolean = false;
   yAxisLabel: string = '';
+  trimYAxis: boolean = true;
+  maxLength: number = 35;
 
   colorScheme = {
     domain: ['#A10A28', '#AAAAAA'],

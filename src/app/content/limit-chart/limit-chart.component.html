@@ -1,19 +1,22 @@
 <div class="row">
-  <div class="col-6">
+  <div class="col-xl-6">
     <div class="card border-secondary mb-3">
       <div class="card-body">
         <!--        start of card body-->
         <h5>Monthly total usage of assigned limit:</h5>
         <div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingTotal$ | async) else loading">
           <div *ngIf="categoryUsageLimitService.totalUsageLimitBarchart$ | async as totalBarChart">
-            <div *ngIf="totalBarChart.length !==0 else noData">
-              <table *ngFor="let chart of totalBarChart">
+            <div class="table-responsive" *ngIf="totalBarChart.length !==0 else noData">
+              <table class="mx-auto w-auto" *ngFor="let chart of totalBarChart">
                 <tr>
-                  <td>
-                    <span>{{chart[0].name}}({{chart[0].spent| currency}}</span>/{{chart[0].totalLimit | currency}})
-                  </td>
-                  <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit else outOfLimit">
-                    <td *ngIf="chart[0].totalLimit else limitsNotSet">
+                  <div class="text-center" *ngIf="!(chart[0].spent <= chart[0].totalLimit)">
+                    <span class="text-warning fw-bold fst-italic">YOUR MONTHLY
+                      <span class="text-dark">{{chart[0].categoryName.toUpperCase()}}</span>
+                      LIMIT IS EXCEEDED!
+                    </span>
+                  </div>
+                  <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit">
+                    <div *ngIf="chart[0].totalLimit else limitsNotSet">
                       <ngx-charts-bar-horizontal-normalized
                         [view]="view"
                         [results]="chart"
@@ -25,9 +28,11 @@
                         [showYAxisLabel]="showYAxisLabel"
                         [xAxisLabel]="xAxisLabel"
                         [yAxisLabel]="yAxisLabel"
+                        [trimYAxisTicks]="trimYAxis"
+                        [maxYAxisTickLength]="maxLength"
                         (select)="onSelect($event)">
                       </ngx-charts-bar-horizontal-normalized>
-                    </td>
+                    </div>
                   </div>
                 </tr>
               </table>
@@ -42,21 +47,24 @@
 
 
 <div class="row">
-  <div class="col-6">
+  <div class="col-lg-6">
     <div class="card border-secondary mb-3">
       <div class="card-body">
         <h5>Monthly usage of assigned limits by categories:</h5>
         <!--        start of card body-->
         <div class="col col-form-label " *ngIf="!(categoryUsageLimitService.loadingCategories$ | async) else loading">
           <div *ngIf="categoryUsageLimitService.categoryUsageBarChart$ | async as barCharts">
-            <div *ngIf="barCharts.length !==0 else noData">
-              <table>
+            <div class="table-responsive" *ngIf="barCharts.length !==0 else noData">
+              <table class="mx-auto w-auto">
                 <tr *ngFor="let chart of barCharts">
-                  <td>
-                    <span>{{chart[0].name}}({{chart[0].spent| currency}}</span>/{{chart[0].totalLimit | currency}})
-                  </td>
-                  <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit else outOfLimit">
-                    <td *ngIf="chart[0].totalLimit else limitsNotSet">
+                  <div class="text-center" *ngIf="!(chart[0].spent <= chart[0].totalLimit)">
+                    <span class="text-warning fw-bold fst-italic">YOUR MONTHLY
+                      <span class="text-dark">{{chart[0].categoryName.toUpperCase()}}</span>
+                      IS LIMIT EXCEEDED!
+                    </span>
+                  </div>
+                  <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit">
+                    <div *ngIf="chart[0].totalLimit else limitsNotSet">
                       <ngx-charts-bar-horizontal-normalized
                         [view]="view"
                         [results]="chart"
@@ -68,9 +76,11 @@
                         [showYAxisLabel]="showYAxisLabel"
                         [xAxisLabel]="xAxisLabel"
                         [yAxisLabel]="yAxisLabel"
+                        [trimYAxisTicks]="trimYAxis"
+                        [maxYAxisTickLength]="maxLength"
                         (select)="onSelect($event)">
                       </ngx-charts-bar-horizontal-normalized>
-                    </td>
+                    </div>
                   </div>
                 </tr>
               </table>
@@ -94,9 +104,5 @@
 
 <ng-template #limitsNotSet>
   <span class="text-info fst-italic">&emsp;Limit for category not set!</span>
-</ng-template>
-
-<ng-template #outOfLimit>
-  <span class="text-warning fw-bold fst-italic">&emsp;YOUR MONTHLY LIMIT EXCEEDED!</span>
 </ng-template>
 

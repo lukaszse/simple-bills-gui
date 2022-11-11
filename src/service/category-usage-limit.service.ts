@@ -5,6 +5,7 @@ import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { Injectable } from "@angular/core";
 import { CategoryUsageLimitBarChart } from "../app/content/limit-chart/categoryUsageLimitBarChart";
+import { CurrencyPipe } from "@angular/common";
 
 @Injectable({providedIn: "root"})
 export class CategoryUsageLimitService {
@@ -20,7 +21,7 @@ export class CategoryUsageLimitService {
   private _loadingTotal$ = new BehaviorSubject<boolean>(true);
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private currencyPipe: CurrencyPipe) {
 
     this._findCategoryUsageLimit$
       .pipe(
@@ -30,7 +31,7 @@ export class CategoryUsageLimitService {
         tap(() => this._loadingCategories$.next(false))
       )
       .subscribe((result) => {
-        this._categoryUsageBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
+        this._categoryUsageBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result, currencyPipe))
       });
 
     this._findTotalUsageLimit$
@@ -41,7 +42,7 @@ export class CategoryUsageLimitService {
         tap(() => this._loadingTotal$.next(false))
       )
       .subscribe((result) => {
-        this._totalUsageLimitBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
+        this._totalUsageLimitBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result, currencyPipe))
       });
   }
 
@@ -76,17 +77,22 @@ export class CategoryUsageLimitService {
     return this._loadingTotal$.asObservable();
   }
 
-  static prepareBarCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsageLimitBarChart[][] {
+  private static prepareBarCharData(categoryUsageLimits: CategoryUsageLimit[],
+                                    currencyPipe: CurrencyPipe): CategoryUsageLimitBarChart[][] {
     return categoryUsageLimits
-      .map(CategoryUsageLimitService.convertToBarChartData);
+      .map(categoryUsageLimit => CategoryUsageLimitService.convertToBarChartData(categoryUsageLimit, currencyPipe));
   }
 
-  static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit): CategoryUsageLimitBarChart[] {
-    let remainingLimit = CategoryUsageLimitService.remainingLimit(categoryUsageLimit);
-    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, remainingLimit, categoryUsageLimit.limit)];
+  private static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit,
+                                       currencyPipe: CurrencyPipe): CategoryUsageLimitBarChart[] {
+    const remainingLimit: number = CategoryUsageLimitService.calculateRemainingLimit(categoryUsageLimit);
+    let formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
+    let formattedLimit: string = currencyPipe.transform(categoryUsageLimit.limit, 'USD', 'symbol', '1.2-2');
+    const nameWithUsageAndLimit: string = `${categoryUsageLimit.categoryName} (${formattedUsage}/${formattedLimit})`
+    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, nameWithUsageAndLimit, categoryUsageLimit.usage, remainingLimit, categoryUsageLimit.limit)];
   }
 
-  private static remainingLimit(categoryUsageLimit: CategoryUsageLimit) {
+  private static calculateRemainingLimit(categoryUsageLimit: CategoryUsageLimit): number {
     if (categoryUsageLimit.limit && categoryUsageLimit.usage <= categoryUsageLimit.limit) {
       return categoryUsageLimit.limit - categoryUsageLimit.usage;
     } else {
