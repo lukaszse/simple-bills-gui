@@ -8,10 +8,10 @@
           <table class="mx-auto w-auto" *ngFor="let chart of totalBarChart">
             <tr>
               <div class="text-center" *ngIf="!(chart[0].spent <= chart[0].totalLimit)">
-                    <span class="text-warning fw-bold fst-italic">YOUR MONTHLY
-                      <span class="text-dark">{{chart[0].categoryName.toUpperCase()}}</span>
-                      LIMIT IS EXCEEDED!
-                    </span>
+                <span class="text-dark ngx-fontsize">
+                  {{chart[0].categoryName}}
+                  ({{chart[0].spent | currency}}/{{chart[0].totalLimit | currency}})</span>
+                <span class="fw-bold fst-italic text-warning">&emsp;LIMIT EXCEEDED!</span>
               </div>
               <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit">
                 <div *ngIf="chart[0].totalLimit else limitsNotSet">
@@ -51,10 +51,10 @@
           <table class="mx-auto w-auto">
             <tr *ngFor="let chart of barCharts">
               <div class="text-center" *ngIf="!(chart[0].spent <= chart[0].totalLimit)">
-                    <span class="text-warning fw-bold fst-italic">YOUR MONTHLY
-                      <span class="text-dark">{{chart[0].categoryName.toUpperCase()}}</span>
-                      LIMIT IS EXCEEDED!
-                    </span>
+                <span class="text-dark ngx-fontsize">
+                  {{chart[0].categoryName}}
+                  ({{chart[0].spent | currency}}/{{chart[0].totalLimit | currency}})</span>
+                <span class="fw-bold fst-italic text-warning">&emsp;LIMIT EXCEEDED!</span>
               </div>
               <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit">
                 <div *ngIf="chart[0].totalLimit else limitsNotSet">

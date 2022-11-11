@@ -6,6 +6,7 @@ import { HttpUtils } from "../utils/httpClientUtils";
 import { Injectable } from "@angular/core";
 import { CategoryUsageLimitBarChart } from "../dto/categoryUsageLimitBarChart";
 import { CurrencyPipe } from "@angular/common";
+import { setToZeroIfNull } from "../utils/objectUtils";
 
 
 @Injectable({providedIn: "root"})
@@ -87,10 +88,11 @@ export class UsageLimitBarChartService {
   private static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit,
                                        currencyPipe: CurrencyPipe): CategoryUsageLimitBarChart[] {
     const remainingLimit: number = UsageLimitBarChartService.calculateRemainingLimit(categoryUsageLimit);
-    let formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
-    let formattedLimit: string = currencyPipe.transform(categoryUsageLimit.limit, 'USD', 'symbol', '1.2-2');
+    const limit = setToZeroIfNull(categoryUsageLimit.limit)
+    const formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
+    const formattedLimit: string = currencyPipe.transform(categoryUsageLimit.limit, 'USD', 'symbol', '1.2-2');
     const nameWithUsageAndLimit: string = `${categoryUsageLimit.categoryName} (${formattedUsage}/${formattedLimit})`
-    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, nameWithUsageAndLimit, categoryUsageLimit.usage, remainingLimit, categoryUsageLimit.limit)];
+    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, nameWithUsageAndLimit, categoryUsageLimit.usage, remainingLimit, limit)];
   }
 
   private static calculateRemainingLimit(categoryUsageLimit: CategoryUsageLimit): number {
