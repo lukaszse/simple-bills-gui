@@ -17,6 +17,7 @@ import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directi
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitUsageChartsComponent } from './content/limit-usage-chart/limit-usage-charts.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { PieUsageChartComponent } from "./content/pie-usage-chart/pie-usage-chart.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     TransactionsComponent,
     CategoryComponent,
     NgbdSortableHeader,
-    LimitUsageChartsComponent
+    LimitUsageChartsComponent,
+    PieUsageChartComponent
   ],
   imports: [
     BrowserModule,
