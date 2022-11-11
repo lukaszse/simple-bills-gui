@@ -2,8 +2,8 @@
   <div class="card-body">
     <!--        start of card body-->
     <h5>Monthly total usage of assigned limit:</h5>
-    <div class="col col-form-label" *ngIf="!(categoryUsageLimitService.loadingTotal$ | async) else loading">
-      <div *ngIf="categoryUsageLimitService.totalUsageLimitBarchart$ | async as totalBarChart">
+    <div class="col col-form-label" *ngIf="!(barChartService.loadingTotal$ | async) else loading">
+      <div *ngIf="barChartService.totalUsageLimitBarchart$ | async as totalBarChart">
         <div class="table-responsive" *ngIf="totalBarChart.length !==0 else noData">
           <table class="mx-auto w-auto" *ngFor="let chart of totalBarChart">
             <tr>
@@ -46,8 +46,9 @@
   <div class="card-body">
     <h5>Monthly usage of assigned limits by categories:</h5>
     <!--        start of card body-->
-    <div class="col col-form-label " *ngIf="!(categoryUsageLimitService.loadingCategories$ | async) else loading">
-      <div *ngIf="categoryUsageLimitService.categoryUsageBarChart$ | async as barCharts">
+    <div class="col col-form-label "
+         *ngIf="!(barChartService.loadingCategories$ | async) else loading">
+      <div *ngIf="barChartService.categoryUsageBarChart$ | async as barCharts">
         <div class="table-responsive" *ngIf="barCharts.length !==0 else noData">
           <table class="mx-auto w-auto">
             <tr *ngFor="let chart of barCharts">

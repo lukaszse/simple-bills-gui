@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryUsageLimitService } from "../../../service/category-usage-limit.service";
+import { UsageLimitBarChartServiceService } from "../../../service/usage-limit-bar-chart-service.service";
 
 @Component({
   selector: 'app-limit-usage-chart',
@@ -26,11 +26,11 @@ export class LimitUsageChartsComponent implements OnInit {
     domain: ['#A10A28', '#AAAAAA'],
   };
 
-  constructor(public categoryUsageLimitService: CategoryUsageLimitService) {
+  constructor(public barChartService: UsageLimitBarChartServiceService) {
   }
 
   ngOnInit(): void {
-    this.categoryUsageLimitService.refresh();
+    this.barChartService.refresh();
   }
 
   onSelect(event) {
