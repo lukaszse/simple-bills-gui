@@ -32,8 +32,4 @@ export class LimitUsageChartsComponent implements OnInit {
   ngOnInit(): void {
     this.barChartService.refresh();
   }
-
-  onSelect(event) {
-    console.log(event);
-  }
 }

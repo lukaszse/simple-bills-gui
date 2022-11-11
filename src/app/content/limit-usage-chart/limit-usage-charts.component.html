@@ -54,7 +54,7 @@
               <div class="text-center" *ngIf="!(chart[0].spent <= chart[0].totalLimit)">
                     <span class="text-warning fw-bold fst-italic">YOUR MONTHLY
                       <span class="text-dark">{{chart[0].categoryName.toUpperCase()}}</span>
-                      IS LIMIT EXCEEDED!
+                      LIMIT IS EXCEEDED!
                     </span>
               </div>
               <div class="text-center" *ngIf="chart[0].spent <= chart[0].totalLimit">
@@ -71,8 +71,7 @@
                     [xAxisLabel]="xAxisLabel"
                     [yAxisLabel]="yAxisLabel"
                     [trimYAxisTicks]="trimYAxis"
-                    [maxYAxisTickLength]="maxLength"
-                    (select)="onSelect($event)">
+                    [maxYAxisTickLength]="maxLength">
                   </ngx-charts-bar-horizontal-normalized>
                 </div>
               </div>

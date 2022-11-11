@@ -13,9 +13,6 @@
             [labels]="showLabels"
             [doughnut]="isDoughnut"
             [maxLabelLength]="maxLength"
-            (select)="onSelect($event)"
-            (activate)="onActivate($event)"
-            (deactivate)="onDeactivate($event)"
           >
           </ngx-charts-pie-chart>
         </tr>
@@ -24,7 +21,6 @@
     <!--        end of card body-->
   </div>
 </div>
-
 
 <ng-template #noData>
   <br>

@@ -63,7 +63,7 @@ export class UsageLimitPieChartService {
   }
 
   private static prepareCategoryNameLabel(categoryUsageLimit: CategoryUsageLimit, currencyPipe: CurrencyPipe): string {
-    let formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
+    const formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
     return `${categoryUsageLimit.categoryName} (${formattedUsage})`;
   }
 }
