@@ -1,7 +1,7 @@
 <div class="card border-secondary mb-3">
   <div class="card-body">
     <!--        start of card body-->
-    <h5>Monthly total usage of assigned limit:</h5>
+    <h5>Current month total limit usage:</h5>
     <div class="col" *ngIf="!(barChartService.loadingTotal$ | async) else loading">
       <div *ngIf="barChartService.totalUsageLimitBarchart$ | async as totalBarChart">
         <div class="table-responsive" *ngIf="totalBarChart.length !==0 else noData">
@@ -27,8 +27,7 @@
                     [xAxisLabel]="xAxisLabel"
                     [yAxisLabel]="yAxisLabel"
                     [trimYAxisTicks]="trimYAxis"
-                    [maxYAxisTickLength]="maxLength"
-                    (select)="onSelect($event)">
+                    [maxYAxisTickLength]="maxLength">
                   </ngx-charts-bar-horizontal-normalized>
                 </div>
               </div>
@@ -44,7 +43,7 @@
 
 <div class="card border-secondary mb-3">
   <div class="card-body">
-    <h5>Monthly usage of assigned limits by categories:</h5>
+    <h5>Current month limit usage by categories:</h5>
     <!--        start of card body-->
     <div class="col" *ngIf="!(barChartService.loadingCategories$ | async) else loading">
       <div *ngIf="barChartService.categoryUsageBarChart$ | async as barCharts">

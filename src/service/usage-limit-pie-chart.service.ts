@@ -5,7 +5,6 @@ import { HttpClient } from "@angular/common/http";
 import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
 import { HttpUtils } from "../utils/httpClientUtils";
 import { CategoryUsagePieChart } from "../dto/categoryUsagePieChart";
-import { CurrencyPipe } from "@angular/common";
 
 @Injectable({providedIn: "root"})
 export class UsageLimitPieChartService {
@@ -19,7 +18,7 @@ export class UsageLimitPieChartService {
   private _loading$ = new BehaviorSubject<boolean>(true);
 
 
-  constructor(private httpClient: HttpClient, private currencyPipe: CurrencyPipe) {
+  constructor(private httpClient: HttpClient) {
     this._findCategoryUsageLimit$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -28,7 +27,7 @@ export class UsageLimitPieChartService {
         tap(() => this._loading$.next(false))
       )
       .subscribe((result) => {
-        this._categoryUsagePieChart$.next(UsageLimitPieChartService.preparePieCharData(result, currencyPipe))
+        this._categoryUsagePieChart$.next(UsageLimitPieChartService.preparePieCharData(result))
       });
   }
 
@@ -55,15 +54,21 @@ export class UsageLimitPieChartService {
     return this._loading$.asObservable();
   }
 
-  private static preparePieCharData(categoryUsageLimits: CategoryUsageLimit[],
-                                    currencyPipe: CurrencyPipe): CategoryUsagePieChart[] {
+  private static preparePieCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsagePieChart[] {
+    const totalUsage: number = UsageLimitPieChartService.calculateTotalUsage(categoryUsageLimits);
     return categoryUsageLimits
       .map(categoryUsageLimit =>
-        new CategoryUsagePieChart(UsageLimitPieChartService.prepareCategoryNameLabel(categoryUsageLimit, currencyPipe), categoryUsageLimit.usage));
+        new CategoryUsagePieChart(UsageLimitPieChartService.prepareCategoryNameLabel(categoryUsageLimit, totalUsage), categoryUsageLimit.usage));
   }
 
-  private static prepareCategoryNameLabel(categoryUsageLimit: CategoryUsageLimit, currencyPipe: CurrencyPipe): string {
-    const formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
-    return `${categoryUsageLimit.categoryName} (${formattedUsage})`;
+  private static calculateTotalUsage(categoryUsageLimits: CategoryUsageLimit[]) {
+    return categoryUsageLimits
+      .map(categoryUsageLimit => categoryUsageLimit.usage)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  }
+
+  private static prepareCategoryNameLabel(categoryUsageLimit: CategoryUsageLimit, totalUsage: number): string {
+    const percentageUsage: string = `${Math.round((categoryUsageLimit.usage / totalUsage) * 100)}%`
+    return `${categoryUsageLimit.categoryName} (${percentageUsage})`;
   }
 }

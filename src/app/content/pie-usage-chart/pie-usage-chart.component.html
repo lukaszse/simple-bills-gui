@@ -1,7 +1,7 @@
 <div class="card border-secondary mb-3">
   <div class="card-body">
     <!--        start of card body-->
-    <h5>Monthly expenses by categories:</h5>
+    <h5>Current month expenses by categories:</h5>
     <div class="table-responsive" *ngIf="pieChartService.categoryUsagePieChart$ | async as pieCharts else noData">
       <table class="mx-auto w-auto">
         <tr>
