@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUsername = this.getUser();
+    this.balanceService.refresh();
   }
 
   getUser(): Observable<string> {

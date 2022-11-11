@@ -7,35 +7,34 @@ import { HttpUtils } from "../utils/http/httpClientUtils";
 import { CategoryUsagePieChart } from "../dto/categoryUsagePieChart";
 
 @Injectable({providedIn: "root"})
-export class UsagePieChartService {
+export class UsageLimitPieChartService {
 
   private static host = environment.billPlanHost
   private static endpoint = "/category-usage-limit"
 
   private _findCategoryUsageLimit$ = new Subject<void>();
   private _findTotalUsageLimit$ = new Subject<void>();
-  private _categoryUsageBarChart$ = new BehaviorSubject<CategoryUsagePieChart[]>(null);
-  private _loadingCategories$ = new BehaviorSubject<boolean>(true);
-  private _loadingTotal$ = new BehaviorSubject<boolean>(true);
+  private _categoryUsagePieChart$ = new BehaviorSubject<CategoryUsagePieChart[]>(null);
+  private _loading$ = new BehaviorSubject<boolean>(true);
 
 
   constructor(private httpClient: HttpClient) {
     this._findCategoryUsageLimit$
       .pipe(
-        tap(() => this._loadingCategories$.next(true)),
+        tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this.findCategoryUsageLimits()),
-        tap(() => this._loadingCategories$.next(false))
+        tap(() => this._loading$.next(false))
       )
       .subscribe((result) => {
-        this._categoryUsageBarChart$.next(UsagePieChartService.preparePieCharData(result))
+        this._categoryUsagePieChart$.next(UsageLimitPieChartService.preparePieCharData(result))
       });
   }
 
   private findCategoryUsageLimits(total?: boolean): Observable<CategoryUsageLimit[]> {
-    const url = HttpUtils.prepareUrl(UsagePieChartService.host, UsagePieChartService.endpoint);
+    const url = HttpUtils.prepareUrl(UsageLimitPieChartService.host, UsageLimitPieChartService.endpoint);
     const completeUrl = total ? `${url}?total=true` : url;
-    return this.httpClient.get<UsagePieChartService[]>(completeUrl, {headers: HttpUtils.prepareHeaders()})
+    return this.httpClient.get<UsageLimitPieChartService[]>(completeUrl, {headers: HttpUtils.prepareHeaders()})
       .pipe(
         catchError(HttpUtils.handleError),
         tap(console.log)
@@ -47,16 +46,12 @@ export class UsagePieChartService {
     this._findTotalUsageLimit$.next()
   }
 
-  get categoryUsageBarChart$() {
-    return this._categoryUsageBarChart$.asObservable();
+  get categoryUsagePieChart$() {
+    return this._categoryUsagePieChart$.asObservable();
   }
 
-  get loadingCategories$() {
-    return this._loadingCategories$.asObservable();
-  }
-
-  get loadingTotal$() {
-    return this._loadingTotal$.asObservable();
+  get loading$() {
+    return this._loading$.asObservable();
   }
 
   private static preparePieCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsagePieChart[] {

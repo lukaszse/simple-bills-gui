@@ -1,1 +1,19 @@
-<p>pie-usage-chart works!</p>
+<div class="card border-secondary mb-3">
+  <div class="card-body table-responsive">
+    <!--        start of card body-->
+    <h5>Monthly expenses by categories ($):</h5>
+    <div *ngIf="pieChartService.categoryUsagePieChart$ | async as pieCharts">
+      <ngx-charts-advanced-pie-chart
+        [view]="view"
+        [results]="pieCharts"
+        [gradient]="gradient"
+        [valueFormatting]="toCurrency"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+      >
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <!--        end of card body-->
+  </div>
+</div>
