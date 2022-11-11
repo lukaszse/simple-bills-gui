@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, tap } from "rxjs";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { environment } from "../environments/environment";
 import { User } from "../dto/user";
 import { map } from "rxjs/operators";

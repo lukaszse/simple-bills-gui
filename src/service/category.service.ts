@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, tap } from "rxjs";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { Category } from "../dto/category";
 import { map } from "rxjs/operators";
 import { TransactionType } from "../dto/transaction";

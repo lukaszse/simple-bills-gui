@@ -2,10 +2,11 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchMap, tap } from "rxjs";
 import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { Injectable } from "@angular/core";
 import { CategoryUsageLimitBarChart } from "../dto/categoryUsageLimitBarChart";
 import { CurrencyPipe } from "@angular/common";
+
 
 @Injectable({providedIn: "root"})
 export class UsageLimitBarChartService {

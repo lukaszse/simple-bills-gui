@@ -3,8 +3,9 @@ import { environment } from "../environments/environment";
 import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchMap, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { CategoryUsagePieChart } from "../dto/categoryUsagePieChart";
+import { CurrencyPipe } from "@angular/common";
 
 @Injectable({providedIn: "root"})
 export class UsageLimitPieChartService {
@@ -18,7 +19,7 @@ export class UsageLimitPieChartService {
   private _loading$ = new BehaviorSubject<boolean>(true);
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private currencyPipe: CurrencyPipe) {
     this._findCategoryUsageLimit$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -27,7 +28,7 @@ export class UsageLimitPieChartService {
         tap(() => this._loading$.next(false))
       )
       .subscribe((result) => {
-        this._categoryUsagePieChart$.next(UsageLimitPieChartService.preparePieCharData(result))
+        this._categoryUsagePieChart$.next(UsageLimitPieChartService.preparePieCharData(result, currencyPipe))
       });
   }
 
@@ -54,8 +55,15 @@ export class UsageLimitPieChartService {
     return this._loading$.asObservable();
   }
 
-  private static preparePieCharData(categoryUsageLimits: CategoryUsageLimit[]): CategoryUsagePieChart[] {
+  private static preparePieCharData(categoryUsageLimits: CategoryUsageLimit[],
+                                    currencyPipe: CurrencyPipe): CategoryUsagePieChart[] {
     return categoryUsageLimits
-      .map(categoryUsageLimit => new CategoryUsagePieChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage));
+      .map(categoryUsageLimit =>
+        new CategoryUsagePieChart(UsageLimitPieChartService.prepareCategoryNameLabel(categoryUsageLimit, currencyPipe), categoryUsageLimit.usage));
+  }
+
+  private static prepareCategoryNameLabel(categoryUsageLimit: CategoryUsageLimit, currencyPipe: CurrencyPipe): string {
+    let formattedUsage: string = currencyPipe.transform(categoryUsageLimit.usage, 'USD', 'symbol', '1.2-2');
+    return `${categoryUsageLimit.categoryName} (${formattedUsage})`;
   }
 }

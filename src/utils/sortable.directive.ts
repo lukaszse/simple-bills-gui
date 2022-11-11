@@ -1,6 +1,4 @@
-import {Directive, EventEmitter, Input, Output, QueryList} from "@angular/core";
-import {map} from "rxjs/operators";
-import {Observable} from "rxjs";
+import { Directive, EventEmitter, Input, Output, QueryList } from "@angular/core";
 
 export type SortDirection = 'asc' | 'desc' | '';
 export const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;

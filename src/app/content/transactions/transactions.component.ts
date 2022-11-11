@@ -1,6 +1,6 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { DatePipe, DecimalPipe, formatDate } from "@angular/common";
-import { NgbdSortableHeader, SortEvent, SortUtils } from "../../../utils/sortableComponents/sortable.directive";
+import { NgbdSortableHeader, SortEvent, SortUtils } from "../../../utils/sortable.directive";
 import { TransactionSearchService } from "../../../service/transaction-search.service";
 import { TransactionCrudService } from "../../../service/transaction-crud.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";

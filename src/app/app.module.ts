@@ -13,7 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
 import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgbdSortableHeader } from "../utils/sortableComponents/sortable.directive";
+import { NgbdSortableHeader } from "../utils/sortable.directive";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LimitUsageChartsComponent } from './content/limit-usage-chart/limit-usage-charts.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";

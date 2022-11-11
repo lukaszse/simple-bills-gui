@@ -9,13 +9,14 @@ import { CurrencyPipe } from "@angular/common";
 })
 export class PieUsageChartComponent implements OnInit {
 
-  view: any[] = [550, 200];
+  view: any[] = [450, 350];
 
   // options
-  gradient: boolean = true;
-  showLegend: boolean = true;
+  gradient: boolean = false;
+  showLegend: boolean = false;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
+  maxLength: number = 35;
 
   colorScheme = {
     domain: [
@@ -24,7 +25,8 @@ export class PieUsageChartComponent implements OnInit {
       '#9F73AB',
       '#A3C7D6',
       '#a5d6a3',
-      '#646e3e'],
+      '#646e3e',
+      '#6e563e'],
   };
 
   constructor(public pieChartService: UsageLimitPieChartService, private currencyPipe: CurrencyPipe) {

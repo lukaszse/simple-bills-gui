@@ -5,8 +5,8 @@ import { Transaction } from "../dto/transaction";
 import { map } from "rxjs/operators";
 import { DatePipe, DecimalPipe } from "@angular/common";
 import { PageableTransactions } from "../dto/pageableTransactions";
-import { SortableState, SortDirection } from "../utils/sortableComponents/sortable.directive";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { SortableState, SortDirection } from "../utils/sortable.directive";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { environment } from "../environments/environment";
 
 

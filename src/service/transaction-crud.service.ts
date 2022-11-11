@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { HttpUtils } from "../utils/http/httpClientUtils";
+import { HttpUtils } from "../utils/httpClientUtils";
 import { TransactionDto } from "../dto/transactionDto";
 import { catchError, Observable, tap } from "rxjs";
 import { TransactionSearchService } from "./transaction-search.service";
