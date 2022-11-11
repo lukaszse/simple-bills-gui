@@ -14,8 +14,6 @@ export class CategoryUsageLimitService {
 
   private _findCategoryUsageLimit$ = new Subject<void>();
   private _findTotalUsageLimit$ = new Subject<void>();
-  private _categoryUsageLimit$ = new BehaviorSubject<CategoryUsageLimit[]>(null);
-  private _totalUsageLimit$ = new BehaviorSubject<CategoryUsageLimit[]>(null);
   private _categoryUsageBarChart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
   private _totalUsageLimitBarChart$ = new BehaviorSubject<CategoryUsageLimitBarChart[][]>(null);
   private _loadingCategories$ = new BehaviorSubject<boolean>(true);
@@ -32,7 +30,6 @@ export class CategoryUsageLimitService {
         tap(() => this._loadingCategories$.next(false))
       )
       .subscribe((result) => {
-        this._categoryUsageLimit$.next(result);
         this._categoryUsageBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
       });
 
@@ -44,7 +41,6 @@ export class CategoryUsageLimitService {
         tap(() => this._loadingTotal$.next(false))
       )
       .subscribe((result) => {
-        this._totalUsageLimit$.next(result);
         this._totalUsageLimitBarChart$.next(CategoryUsageLimitService.prepareBarCharData(result))
       });
   }
@@ -62,14 +58,6 @@ export class CategoryUsageLimitService {
   refresh() {
     this._findCategoryUsageLimit$.next();
     this._findTotalUsageLimit$.next()
-  }
-
-  get categoryUsageLimit$() {
-    return this._categoryUsageLimit$.asObservable();
-  }
-
-  get totalUsageLimit$() {
-    return this._totalUsageLimit$.asObservable();
   }
 
   get categoryUsageBarChart$() {
@@ -94,7 +82,15 @@ export class CategoryUsageLimitService {
   }
 
   static convertToBarChartData(categoryUsageLimit: CategoryUsageLimit): CategoryUsageLimitBarChart[] {
-    let limitToBeUsed = categoryUsageLimit.limit ? categoryUsageLimit.limit - categoryUsageLimit.usage : 0;
-    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, limitToBeUsed)];
+    let remainingLimit = CategoryUsageLimitService.remainingLimit(categoryUsageLimit);
+    return [new CategoryUsageLimitBarChart(categoryUsageLimit.categoryName, categoryUsageLimit.usage, remainingLimit, categoryUsageLimit.limit)];
+  }
+
+  private static remainingLimit(categoryUsageLimit: CategoryUsageLimit) {
+    if (categoryUsageLimit.limit && categoryUsageLimit.usage <= categoryUsageLimit.limit) {
+      return categoryUsageLimit.limit - categoryUsageLimit.usage;
+    } else {
+      return 0;
+    }
   }
 }

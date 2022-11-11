@@ -8,7 +8,10 @@ $theme-colors: (
   "secondary": $cyan-700,
   "light": $gray-100,
   "dark": $gray-900,
-  "info": $gray-400
+  "info": $gray-400,
+  "success": $success,
+  "warning": $red,
+  "danger": $danger
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

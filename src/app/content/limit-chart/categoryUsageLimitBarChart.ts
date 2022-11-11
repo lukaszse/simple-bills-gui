@@ -1,14 +1,17 @@
 export class CategoryUsageLimitBarChart {
 
   name: string;
+  spent: number;
+  remainingLimit: number;
+  totalLimit: number;
   series: Series[];
 
-  constructor(name: string, spent: number, limit: number) {
-    const spentSeries = new Series('already spent', spent);
-    const limitSeries = new Series('limit to be used', limit);
-    const series: Series[] = [spentSeries, limitSeries];
+  constructor(name: string, spent: number, remainingLimit: number, totalLimit: number) {
     this.name = name;
-    this.series = series;
+    this.spent = spent;
+    this.remainingLimit = remainingLimit;
+    this.totalLimit = totalLimit;
+    this.series = [new Series('already spent', spent), new Series('limit to be used', remainingLimit)];
   }
 }
 
