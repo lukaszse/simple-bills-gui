@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, debounceTime, Observable, Subject, switchM
 import { CategoryUsageLimit } from "../dto/categoryUsageLimit";
 import { HttpUtils } from "../utils/http/httpClientUtils";
 import { Injectable } from "@angular/core";
-import { CategoryUsageLimitBarChart } from "../app/content/limit-usage-chart/categoryUsageLimitBarChart";
+import { CategoryUsageLimitBarChart } from "../dto/categoryUsageLimitBarChart";
 import { CurrencyPipe } from "@angular/common";
 
 @Injectable({providedIn: "root"})
