@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { UserService } from "../../../service/user.service";
+import { BalanceService } from "../../../service/balance.service";
 
 
 @Component({
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   loggedUsername: Observable<string>;
 
-  constructor(private userService: UserService) {
+  constructor(public balanceService: BalanceService, private userService: UserService) {
   }
 
   ngOnInit(): void {

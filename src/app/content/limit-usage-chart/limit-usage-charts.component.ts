@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryUsageLimitService } from "../../../service/category-usage-limit.service";
 
 @Component({
-  selector: 'app-limit-chart',
-  templateUrl: './limit-chart.component.html',
-  styleUrls: ['./limit-chart.component.scss']
+  selector: 'app-limit-usage-chart',
+  templateUrl: './limit-usage-charts.component.html',
+  styleUrls: ['./limit-usage-charts.component.scss']
 })
-export class LimitChartComponent implements OnInit {
+export class LimitUsageChartsComponent implements OnInit {
 
 
   // options
