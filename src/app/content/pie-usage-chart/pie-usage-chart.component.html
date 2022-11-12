@@ -1,0 +1,28 @@
+<div class="card border-secondary mb-3">
+  <div class="card-body">
+    <!--        start of card body-->
+    <h5>Current month expenses by categories:</h5>
+    <div class="table-responsive" *ngIf="pieChartService.categoryUsagePieChart$ | async as pieCharts else noData">
+      <table class="mx-auto w-auto">
+        <tr>
+          <ngx-charts-pie-chart
+            [view]="view"
+            [results]="pieCharts"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [labels]="showLabels"
+            [doughnut]="isDoughnut"
+            [maxLabelLength]="maxLength"
+          >
+          </ngx-charts-pie-chart>
+        </tr>
+      </table>
+    </div>
+    <!--        end of card body-->
+  </div>
+</div>
+
+<ng-template #noData>
+  <br>
+  <h6 class="text-info text-center fw-bold">Add any category with assigned limit to see chart here</h6>
+</ng-template>

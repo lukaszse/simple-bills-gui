@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+
+  production: false,
+  simpleBillHost: "http://localhost:8080",
+  billPlanHost: "http://localhost:8081",
+  redirectUri: "http://localhost:8089/",
+  tokenUrl: "http://localhost:8085/realms/simple-bills/protocol/openid-connect/token",
+  authUrl: "http://localhost:8085/realms/simple-bills/protocol/openid-connect/auth"
 };
 
 /*

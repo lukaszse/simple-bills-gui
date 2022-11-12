@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContentComponent } from './content.component';
+import { PieUsageChartComponent } from './pie-usage-chart.component';
 
-describe('ContentComponent', () => {
-  let component: ContentComponent;
-  let fixture: ComponentFixture<ContentComponent>;
+describe('PieUsageChartComponent', () => {
+  let component: PieUsageChartComponent;
+  let fixture: ComponentFixture<PieUsageChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContentComponent ]
+      declarations: [ PieUsageChartComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ContentComponent);
+    fixture = TestBed.createComponent(PieUsageChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

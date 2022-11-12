@@ -22,6 +22,7 @@
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "@reactivex/rxjs": "^5.5.12",
+    "@swimlane/ngx-charts": "^20.1.0",
     "bootstrap": "^5.2.0",
     "jquery": "^3.6.1",
     "ng2-cookies": "^1.0.12",

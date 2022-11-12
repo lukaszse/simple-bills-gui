@@ -1,6 +1,4 @@
-import {Component} from '@angular/core';
-import {OAuth2Service} from "./oAuth2Service";
-import {Config} from "./config";
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,29 +6,13 @@ import {Config} from "./config";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title: string = "Simple Bills Gui";
 
-  title = 'simple-bills-gui';
-  public isLogged: boolean = false;
 
-  constructor(private _service: OAuth2Service) {
+  constructor() {
   }
 
-  ngOnInit() {
-    this.isLogged = this._service.checkCredentials();
-    let i = window.location.href.indexOf('code');
-    if (!this.isLogged && i != -1) {
-      this._service.retrieveToken(window.location.href.substring(i + 5));
-    }
+  ngOnInit(): void {
   }
 
-  login() {
-    window.location.href =
-      `${Config.keycloakHost}/realms/baeldung/protocol/openid-connect/auth?` +
-      'response_type=code&scope=openid%20write%20read&client_id=' +
-      this._service.clientId + '&redirect_uri=' + this._service.redirectUri;
-  }
-
-  logout() {
-    this._service.logout();
-  }
 }

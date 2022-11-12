@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from "rxjs";
+import { UserService } from "../../../service/user.service";
+import { BalanceService } from "../../../service/balance.service";
+
 
 @Component({
   selector: 'app-home',
@@ -7,9 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  loggedUsername: Observable<string>;
 
-  ngOnInit(): void {
+  constructor(public balanceService: BalanceService, private userService: UserService) {
   }
 
+  ngOnInit(): void {
+    this.loggedUsername = this.getUser();
+    this.balanceService.refresh();
+  }
+
+  getUser(): Observable<string> {
+    return this.userService
+      .getUser()
+  }
 }
