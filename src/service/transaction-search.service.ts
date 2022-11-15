@@ -44,12 +44,12 @@ export class TransactionSearchService {
     this._search$.next();
   }
 
-  private findBills(pageSize: number,
-                    pageNumber: number,
-                    sortDirection: string,
-                    sortColumn: string,
-                    dateFrom: Date,
-                    dateTo: Date): Observable<PageableTransactions> {
+  private findTransactions(pageSize: number,
+                           pageNumber: number,
+                           sortDirection: string,
+                           sortColumn: string,
+                           dateFrom: Date,
+                           dateTo: Date): Observable<PageableTransactions> {
 
     let url = HttpUtils.prepareUrl(TransactionSearchService.host, TransactionSearchService.endpoint, pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo);
     return this.httpClient.get<Transaction[]>(url, {headers: HttpUtils.prepareHeaders(), observe: 'response'})
@@ -64,7 +64,7 @@ export class TransactionSearchService {
 
   private _search(): Observable<PageableTransactions> {
     const {sortColumn, sortDirection, pageSize, pageNumber, searchTerm, dateFrom, dateTo} = this._state;
-    let pageableBills$ = this.findBills(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
+    let pageableBills$ = this.findTransactions(pageSize, pageNumber, sortDirection, sortColumn, dateFrom, dateTo).pipe()
     pageableBills$ = TransactionSearchService.search(pageableBills$, searchTerm, this.decimalPipe, this.datePipe)
     return pageableBills$
       .pipe(
