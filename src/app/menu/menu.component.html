@@ -13,7 +13,10 @@
         <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="3">
           <a class="nav-link" ngbNavLink routerLink="/category">categories</a>
         </li>
-        <li ngbDropdown class="nav-item" [ngbNavItem]="4">
+        <li *ngIf="isLogged" class="nav-item" [ngbNavItem]="4">
+          <a class="nav-link" ngbNavLink routerLink="/assets">assets</a>
+        </li>
+        <li ngbDropdown class="nav-item" [ngbNavItem]="5">
           <a href (click)="false" class="nav-link" ngbDropdownToggle>Links</a>
           <div ngbDropdownMenu>
             <a ngbDropdownItem>Documentation</a>
