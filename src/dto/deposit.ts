@@ -1,6 +1,7 @@
 export interface Deposit {
   name: string;
   depositType: DepositType;
+  value: number,
   bankName: string;
   durationInMonths: number;
   annualInterestRate: number

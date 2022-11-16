@@ -26,7 +26,7 @@ export class CategoryComponent implements OnInit {
 
 
   constructor(private categoryService: CategoryService,
-              private _modalService: NgbModal) {
+              private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -42,7 +42,7 @@ export class CategoryComponent implements OnInit {
     const transactionTypeEnum = TransactionType[transactionType];
     this.expenseTransactionType = transactionTypeEnum === TransactionType.EXPENSE;
     this.resetFormFields(transactionTypeEnum)
-    this._modalService.open(content, {ariaLabelledBy: 'modal-category-creation'}).result.then(
+    this.modalService.open(content, {ariaLabelledBy: 'modal-category-creation'}).result.then(
       () => {
         this.categoryService.createCategory(this.category)
           .subscribe((deletionResponse) => {
@@ -59,7 +59,7 @@ export class CategoryComponent implements OnInit {
   openEditWindowForSelectedCategory(category: Category, content) {
     this.category = category;
     this.expenseTransactionType = category.transactionType === TransactionType.EXPENSE;
-    this._modalService.open(content, {ariaLabelledBy: 'modal-category-update'}).result.then(
+    this.modalService.open(content, {ariaLabelledBy: 'modal-category-update'}).result.then(
       () => {
         this.categoryService.updateCategory(this.category)
           .subscribe((updateResponse) => {
@@ -76,7 +76,7 @@ export class CategoryComponent implements OnInit {
   openDeletionConfirmationWindow(categoryName: string, content) {
     this.categoryToDelete = categoryName;
     this.allowableReplacementCategories = this.categories.filter(category => category.name !== categoryName);
-    this._modalService.open(content, {ariaLabelledBy: 'modal-category-deletion'}).result.then(
+    this.modalService.open(content, {ariaLabelledBy: 'modal-category-deletion'}).result.then(
       (result) => {
         console.log(result);
         this.categoryService.deleteCategory(categoryName, this.replacementCategory)

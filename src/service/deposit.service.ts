@@ -11,7 +11,7 @@ import { Transaction } from "../dto/transaction";
 export class DepositService {
 
   private static host = environment.assetsManagementHost;
-  private static endpoint = "/assets";
+  private static endpoint = "/deposits";
 
   private _findDeposits$ = new Subject<void>()
   private _deposits$ = new BehaviorSubject<Deposit[]>(null);
@@ -28,7 +28,7 @@ export class DepositService {
       .subscribe((result) => this._deposits$.next(result))
   }
 
-  findDeposits(): Observable<Deposit[]> {
+  private findDeposits(): Observable<Deposit[]> {
     const url = HttpUtils.prepareUrl(DepositService.host, DepositService.endpoint);
     return this.httpClient.get<Balance>(url, {headers: HttpUtils.prepareHeaders()})
       .pipe(
@@ -48,7 +48,7 @@ export class DepositService {
       )
   }
 
-  updateTransaction(deposit: Deposit): Observable<Transaction> {
+  updateDeposit(deposit: Deposit): Observable<Transaction> {
     const url = `${HttpUtils.prepareUrlWithId(DepositService.host, DepositService.endpoint, deposit.name)}`;
     return this.httpClient
       .patch<Transaction>(url, deposit, {headers: HttpUtils.prepareHeaders()})
@@ -59,7 +59,7 @@ export class DepositService {
       )
   }
 
-  deleteBill(transactionNumber: number | string): Observable<number | Object> {
+  deleteDeposit(transactionNumber: number | string): Observable<number | Object> {
     const url = `${HttpUtils.prepareUrlWithId(DepositService.host, DepositService.endpoint, transactionNumber)}`;
     return this.httpClient
       .delete<string>(url, {headers: HttpUtils.prepareHeaders()})

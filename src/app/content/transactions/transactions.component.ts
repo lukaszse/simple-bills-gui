@@ -79,7 +79,7 @@ export class TransactionsComponent implements OnInit {
     this.setFormFields(transaction)
     this.modalService.open(content, {ariaLabelledBy: 'modal-transaction-update'}).result.then(
       () => {
-        const transactionToUpdate: Transaction = this.updateBill(transaction);
+        const transactionToUpdate: Transaction = this.prepareTransactionToUpdate(transaction);
         console.log(this.transactionDto)
         this.transactionCrudService.updateTransaction(transactionToUpdate)
           .subscribe((creationResponse) => {
@@ -88,7 +88,7 @@ export class TransactionsComponent implements OnInit {
           });
       },
       () => {
-        console.log("Bill update canceled")
+        console.log("Transaction update canceled")
       }
     );
   }
@@ -129,7 +129,7 @@ export class TransactionsComponent implements OnInit {
     this.transactionDto.date = formatDate(transaction.date, "yyyy-MM-dd", "en");
   }
 
-  updateBill(transaction: Transaction): Transaction {
+  prepareTransactionToUpdate(transaction: Transaction): Transaction {
     transaction.type = this.transactionDto.type;
     transaction.category = this.transactionDto.category;
     transaction.description = this.transactionDto.description;
