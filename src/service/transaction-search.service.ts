@@ -23,7 +23,7 @@ export class TransactionSearchService {
     sortColumn: '',
     sortDirection: '',
     pageNumber: 1,
-    pageSize: 4,
+    pageSize: 5,
     searchTerm: '',
     dateFrom: null,
     dateTo: null

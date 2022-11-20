@@ -35,13 +35,13 @@
             {{deposit.value | currency}}
           </td>
           <td>
-            {{deposit.bankName | currency}}
+            {{deposit.bankName}}
           </td>
           <td>
-            {{deposit.durationInMonths | currency}}
+            {{deposit.durationInMonths }}
           </td>
           <td>
-            {{deposit.annualInterestRate | currency}}
+            {{deposit.annualInterestRate}}%
           </td>
           <td>
             <button
@@ -111,7 +111,7 @@
             id="new-deposit-bank-input"
             type="text"
             class="form-control"
-            name="category-name"
+            name="new-deposit-bank-input"
             [(ngModel)]="deposit.bankName"/>
         </div>
         <label for="new-deposit-value-input" class="col-form-label">Deposit value</label>
@@ -120,7 +120,7 @@
             id="new-deposit-value-input"
             type="text"
             class="form-control"
-            name="category-name"
+            name="new-deposit-value-input"
             [(ngModel)]="deposit.value"/>
         </div>
         <label for="new-deposit-duration-input" class="col-form-label">Duration</label>
@@ -129,7 +129,7 @@
             id="new-deposit-duration-input"
             type="text"
             class="form-control"
-            name="category-name"
+            name="new-deposit-duration-input"
             [(ngModel)]="deposit.durationInMonths"/>
         </div>
         <label for="new-deposit-interest-rate-input" class="col-form-label">Annual interest rate</label>
@@ -138,7 +138,7 @@
             id="new-deposit-interest-rate-input"
             type="text"
             class="form-control"
-            name="category-name"
+            name="new-deposit-interest-rate-input"
             [(ngModel)]="deposit.annualInterestRate"/>
         </div>
       </div>
@@ -158,64 +158,66 @@
     <h4 class="modal-title" id="modal-category-update">Category update</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <form>
-    <h2 class="col-form-label">Add new deposit:</h2>
-    <div class="mb-3">
-      <label for="update-deposit-name-input" class="col-form-label">Deposit name</label>
-      <div class="input-group">
-        <input
-          type="text"
-          id="update-deposit-name-input"
-          name="new-category-transaction-type-input"
-          class="form-control"
-          disabled
-          [(ngModel)]="deposit.name">
+  <div class="modal-body text-dark">
+    <form>
+      <h2 class="col-form-label">Add new deposit:</h2>
+      <div class="mb-3">
+        <label for="update-deposit-name-input" class="col-form-label">Deposit name</label>
+        <div class="input-group">
+          <input
+            type="text"
+            id="update-deposit-name-input"
+            name="new-category-transaction-type-input"
+            class="form-control"
+            disabled
+            [(ngModel)]="deposit.name">
+        </div>
+        <label for="update-deposit-type-input" class="col-form-label">Deposit type</label>
+        <select [(ngModel)]="deposit.depositType" name="categoryRemoval" class="form-select"
+                aria-label="Default select example" id="update-deposit-type-input">
+          <option value="TERM">Term</option>
+          <option value="PERPETUAL">Perpetual</option>
+        </select>
+        <label for="update-deposit-bank-input" class="col-form-label">Bank name</label>
+        <div class="input-group">
+          <input
+            id="update-deposit-bank-input"
+            type="text"
+            class="form-control"
+            name="update-deposit-bank-input"
+            [(ngModel)]="deposit.bankName"/>
+        </div>
+        <label for="update-deposit-value-input" class="col-form-label">Deposit value</label>
+        <div class="input-group">
+          <input
+            id="update-deposit-value-input"
+            type="text"
+            class="form-control"
+            name="update-deposit-value-input"
+            [(ngModel)]="deposit.value"/>
+        </div>
+        <label for="update-deposit-duration-input" class="col-form-label">Duration</label>
+        <div class="input-group">
+          <input
+            id="update-deposit-duration-input"
+            type="text"
+            class="form-control"
+            name="update-deposit-duration-input"
+            [(ngModel)]="deposit.durationInMonths"/>
+        </div>
+        <label for="update-deposit-interest-rate-input" class="col-form-label">Annual interest rate</label>
+        <div class="input-group">
+          <input
+            id="update-deposit-interest-rate-input"
+            type="text"
+            class="form-control"
+            name="update-deposit-interest-rate-input"
+            [(ngModel)]="deposit.annualInterestRate"/>
+        </div>
       </div>
-      <label for="new-deposit-type-input" class="col-form-label">Deposit type</label>
-      <select [(ngModel)]="deposit.depositType" name="categoryRemoval" class="form-select"
-              aria-label="Default select example" id="update-deposit-type-input">
-        <option value="TERM">Term</option>
-        <option value="PERPETUAL">Perpetual</option>
-      </select>
-      <label for="update-deposit-bank-input" class="col-form-label">Bank name</label>
-      <div class="input-group">
-        <input
-          id="update-deposit-bank-input"
-          type="text"
-          class="form-control"
-          name="category-name"
-          [(ngModel)]="deposit.bankName"/>
-      </div>
-      <label for="update-deposit-value-input" class="col-form-label">Deposit value</label>
-      <div class="input-group">
-        <input
-          id="update-deposit-value-input"
-          type="text"
-          class="form-control"
-          name="category-name"
-          [(ngModel)]="deposit.value"/>
-      </div>
-      <label for="update-deposit-duration-input" class="col-form-label">Duration</label>
-      <div class="input-group">
-        <input
-          id="update-deposit-duration-input"
-          type="text"
-          class="form-control"
-          name="category-name"
-          [(ngModel)]="deposit.durationInMonths"/>
-      </div>
-      <label for="update-deposit-interest-rate-input" class="col-form-label">Annual interest rate</label>
-      <div class="input-group">
-        <input
-          id="update-deposit-interest-rate-input"
-          type="text"
-          class="form-control"
-          name="category-name"
-          [(ngModel)]="deposit.annualInterestRate"/>
-      </div>
-    </div>
-  </form>
-  <div>
+    </form>
+  </div>
+  <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark m-2" (click)="modal.close('update deposit')">Update selected
       deposit
     </button>

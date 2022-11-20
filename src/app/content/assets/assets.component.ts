@@ -49,6 +49,7 @@ export class AssetsComponent implements OnInit {
   openDepositEditWindow(deposit: Deposit, content) {
     this.selectedDeposit = deposit.name;
     this.setFormFields(deposit)
+    console.log(this.deposit)
     this.modalService.open(content, {ariaLabelledBy: 'modal-deposit-update'}).result.then(
       () => {
         console.log(this.deposit)
@@ -92,10 +93,10 @@ export class AssetsComponent implements OnInit {
 
   setFormFields(deposit: Deposit) {
     this.deposit.name = deposit.name;
+    this.deposit.bankName = deposit.bankName;
     this.deposit.depositType = deposit.depositType;
     this.deposit.value = deposit.value;
     this.deposit.durationInMonths = deposit.durationInMonths;
     this.deposit.annualInterestRate = deposit.annualInterestRate;
-    this.deposit.bankName = deposit.bankName;
   }
 }
