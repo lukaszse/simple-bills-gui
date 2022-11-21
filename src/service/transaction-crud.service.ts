@@ -10,7 +10,7 @@ import { Transaction } from "../dto/transaction";
 @Injectable({providedIn: "root"})
 export class TransactionCrudService {
 
-  private static host: string = environment.simpleBillHost;
+  private static host: string = environment.transactionManagementHost;
   private static endpoint: string = "/transactions";
 
   constructor(private httpClient: HttpClient, private transactionSearchService: TransactionSearchService) {

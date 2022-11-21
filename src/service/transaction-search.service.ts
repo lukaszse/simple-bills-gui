@@ -13,7 +13,7 @@ import { environment } from "../environments/environment";
 @Injectable({providedIn: "root"})
 export class TransactionSearchService {
 
-  private static host: string = environment.simpleBillHost;
+  private static host: string = environment.transactionManagementHost;
   private static endpoint: string = "/transactions";
   private _pageableTransactions$ = new BehaviorSubject<PageableTransactions>(null);
   private _loading$ = new BehaviorSubject<boolean>(true);
