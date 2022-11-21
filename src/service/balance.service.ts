@@ -8,7 +8,7 @@ import { Injectable } from "@angular/core";
 @Injectable({providedIn: "root"})
 export class BalanceService {
 
-  private static host = environment.billPlanHost;
+  private static host = environment.planningHost;
   private static endpoint = "/balance";
 
   private _findBalance$ = new Subject<void>()

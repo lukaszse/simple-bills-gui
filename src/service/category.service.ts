@@ -10,7 +10,7 @@ import { TransactionType } from "../dto/transaction";
 @Injectable({providedIn: "root"})
 export class CategoryService {
 
-  private static host = environment.billPlanHost
+  private static host = environment.planningHost
   private static endpoint = "/categories"
 
   public categories$: Observable<Category[]>;

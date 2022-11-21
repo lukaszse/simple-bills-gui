@@ -12,7 +12,7 @@ import { setToZeroIfNull } from "../utils/objectUtils";
 @Injectable({providedIn: "root"})
 export class UsageLimitBarChartService {
 
-  private static host = environment.billPlanHost
+  private static host = environment.planningHost
   private static endpoint = "/category-usage-limit"
 
   private _findCategoryUsageLimit$ = new Subject<void>();

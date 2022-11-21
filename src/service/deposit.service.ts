@@ -10,7 +10,7 @@ import { Transaction } from "../dto/transaction";
 @Injectable({providedIn: "root"})
 export class DepositService {
 
-  private static host = environment.assetsManagementHost;
+  private static host = environment.assetManagementHost;
   private static endpoint = "/deposits";
 
   private _findDeposits$ = new Subject<void>()

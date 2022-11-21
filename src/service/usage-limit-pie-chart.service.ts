@@ -9,7 +9,7 @@ import { CategoryUsagePieChart } from "../dto/categoryUsagePieChart";
 @Injectable({providedIn: "root"})
 export class UsageLimitPieChartService {
 
-  private static host = environment.billPlanHost
+  private static host = environment.planningHost
   private static endpoint = "/category-usage-limit"
 
   private _findCategoryUsageLimit$ = new Subject<void>();
